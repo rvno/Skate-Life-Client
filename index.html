@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>mobile test</title>
+	<!-- Include meta tag to ensure proper rendering and touch zooming -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Include jQuery Mobile stylesheets -->
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+
+<!-- include CUSTOM css stylesheets -->
+<link rel="stylesheet" type="text/css" href="./css/app.css">
+
+<!-- Include the jQuery library -->
+<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+<!-- Include the jQuery Mobile library -->
+<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+</head>
+<body>
+
+	<!-- separate divs for separate pages -->
+	<div data-role="page" id="pageone">
+	  <div data-role="header">
+	    <h1>Welcome To My Homepage</h1>
+	  </div>
+
+	  <div data-role="main" class="ui-content">
+	    <p>Welcome! If you click on the link below, it will take you to Page Two.</p>
+	    <a href="#pagetwo" class="ui-btn">Go to Page Two</a> 
+	    <!-- above is a button that redirects to page two, a element is recommended -->
+	    <a href="#anylink" class="ui-btn ui-icon-forward ui-btn-icon-forward" data-icon="forward" data-theme="a"></a>
+	    <a href="#pagetwo">Go to Page Two</a>
+	  </div>
+
+	  <div data-role="footer">
+	    <h1>Footer Text</h1>
+	  </div>
+	</div> 
+
+		<div data-role="page" id="pagetwo">
+	  <div data-role="header">
+	    <h1>Welcome To My 2nd home page</h1>
+	  </div>
+
+	  <div data-role="main" class="ui-content">
+	    <p>This is Page Two. If you click on the link below, it will take you to Page One.</p>
+	    <a href="#pageone">Go to Page One</a>
+	  </div>
+
+	  <div data-role="footer" class="footer">
+			<div data-role="navbar" class="navbar">
+    <ul>
+      <li><a href="#anylink" class="ui-btn ui-icon-back ui-btn-icon-bottom" data-rel="back"></a>
+			</li>
+      <li><a href="#anylink" class="ui-btn ui-icon-home ui-btn-icon-bottom"></a>
+			</li>
+      <li><a href="#anylink" class="ui-btn ui-icon-search ui-btn-icon-bottom" data-role="button" data-theme="a"></a>
+      </li>
+    </ul>
+  </div>
+	  </div>
+	</div> 
+	
+</body>
+</html>
