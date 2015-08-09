@@ -17,50 +17,93 @@
 
 <!-- Include the jQuery Mobile library -->
 <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+
+<!-- include CUSTOM js files -->
+<script src="./js/app.js"></script>
 </head>
 <body>
 
 	<!-- separate divs for separate pages -->
-	<div data-role="page" id="pageone">
-	  <div data-role="header">
+
+	<!-- LOGIN PAGE -->
+	<div data-role="page" id="login-page">
+	  <div data-role="header" data-theme="b">
 	    <h1>Welcome To My Homepage</h1>
 	  </div>
 
 	  <div data-role="main" class="ui-content">
-	    <p>Welcome! If you click on the link below, it will take you to Page Two.</p>
-	    <a href="#pagetwo" class="ui-btn">Go to Page Two</a> 
+	    <a href="#main-map-page" class="ui-btn login-btn">Login</a>
+
 	    <!-- above is a button that redirects to page two, a element is recommended -->
-	    <a href="#anylink" class="ui-btn ui-icon-forward ui-btn-icon-forward" data-icon="forward" data-theme="a"></a>
-	    <a href="#pagetwo">Go to Page Two</a>
 	  </div>
 
-	  <div data-role="footer">
-	    <h1>Footer Text</h1>
+	  <div data-role="footer" class="footer" data-theme="b">
+	    <div data-role="navbar" class="navbar">
+    		<ul>
+		      <li><a href="#anylink" class="ui-btn ui-icon-back ui-btn-icon-bottom" data-rel="back"></a>
+					</li>
+		      <li><a href="#main-map-page" class="ui-btn ui-icon-home ui-btn-icon-bottom"></a>
+					</li>
+		      <li><a href="#anylink" class="ui-btn ui-icon-user ui-btn-icon-bottom" data-role="button"></a>
+		      </li>
+    		</ul>
+  		</div>
 	  </div>
 	</div> 
 
-		<div data-role="page" id="pagetwo">
-	  <div data-role="header">
-	    <h1>Welcome To My 2nd home page</h1>
-	  </div>
+	<!-- MAIN MAP PAGE -->
+	<div data-role="page" id="main-map-page">
+		<div data-role="header" data-theme="b">
+			<h1>Welcome To My 2nd home page</h1>
 
-	  <div data-role="main" class="ui-content">
-	    <p>This is Page Two. If you click on the link below, it will take you to Page One.</p>
-	    <a href="#pageone">Go to Page One</a>
-	  </div>
+		</div>
 
-	  <div data-role="footer" class="footer">
+		<div data-role="main" class="ui-content">
+			<div class="skateparks">
+				<ul class="skatepark-list" data-role="list-view">
+				</ul>
+			</div>
+			<a href="#login-page">Go to Page One</a>
+			<a href="#skatepark-page">Go to a skatepark</a>
+
+		</div>
+
+		<div data-role="footer" class="footer" data-theme="b">
 			<div data-role="navbar" class="navbar">
-    <ul>
-      <li><a href="#anylink" class="ui-btn ui-icon-back ui-btn-icon-bottom" data-rel="back"></a>
-			</li>
-      <li><a href="#anylink" class="ui-btn ui-icon-home ui-btn-icon-bottom"></a>
-			</li>
-      <li><a href="#anylink" class="ui-btn ui-icon-search ui-btn-icon-bottom" data-role="button" data-theme="a"></a>
-      </li>
-    </ul>
-  </div>
-	  </div>
+				<ul>
+					<li><a href="#anylink" class="ui-btn ui-icon-back ui-btn-icon-bottom" data-rel="back"></a>
+					</li>
+					<li><a href="#main-map-page" class="ui-btn ui-icon-home ui-btn-icon-bottom"></a>
+					</li>
+					<li><a href="#anylink" class="ui-btn ui-icon-user ui-btn-icon-bottom" data-role="button"></a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div> 
+
+	<!-- INDIVIDUAL SKATEPARK PAGE -->
+	<div data-role="page" id="skatepark-page">
+		<div data-role="header" data-theme="b">
+			<h1 class="skatepark-name"></h1>
+		</div>
+
+		<div data-role="main" class="ui-content">
+			<div class="skatepark-page"></div>
+		</div>
+
+		<div data-role="footer" class="footer" data-theme="b">
+			<div data-role="navbar" class="navbar">
+				<ul>
+					<li><a href="#anylink" class="ui-btn ui-icon-back ui-btn-icon-bottom" data-rel="back"></a>
+					</li>
+					<li><a href="#main-map-page" class="ui-btn ui-icon-home ui-btn-icon-bottom"></a>
+					</li>
+					<li><a href="#anylink" class="ui-btn ui-icon-user ui-btn-icon-bottom" data-role="button"></a>
+					</li>
+				</ul>
+			</div>
+		</div>
 	</div> 
 	
 </body>

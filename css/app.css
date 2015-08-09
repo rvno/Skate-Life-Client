@@ -3,3 +3,26 @@
 	bottom: 0;
   width: 100%;
 }
+
+.hidden{
+	display:none;
+}
+
+.skateparks{
+	overflow-y: scroll;
+	padding-bottom: 40px;
+}
+
+li{
+	list-style-type: none;
+	margin-bottom:2%;
+}
+
+a{
+	text-decoration:none;
+}
+
+#main-map-page > div.ui-content > div > li > a{
+	color:black;
+	font-weight:520;
+}
