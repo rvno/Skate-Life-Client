@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+   <widget xmlns   = "http://www.w3.org/ns/widgets"
+       xmlns:gap   = "http://phonegap.com/ns/1.0"
+       id          = "com.skate-life.mobile-test"
+       versionCode = "10"
+       version     = "1.0.0" >
+
+   <!-- versionCode is optional and Android only -->
+
+   <name>Skate Life Mobile Test</name>
+
+   <description>
+       Skate Life mobile application test using jQuery Mobile.
+   </description>
+
+   <author href="http://phonegap.com" email="harveydngo@gmail.com">
+       Team SICH
+   </author>
+
+    <gap:plugin name="org.apache.cordova.inappbrowser"/>
+    <access origin="*"/>
+    <preference name="permissions" value="none"/>
+
+
+</widget>
