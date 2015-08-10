@@ -1,4 +1,5 @@
 var ref = new Firebase("https://skatelife.firebaseio.com");
+var userData;
 
 baseURL = 'https://skate-life-backend.herokuapp.com/';
 
@@ -23,9 +24,11 @@ var authenticatUser = function() {
 }
 
 var buildUserProfile = function() {
-  var userData = JSON.parse(window.localStorage.getItem('googleData'));
+  userData = JSON.parse(window.localStorage.getItem('googleData'));
   var firstName = userData.google.displayName.split(' ')[0];
   $('.username').text('Welcome ' + firstName);
+  $('.welcome-header').text('Welcome ' + firstName);
+  // $('.login-btn').parent().remove();
   // $("#main-map-page").prepend($('<img>').attr("src", userData.google.profileImageURL))
 }
 
@@ -48,6 +51,7 @@ $(document).on("pageinit", '#main-map-page',function(){
             .attr('href', path+ skatepark.id)
             // .attr('id', park.name)
             .text(skatepark.name)));
+    $('.back-btn').parent().hide()
 
     })
   })
@@ -149,7 +153,7 @@ function initializeMap(){
   //end custom color segment//
   //set your location marker to be where your current location is
   var marker = new google.maps.Marker({
-    url:"#login-page",    
+    url:"#login-page",
     position:dbc,
   })
 
@@ -231,7 +235,7 @@ var onSuccess = function(position){
 	dbc = new google.maps.LatLng(latitude, longitude)
 
 
-	initializeMap();	
+	initializeMap();
 }
 
 function onError(error) {
@@ -251,7 +255,7 @@ onDeviceReady();
 
 google.maps.event.addDomListener(window, 'load', initializeMap);
 
-//end google map 
+//end google map
 
 // authentication below
 
@@ -272,3 +276,13 @@ var googleOauth = function() {
 $(document).on('click', '.favorite-button', function(){
   console.log("aww yiss")
 })
+
+$(document).on("click", "#logout", function() {
+  signOut();
+});
+
+var signOut = function() {
+  localStorage.clear();
+  userData = "";
+  $.mobile.changePage('#login-page')
+}
