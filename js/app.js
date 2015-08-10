@@ -75,10 +75,10 @@ $(document).on("click", ".skatepark-link", function(e){
     else{
       response.name = response.name + " skatepark"
     }
-
     $('#skatepark-page .skatepark-name').text(response.name.toUpperCase());
-    $('#skatepark-page .ui-content .skatepark-page').html('<h1>'+response.name+'</h1><p>Address: '+response.address+'</p><p>Favorited: '+response.fav_count+'</p>'
+    $('#skatepark-page .ui-content .skatepark-page').html('<h1>'+response.name+'</h1><p>Address: '+response.address+'</p><p>Favorited: '+response.fav_count+'</p><img src="https://maps.googleapis.com/maps/api/streetview?size=300x100&location='+response.lat+','+response.long+'&fov=70&heading=235&pitch=0"/>'
       )
+
 
     $.mobile.changePage('#skatepark-page');
   })
@@ -121,7 +121,7 @@ function initializeMap(){
 
   var mapProp = {
     center:dbc,
-    zoom:17,
+    zoom:15,
     panControl:false,
     zoomControl:true,
     zoomControlOptions: {
@@ -195,7 +195,7 @@ function initializeMap(){
       console.log(lat, lon);
 
       var infowindow = new google.maps.InfoWindow({
-           content: '<p>'+skatepark.name+'</p><p>'+skatepark.address+'</p><a class="skatepark-link" href='+baseURL+'api/skateparks/'+skatepark.id+'>check it</a>'
+           content: '<p>'+skatepark.name+'</p><p>'+skatepark.address+'</p><a class="skatepark-link" href='+baseURL+'api/skateparks/'+skatepark.id+'>check it</a><p><img src="https://maps.googleapis.com/maps/api/streetview?size=300x100&location='+lat+','+lon+'&fov=70&heading=235&pitch=0"/></p>'
       });
 
       var marker = new google.maps.Marker({
@@ -268,3 +268,7 @@ var googleOauth = function() {
   });
   return promise;
 }
+
+$(document).on('click', '.favorite-button', function(){
+  console.log("aww yiss")
+})
