@@ -34,13 +34,18 @@ var buildUserProfile = function() {
 
 $(document).on("pageinit", '#main-map-page',function(){
   // alert("the next page is loading");
-  console.log(baseURL);
+  $('.back-btn')
+    .attr('href', '#')
+    .attr('data-rel', '')
+    .addClass('not-blue');
+
   var path = baseURL + 'api/skateparks/';
   $.ajax({
     url: path,
     method: 'get',
     dataType: 'json'
   })
+
   .done(function(response){
     console.log('done')
     $.each(response, function(index, skatepark){
@@ -51,7 +56,6 @@ $(document).on("pageinit", '#main-map-page',function(){
             .attr('href', path+ skatepark.id)
             // .attr('id', park.name)
             .text(skatepark.name)));
-    $('.back-btn').parent().hide()
 
     })
   })
