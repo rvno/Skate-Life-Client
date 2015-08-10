@@ -328,9 +328,20 @@ $(document).on("panelbeforeopen", "#favoritesPanel", function(event, ui){
 // allow user to favorite a map
 $(document).on('click', '.favorite-button', function(){
   console.log(userData)
-  debugger
   var parkId = $('.skatepark-id').text()
   var path = baseURL + 'api/users/' + userData.google.id + '/favorites/' + parkId
+  $.ajax({
+    url: path,
+    method: 'post',
+    dataType: 'json'
+  })
+  .done(function(response){
+    console.log(response);
+  })
+  .fail(function(response){
+    console.log(response);
+    console.log('toadd')
+  })
 
 })
 
