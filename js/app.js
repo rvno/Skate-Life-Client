@@ -163,9 +163,17 @@ function initializeMap(){
       // debugger
       console.log(lat, lon);
 
-      var marker = new google.maps.Marker({
-        position: new google.maps.LatLng(lat,lon)
+      var infowindow = new google.maps.InfoWindow({
+           content: '<p>'+skatepark.name+'</p><p>'+skatepark.address+'</p><a class="skatepark-link" href='+baseURL+'api/skateparks/'+skatepark.id+'>check it</a>'
       });
+
+      var marker = new google.maps.Marker({
+        position: new google.maps.LatLng(lat,lon),
+        title: skatepark.name
+      });
+      google.maps.event.addListener(marker, 'click', function() {
+          infowindow.open(map,marker);
+        });
 
       console.log(marker);
       marker.setMap(map);
