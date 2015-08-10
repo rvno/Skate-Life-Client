@@ -127,20 +127,6 @@ function initializeMap(){
   })
 
   map.setTilt(0); 
-  //tilt is the angle at which you view the map (think bird's eye)
-  // Grab radius of skatepark
-  // var skateparkRadius = new google.maps.Circle({
-  //   center:portrero,
-  //   radius:50,
-  //   strokeColor:"#0000FF",
-  //   strokeOpacity:1,
-  //   strokeWeight:2,
-  //   fillColor:"#0000FF",
-  //   fillOpacity:0.4
-  // });
-  //skateparkRadius.setMap(map);
-  // THE SECTION ABOVE REPRESENTS THE BLUE CIRCLE FOR GEOFENCING, NOT MVP
-
 }
 
 var onSuccess = function(position){
