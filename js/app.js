@@ -115,7 +115,7 @@ function initializeMap(){
     zoom:17,
     mapTypeId:google.maps.MapTypeId.HYBRID,
     panControl:false,
-    zoomControl:true,
+    zoomControl:false,
     zoomControlOptions: {
       style:google.maps.ZoomControlStyle.SMALL,
       // position:google.maps.ControlPosition.BOTTOM_RIGHT
@@ -129,6 +129,7 @@ function initializeMap(){
 
   // actually Build the map
   var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+
   map.setTilt(0); //tilt is the angle at which you view the map (think bird's eye)
   // Grab radius of skatepark
   // var skateparkRadius = new google.maps.Circle({
@@ -159,6 +160,7 @@ var onSuccess = function(position){
 	// alert(latitude + "," + longitude)
 	dbc = new google.maps.LatLng(latitude, longitude)
 	initializeMap();	
+  google.maps.event.trigger($('#googleMap').gmap('getMap'), 'resize')
 }
 
 function onError(error) {
