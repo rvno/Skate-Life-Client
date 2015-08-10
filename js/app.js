@@ -123,23 +123,56 @@ function initializeMap(){
 
   //this makes it so when we click on a marker, it redirects us to the marker's url
   google.maps.event.addListener(marker, 'click', function(){
-    window.location.href=marker.url;
+    window.location.href = marker.url;
   })
 
-  map.setTilt(0); 
-  //tilt is the angle at which you view the map (think bird's eye)
-  // Grab radius of skatepark
-  // var skateparkRadius = new google.maps.Circle({
-  //   center:portrero,
-  //   radius:50,
-  //   strokeColor:"#0000FF",
-  //   strokeOpacity:1,
-  //   strokeWeight:2,
-  //   fillColor:"#0000FF",
-  //   fillOpacity:0.4
-  // });
-  //skateparkRadius.setMap(map);
-  // THE SECTION ABOVE REPRESENTS THE BLUE CIRCLE FOR GEOFENCING, NOT MVP
+  map.setTilt(0);
+
+
+  $.ajax({
+    url: baseURL + 'api/skateparks',
+    type: 'get',
+    dataType: 'json'
+  })
+
+
+// var myLatlng = new google.maps.LatLng(-25.363882,131.044922);
+
+  .done(function(response) {
+    $.each(response, function(index, skatepark) {
+      // debugger
+      // console.log(skatepark.lat);
+
+      if (skatepark.lat[0] === '-') {
+        var latParsed = skatepark.lat.substr(1);
+        var lat = parseFloat(skatepark.lat);
+      } else {
+        var lat = parseFloat(skatepark.lat);
+      }
+
+      if (skatepark.long[0] === '-') {
+        var lonParsed = skatepark.long.substr(1);
+        var lon = parseFloat(skatepark.long);
+      } else {
+        var lon = parseFloat(skatepark.long);
+      }
+
+      // debugger
+      console.log(lat, lon);
+
+      var marker = new google.maps.Marker({
+        position: new google.maps.LatLng(lat,lon)
+      });
+
+      console.log(marker);
+      marker.setMap(map);
+    });
+  })
+
+  .fail(function(response) {
+
+  });
+
 
 }
 
