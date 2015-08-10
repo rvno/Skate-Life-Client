@@ -1,14 +1,11 @@
 var ref = new Firebase("https://skatelife.firebaseio.com");
 
-
 baseURL = 'https://skate-life-backend.herokuapp.com/';
-
 
 $(function() {
   authenticatUser();
   // buildUserProfile();
 });
-
 
 var authenticatUser = function() {
   $('.login-btn').on('click', function(event){
@@ -31,8 +28,6 @@ var buildUserProfile = function() {
   $('.username').text('Welcome ' + firstName);
   // $("#main-map-page").prepend($('<img>').attr("src", userData.google.profileImageURL))
 }
-
-
 
 $(document).on("pageinit", '#main-map-page',function(){
   // alert("the next page is loading");
@@ -63,11 +58,8 @@ $(document).on("pageinit", '#main-map-page',function(){
 });
 
 
-
-
 $(document).on("click", ".skatepark-link", function(e){
   e.preventDefault();
-  // $('#skatepark-page .ui-content .skatepark-page').text('supppp')
   console.log(e.target.href)
   var path = e.target.href
   $.ajax({
@@ -88,22 +80,16 @@ $(document).on("click", ".skatepark-link", function(e){
     $('#skatepark-page .ui-content .skatepark-page').html('<h1>'+response.name+'</h1><p>Address: '+response.address+'</p><p>Favorited: '+response.fav_count+'</p>'
       )
 
-    // text(response.name + response.address + response.fav_count)
-    // window.location.replace('#skatepark-page')
     $.mobile.changePage('#skatepark-page');
   })
   .fail(function(response){
     console.log("failure")
   })
-  // window.location.replace('#skatepark-page')
 })
-
-// $(document).ready(function(){
 
 // BEGIN BUILDING MAP
 
-
-
+//set default location to madagascar
 var latitude = -17.201472;
 var longitude = 46.977282;
 
@@ -118,7 +104,6 @@ function initializeMap(){
     zoomControl:false,
     zoomControlOptions: {
       style:google.maps.ZoomControlStyle.SMALL,
-      // position:google.maps.ControlPosition.BOTTOM_RIGHT
     },
     mapTypeControl:false,
     scaleControl:false,
@@ -129,8 +114,20 @@ function initializeMap(){
 
   // actually Build the map
   var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+  var marker = new google.maps.Marker({
+    url:"#login-page",    
+    position:dbc,
+  })
 
-  map.setTilt(0); //tilt is the angle at which you view the map (think bird's eye)
+  marker.setMap(map)
+
+  //this makes it so when we click on a marker, it redirects us to the marker's url
+  google.maps.event.addListener(marker, 'click', function(){
+    window.location.href=marker.url;
+  })
+
+  map.setTilt(0); 
+  //tilt is the angle at which you view the map (think bird's eye)
   // Grab radius of skatepark
   // var skateparkRadius = new google.maps.Circle({
   //   center:portrero,
@@ -157,10 +154,10 @@ var onSuccess = function(position){
 	//          'Timestamp: '         + position.timestamp                + '\n');
 	latitude = position.coords.latitude;
 	longitude = position.coords.longitude;
-	// alert(latitude + "," + longitude)
 	dbc = new google.maps.LatLng(latitude, longitude)
+
+
 	initializeMap();	
-  google.maps.event.trigger($('#googleMap').gmap('getMap'), 'resize')
 }
 
 function onError(error) {
@@ -180,23 +177,7 @@ onDeviceReady();
 
 google.maps.event.addDomListener(window, 'load', initializeMap);
 
-
 // authentication below
-
-// fbAuth().then(function(authData){
-//       fbData = authData;
-//       var fbString = JSON.stringify(authData);
-//       window.localStorage.setItem("fbData", fbString);
-//       ajaxLogin(authData);
-//       setProfile(authData);
-//     });
-
-
-
-
-
-
-
 
 var googleOauth = function() {
   var promise = new Promise(function(resolve, reject) {
@@ -211,18 +192,3 @@ var googleOauth = function() {
   });
   return promise;
 }
-
-
-// var fbAuth = function(){
-//   var promise = new Promise(function(resolve, reject){
-//     ref.authWithOAuthPopup("facebook", function(error, authData) {
-//       if (error) {
-//         alert("login failed!");
-//         reject(error);
-//       } else {
-//         resolve(authData);
-//       };
-//     });
-//   })
-//   return promise;
-// };
