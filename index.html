@@ -34,7 +34,7 @@
 	<!-- LOGIN PAGE -->
 	<div data-role="page" id="login-page">
 	  <div data-role="header" data-theme="b">
-	    <h1>Skate Life, Breh</h1>
+	    <h1 class="welcome-header">Skate Life, Breh</h1>
 	  </div>
 
 	  <div data-role="main" class="ui-content">
@@ -65,7 +65,7 @@
 		  <li><a href="#">data-icon="minus"</a></li>
 		  <li><a href="#">data-icon="delete"</a></li>
 		  <li><a href="#">data-icon="location"</a></li>
-		  <li><a href="#">data-icon="false"</a></li>
+		  <li id="logout"><a href="#">Logout</a></li>
 		</ul>
 		</div>
 
@@ -76,7 +76,7 @@
 
 		<div data-role="main" class="ui-content">
 			<div id="googleMap" style="width:500px;height:380px;"></div>
-			
+
 			<!-- currently empty map below -->
 			<div class="skateparks">
 				<ul class="skatepark-list" data-role="list-view">
@@ -90,7 +90,7 @@
 		<div data-role="footer" class="footer" data-theme="b">
 			<div data-role="navbar" class="navbar">
 				<ul>
-					<li><a href="#anylink" class="ui-btn ui-icon-back ui-btn-icon-bottom" data-rel="back"></a>
+					<li><a href="#anylink" class="ui-btn ui-icon-back ui-btn-icon-bottom back-btn" data-rel="back"></a>
 					</li>
 					<li><a href="#main-map-page" class="ui-btn ui-icon-home ui-btn-icon-bottom"></a>
 					</li>
