@@ -21,6 +21,9 @@
 <!-- Include the jQuery Mobile library -->
 <script src="./js/jquery-mobile.min.js"></script>
 
+<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+
+
 <!-- FIREBASE -->
 <script src="./js/firebase.js"></script>
 
@@ -34,7 +37,7 @@
 	<!-- LOGIN PAGE -->
 	<div data-role="page" id="login-page">
 	  <div data-role="header" data-theme="b">
-	    <h1>Skate Life, Breh</h1>
+	    <h1 class="welcome-header">Skate Life, Breh</h1>
 	  </div>
 
 	  <div data-role="main" class="ui-content">
@@ -57,26 +60,28 @@
 
 	<!-- MAIN MAP PAGE -->
 	<div data-role="page" id="main-map-page">
-		<div data-role="panel" id="menuPanel" data-theme="b">
-		<a href="#main-map-page" data-rel="close" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-a ui-icon-delete ui-btn-icon-left">Close panel</a>
-		<ul data-role="listview">
-		  <li><a href="#">Default is right arrow</a></li>
+		<div data-role="panel" id="favoritesPanel" data-theme="b">
+		<a href="#main-map-page" data-rel="close" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-a ui-icon-delete ui-btn-icon-left">Close Favorites</a>
+
+		<ul data-role="listview" class="favorites">
+
+		  <!-- <li><a href="#">Default is right arrow</a></li>
 		  <li><a href="#">data-icon="plus"</a></li>
 		  <li><a href="#">data-icon="minus"</a></li>
 		  <li><a href="#">data-icon="delete"</a></li>
-		  <li><a href="#">data-icon="location"</a></li>
-		  <li><a href="#">data-icon="false"</a></li>
+		  <li><a href="#">data-icon="location"</a></li> -->
+		  <li id="logout"><a href="#">Logout</a></li>
 		</ul>
 		</div>
 
 		<div data-role="header" data-theme="b" class="map-header">
-		<a href="#menuPanel" class="ui-btn ui-btn-inline ui-corner-all ui-shadow ui-icon-bars ui-btn-icon-left ui-nodisc-icon">Open Panel</a>
+		<a href="#favoritesPanel" class="ui-btn ui-btn-inline ui-corner-all ui-shadow ui-icon-bars ui-btn-icon-left ui-nodisc-icon">Open Panel</a>
 			<h1 class="username">Welcome Skater</h1>
 		</div>
 
 		<div data-role="main" class="ui-content">
 			<div id="googleMap" style="width:500px;height:380px;"></div>
-			
+
 			<!-- currently empty map below -->
 			<div class="skateparks">
 				<ul class="skatepark-list" data-role="list-view">
@@ -90,7 +95,7 @@
 		<div data-role="footer" class="footer" data-theme="b">
 			<div data-role="navbar" class="navbar">
 				<ul>
-					<li><a href="#anylink" class="ui-btn ui-icon-back ui-btn-icon-bottom" data-rel="back"></a>
+					<li><a href="#anylink" class="ui-btn ui-icon-back ui-btn-icon-bottom back-btn" data-rel="back"></a>
 					</li>
 					<li><a href="#main-map-page" class="ui-btn ui-icon-home ui-btn-icon-bottom"></a>
 					</li>
@@ -104,6 +109,7 @@
 	<!-- INDIVIDUAL SKATEPARK PAGE -->
 	<div data-role="page" id="skatepark-page">
 		<div data-role="header" data-theme="b">
+		
 			<h1 class="skatepark-name"></h1>
 		</div>
 
@@ -118,9 +124,12 @@
 					</li>
 					<li><a href="#main-map-page" class="ui-btn ui-icon-home ui-btn-icon-bottom"></a>
 					</li>
-					<li><a href="#anylink" class="ui-btn ui-icon-star ui-btn-icon-bottom favorite-button" data-role="button"></a>
+					<li><a href="#favoritePopup" data-rel="popup" class="ui-btn ui-icon-star ui-btn-icon-bottom favorite-button" data-role="button"></a>
 					</li>
 				</ul>
+				<div data-role="popup" id="favoritePopup">
+					<p>X Park has been added to your favorites.</p>
+				</div>
 			</div>
 		</div>
 	</div>
