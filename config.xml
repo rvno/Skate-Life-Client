@@ -21,5 +21,7 @@
     <access origin="*"/>
     <preference name="permissions" value="none"/>
 
+    <feature name="http://api.phonegap.com/1.0/geolocation"/>
+
 
 </widget>

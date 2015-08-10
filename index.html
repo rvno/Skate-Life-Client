@@ -6,6 +6,8 @@
 	<!-- Include meta tag to ensure proper rendering and touch zooming -->
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAhF9O9X3q9k6cFfREJ8ozkl-23WSxH40A"></script>
+
 <!-- Include jQuery Mobile stylesheets -->
 <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
 
@@ -53,12 +55,27 @@
 
 	<!-- MAIN MAP PAGE -->
 	<div data-role="page" id="main-map-page">
+		<div data-role="panel" id="menuPanel">
+		<a href="#main-map-page" data-rel="close" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-a ui-icon-delete ui-btn-icon-left">Close panel</a>
+		<ul data-role="listview"> 
+		  <li><a href="#">Default is right arrow</a></li>
+		  <li><a href="#">data-icon="plus"</a></li>
+		  <li><a href="#">data-icon="minus"</a></li>
+		  <li><a href="#">data-icon="delete"</a></li>
+		  <li><a href="#">data-icon="location"</a></li> 
+		  <li><a href="#">data-icon="false"</a></li>
+		</ul>
+		</div>
+
 		<div data-role="header" data-theme="b">
 			<h1>Welcome To My 2nd home page</h1>
 
 		</div>
 
 		<div data-role="main" class="ui-content">
+			<a href="#menuPanel" class="ui-btn ui-btn-inline ui-corner-all ui-shadow">Open Panel</a>
+			<!-- currently empty map below -->
+			<div id="googleMap" style="width:500px; height:380px;"></div>
 			<div class="skateparks">
 				<ul class="skatepark-list" data-role="list-view">
 				</ul>
@@ -105,6 +122,9 @@
 			</div>
 		</div>
 	</div> 
+
+	<!-- USER PROFILE -->
+
 	
 </body>
 </html>
