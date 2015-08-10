@@ -35,6 +35,7 @@ a{
 
 a.ui-btn.login-btn, a.ui-btn.explore-btn{
 	font-size:20px;
+	/*resize login screen buttons*/
 }
 
 
