@@ -283,7 +283,6 @@ $(document).on('click', '.favorite-button', function(){
 $(document).on("panelbeforeopen", "#favoritesPanel", function(event, ui){
   // hit the route that goes to the user's favorites and append list items to show the favorite parks
   var path = baseURL + 'api/users/1/favorites'
-  debugger
   //modify path later to grab current user's user id
   $.ajax({
     url: path,
@@ -292,6 +291,12 @@ $(document).on("panelbeforeopen", "#favoritesPanel", function(event, ui){
   })
   .done(function(response){
     console.log("hey harvey")
+
+    // <li><a href="#">Default is right arrow</a></li>
+    $.each(response, function(index, favorite){
+      $('.favorites').prepend('<li><a href="#">'+favorite.name+'</a></li>')
+    })
+    $('.favorites').listview('refresh')
   })
   .fail(function(response){
     console.log("bye harvey")
