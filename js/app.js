@@ -277,6 +277,28 @@ $(document).on('click', '.favorite-button', function(){
   console.log("aww yiss")
 })
 
+
+
+// before PANEL open event
+$(document).on("panelbeforeopen", "#favoritesPanel", function(event, ui){
+  // hit the route that goes to the user's favorites and append list items to show the favorite parks
+  var path = baseURL + 'api/users/1/favorites'
+  debugger
+  //modify path later to grab current user's user id
+  $.ajax({
+    url: path,
+    method: 'get',
+    dataType: 'json'
+  })
+  .done(function(response){
+    console.log("hey harvey")
+  })
+  .fail(function(response){
+    console.log("bye harvey")
+  })
+})
+
+
 $(document).on("click", "#logout", function() {
   signOut();
 });
