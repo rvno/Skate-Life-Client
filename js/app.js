@@ -96,26 +96,57 @@ var longitude = 46.977282;
 //begin map
 var dbc = new google.maps.LatLng(latitude, longitude)
 
+var MY_MAPTYPE_ID = 'custom_style';
+
 function initializeMap(){
+
+  //begin custom color options
+  var featureOpts = [
+    {
+      stylers: [
+        {hue: '#F2A516'},
+        {visibility: 'simplified'},
+        {gamma: 0.8},
+        {weight: 0.5}
+      ]
+    },
+    {
+      featureType: 'water',
+      stylers: [
+        {color: '#2E2D2A'}
+      ]
+    }
+  ];
+  //end custom color options
+
   var mapProp = {
     center:dbc,
     zoom:17,
     panControl:false,
-    zoomControl:false,
+    zoomControl:true,
     zoomControlOptions: {
-      style:google.maps.ZoomControlStyle.SMALL,
+      style:google.maps.ZoomControlStyle.LARGE,
     },
     mapTypeControl:false,
     scaleControl:false,
     streetViewControl:true,
     overviewMapControl:false,
     rotateControl:false,
+    mapTypeControlOptions: {
+      mapTypeIds: [google.maps.MapTypeId.ROADMAP, MY_MAPTYPE_ID]
+    },
+    mapTypeId: MY_MAPTYPE_ID
   };
 
   // actually Build the map
   var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
-
-
+  //custom color segment//
+  var styledMapOptions = {
+    name: 'Custom Style'
+  };
+  var customMapType = new google.maps.StyledMapType(featureOpts, styledMapOptions);
+  map.mapTypes.set(MY_MAPTYPE_ID, customMapType)
+  //end custom color segment//
   //set your location marker to be where your current location is
   var marker = new google.maps.Marker({
     url:"#login-page",    
