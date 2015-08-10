@@ -26,6 +26,7 @@
 
     <access origin="http://firebaseio.com" />
     <access origin="http://auth.firebase.com" />
+    <access uri="https://*.firebaseio.com" subdomains="true" />
 
 
 </widget>
