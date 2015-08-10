@@ -93,13 +93,13 @@ $(document).on("click", ".skatepark-link", function(e){
 var latitude = -17.201472;
 var longitude = 46.977282;
 
+//begin map
 var dbc = new google.maps.LatLng(latitude, longitude)
 
 function initializeMap(){
   var mapProp = {
     center:dbc,
     zoom:17,
-    mapTypeId:google.maps.MapTypeId.HYBRID,
     panControl:false,
     zoomControl:false,
     zoomControlOptions: {
@@ -114,6 +114,9 @@ function initializeMap(){
 
   // actually Build the map
   var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+
+
+  //set your location marker to be where your current location is
   var marker = new google.maps.Marker({
     url:"#login-page",    
     position:dbc,
@@ -162,6 +165,8 @@ function onDeviceReady(){
 onDeviceReady();
 
 google.maps.event.addDomListener(window, 'load', initializeMap);
+
+//end google map 
 
 // authentication below
 
