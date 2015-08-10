@@ -18,6 +18,7 @@
    </author>
 
     <gap:plugin name="org.apache.cordova.inappbrowser"/>
+    <gap:plugin name="org.apache.cordova.geolocation" />
     <access origin="*"/>
     <preference name="permissions" value="none"/>
 
