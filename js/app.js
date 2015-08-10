@@ -293,11 +293,12 @@ $(document).on("panelbeforeopen", "#favoritesPanel", function(event, ui){
   })
   .done(function(response){
     console.log("hey harvey")
-
+    $('.favorites').empty();
     // <li><a href="#">Default is right arrow</a></li>
     $.each(response, function(index, favorite){
       $('.favorites').prepend('<li><a class="skatepark-link" href='+baseURL+'api/skateparks/'+favorite.id+'>'+favorite.name+'</a></li>')
     })
+    $('.favorites').append('<li id="logout"><a href="#">Logout</a></li>')
     $('.favorites').listview('refresh')
   })
   .fail(function(response){
