@@ -6,7 +6,7 @@ baseURL = 'https://skate-life-backend.herokuapp.com/';
 
 $(function() {
   authenticatUser();
-  buildUserProfile();
+  // buildUserProfile();
 });
 
 
@@ -19,6 +19,7 @@ var authenticatUser = function() {
       var gString = JSON.stringify(authData);
       window.localStorage.setItem('googleData', gString);
       $.mobile.changePage('#main-map-page');
+      buildUserProfile();
     });
     // .dispatchEvent(event);
   });
@@ -28,7 +29,7 @@ var buildUserProfile = function() {
   var userData = JSON.parse(window.localStorage.getItem('googleData'));
   var firstName = userData.google.displayName.split(' ')[0];
   $('.username').text('Welcome ' + firstName);
-  //$("#main-map-page").prepend($('<img>').attr("src", userData.google.profileImageURL))
+  // $("#main-map-page").prepend($('<img>').attr("src", userData.google.profileImageURL))
 }
 
 
@@ -100,7 +101,13 @@ $(document).on("click", ".skatepark-link", function(e){
 // $(document).ready(function(){
 
 // BEGIN BUILDING MAP
-var dbc = new google.maps.LatLng(37.784595, -122.397224)
+
+
+
+var latitude = -17.201472;
+var longitude = 46.977282;
+
+var dbc = new google.maps.LatLng(latitude, longitude)
 
 function initializeMap(){
   var mapProp = {
@@ -138,10 +145,41 @@ function initializeMap(){
 
 }
 
+var onSuccess = function(position){
+	// alert('Latitude: '          + position.coords.latitude          + '\n' +
+	//          'Longitude: '         + position.coords.longitude         + '\n' +
+	//          'Altitude: '          + position.coords.altitude          + '\n' +
+	//          'Accuracy: '          + position.coords.accuracy          + '\n' +
+	//          'Altitude Accuracy: ' + position.coords.altitudeAccuracy  + '\n' +
+	//          'Heading: '           + position.coords.heading           + '\n' +
+	//          'Speed: '             + position.coords.speed             + '\n' +
+	//          'Timestamp: '         + position.timestamp                + '\n');
+	latitude = position.coords.latitude;
+	longitude = position.coords.longitude;
+	// alert(latitude + "," + longitude)
+	dbc = new google.maps.LatLng(latitude, longitude)
+	initializeMap();	
+}
+
+function onError(error) {
+    alert('code: '    + error.code    + '\n' +
+          'message: ' + error.message + '\n');
+}
+
+document.addEventListener("deviceready", onDeviceReady, false);
+
+function onDeviceReady(){
+
+	navigator.geolocation.getCurrentPosition(onSuccess, onError)
+
+}
+
+onDeviceReady();
+
 google.maps.event.addDomListener(window, 'load', initializeMap);
 
 
-
+// authentication below
 
 // fbAuth().then(function(authData){
 //       fbData = authData;
