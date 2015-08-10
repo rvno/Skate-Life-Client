@@ -283,7 +283,7 @@ $(document).on('click', '.favorite-button', function(){
 
 
 
-// before PANEL open event
+// before PANEL open event, load user favorites
 $(document).on("panelbeforeopen", "#favoritesPanel", function(event, ui){
   // hit the route that goes to the user's favorites and append list items to show the favorite parks
   var path = baseURL + 'api/users/1/favorites'
@@ -298,7 +298,7 @@ $(document).on("panelbeforeopen", "#favoritesPanel", function(event, ui){
 
     // <li><a href="#">Default is right arrow</a></li>
     $.each(response, function(index, favorite){
-      $('.favorites').prepend('<li><a href="#">'+favorite.name+'</a></li>')
+      $('.favorites').prepend('<li><a class="skatepark-link" href='+baseURL+'api/skateparks/'+favorite.id+'>'+favorite.name+'</a></li>')
     })
     $('.favorites').listview('refresh')
   })
