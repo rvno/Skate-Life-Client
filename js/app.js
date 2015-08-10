@@ -4,11 +4,11 @@ var userData;
 baseURL = 'https://skate-life-backend.herokuapp.com/';
 
 $(function() {
-  authenticatUser();
+  authenticateUser();
   // buildUserProfile();
 });
 
-var authenticatUser = function() {
+var authenticateUser = function() {
   $('.login-btn').on('click', function(event){
     event.preventDefault();
 
@@ -17,6 +17,7 @@ var authenticatUser = function() {
       var gString = JSON.stringify(authData);
       window.localStorage.setItem('googleData', gString);
       $.mobile.changePage('#main-map-page');
+      backendUserAuth(authData);
       buildUserProfile();
     });
     // .dispatchEvent(event);
@@ -30,6 +31,26 @@ var buildUserProfile = function() {
   $('.welcome-header').text('Welcome ' + firstName);
   // $('.login-btn').parent().remove();
   // $("#main-map-page").prepend($('<img>').attr("src", userData.google.profileImageURL))
+}
+
+
+var backendUserAuth = function(userData) {
+  var path = baseURL + 'api/users/' + userData.google.id + '/authenticate'
+
+  $.ajax({
+    url: path,
+    type: 'post',
+    data: userData,
+    dataType: 'json'
+  })
+
+  .done(function(response) {
+    console.log(response);
+  })
+
+  .fail(function(response) {
+    console.log(response);
+  });
 }
 
 $(document).on("pageinit", '#main-map-page',function(){
@@ -84,7 +105,7 @@ $(document).on("click", ".skatepark-link", function(e){
       response.name = response.name + " skatepark"
     }
     $('#skatepark-page .skatepark-name').text(response.name.toUpperCase());
-    $('#skatepark-page .ui-content .skatepark-page').html('<h1>'+response.name+'</h1><p>Address: '+response.address+'</p><p>Favorited: '+response.fav_count+'</p><img src="https://maps.googleapis.com/maps/api/streetview?size=300x100&location='+response.lat+','+response.long+'&fov=70&heading=235&pitch=0"/>'
+    $('#skatepark-page .ui-content .skatepark-page').html('<h1>'+response.name+'</h1><p>Address: '+response.address+'</p><p>Favorited: '+response.fav_count+'</p><img src="https://maps.googleapis.com/maps/api/streetview?size=300x100&location='+response.lat+','+response.long+'&fov=70&heading=235&pitch=0"/><p class="skatepark-id" hidden>'+response.id+'</p>'
       )
 
 
@@ -200,7 +221,6 @@ function initializeMap(){
       }
 
       // debugger
-      console.log(lat, lon);
 
       var infowindow = new google.maps.InfoWindow({
            content: '<p>'+skatepark.name+'</p><p>'+skatepark.address+'</p><a class="skatepark-link" href='+baseURL+'api/skateparks/'+skatepark.id+'>check it</a><p><img src="https://maps.googleapis.com/maps/api/streetview?size=300x100&location='+lat+','+lon+'&fov=70&heading=235&pitch=0"/></p>'
@@ -214,7 +234,6 @@ function initializeMap(){
           infowindow.open(map,marker);
         });
 
-      console.log(marker);
       marker.setMap(map);
     });
   })
@@ -308,7 +327,10 @@ $(document).on("panelbeforeopen", "#favoritesPanel", function(event, ui){
 
 // allow user to favorite a map
 $(document).on('click', '.favorite-button', function(){
-  console.log("sup shachrisawn")
+  console.log(userData)
+  debugger
+  var parkId = $('.skatepark-id').text()
+  var path = baseURL + 'api/users/' + userData.google.id + '/favorites/' + parkId
 
 })
 
@@ -320,7 +342,7 @@ $(document).on("click", "#logout", function() {
 $(document).on('popupafteropen', '.ui-popup', function(){
   $(this).animate({ opacity: 100 });
   $(this).animate({ opacity: 0 }, 1500);
-  console.log(userData)
+  
 });
 
 var signOut = function() {
