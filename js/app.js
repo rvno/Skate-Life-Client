@@ -192,11 +192,11 @@ function initializeMap(){
         var lat = parseFloat(skatepark.lat);
       }
 
-      if (skatepark.long[0] === '-') {
-        var lonParsed = skatepark.long.substr(1);
-        var lon = parseFloat(skatepark.long);
+      if (skatepark.lon[0] === '-') {
+        var lonParsed = skatepark.lon.substr(1);
+        var lon = parseFloat(skatepark.lon);
       } else {
-        var lon = parseFloat(skatepark.long);
+        var lon = parseFloat(skatepark.lon);
       }
 
       // debugger
@@ -277,9 +277,7 @@ var googleOauth = function() {
   return promise;
 }
 
-$(document).on('click', '.favorite-button', function(){
-  console.log("aww yiss")
-})
+
 
 
 
@@ -307,13 +305,25 @@ $(document).on("panelbeforeopen", "#favoritesPanel", function(event, ui){
   })
 })
 
+// allow user to favorite a map
+$(document).on('click', '.favorite-button', function(){
+  console.log("sup shachrisawn")
+
+})
+
 
 $(document).on("click", "#logout", function() {
   signOut();
 });
 
+$(document).on('popupafteropen', '.ui-popup', function(){
+  $(this).animate({ opacity: 100 });
+  $(this).animate({ opacity: 0 }, 1500);
+  console.log(userData)
+});
+
 var signOut = function() {
   localStorage.clear();
-  userData = "";
+  userData = null;
   $.mobile.changePage('#login-page')
 }
