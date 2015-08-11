@@ -42,7 +42,7 @@ a.ui-btn.login-btn, a.ui-btn.explore-btn{
 	width:100%;
 }*/
 
-.main-map-content{
+/*.main-map-content{
 	padding:0;
 	width:100%;
 }
@@ -50,4 +50,18 @@ a.ui-btn.login-btn, a.ui-btn.explore-btn{
 .map-header{
 	position:fixed;
 	width:100%;
+}*/
+
+
+/*map resizing section*/
+#content{
+	padding:0;
+	position: absolute !important;
+	top: 40px !important;
+	right:0;
+	bottom: 40px !important;
+	left: 0 !important;
+	width:100% !important;
+	height:25em !important;
+	/*changed height from 40px !important to 25em*/
 }
