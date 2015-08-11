@@ -355,6 +355,25 @@ $(document).on("click", "#logout", function() {
   signOut();
 });
 
+$(document).on('popupbeforeposition', '.ui-popup', function(){
+  console.log("hello")
+  var parkId = $('.skatepark-id').text()
+  var userId = window.localStorage.getItem('currentUserId');
+  var path = baseURL + 'api/users/' + userId + '/favorites/'
+  $.ajax({
+    url: path,
+    method: 'get',
+    dataType: 'json'
+  })
+  .done(function(response){
+    console.log("heyy hooo")
+    console.log(response)
+  })
+  .fail(function(response){
+    console.log("oh nooo")
+  })
+})
+
 $(document).on('popupafteropen', '.ui-popup', function(){
   $(this).animate({ opacity: 100 });
   $(this).animate({ opacity: 0 }, 1500);
