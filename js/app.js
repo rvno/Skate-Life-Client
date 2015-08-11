@@ -307,7 +307,8 @@ var googleOauth = function() {
 // before PANEL open event, load user favorites
 $(document).on("panelbeforeopen", "#favoritesPanel", function(event, ui){
   // hit the route that goes to the user's favorites and append list items to show the favorite parks
-  var path = baseURL + 'api/users/1/favorites'
+  var userId = window.localStorage.getItem('currentUserId');
+  var path = baseURL + 'api/users/' + userId + '/favorites'
   //modify path later to grab current user's user id
   $.ajax({
     url: path,
