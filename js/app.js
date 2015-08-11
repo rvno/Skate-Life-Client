@@ -88,7 +88,7 @@ $(document).on("pageinit", '#main-map-page',function(){
     
     $.each(response, function(index, skatepark){
       //implement carousel
-      // $('.carousel').slick('slickAdd', '<div class="carousel-img"><img src="https://maps.googleapis.com/maps/api/streetview?size=300x100&location='+skatepark.lat+','+skatepark.lon+'&fov=70&heading=235&pitch=0"/></div>')
+      $('.carousel').slick('slickAdd', '<div class="carousel-img"><img src="https://maps.googleapis.com/maps/api/streetview?size=300x100&location='+skatepark.lat+','+skatepark.lon+'&fov=70&heading=235&pitch=0"/></div>')
       //end carousel
       $('.skateparks').append(
         $('<li>').append(
@@ -203,6 +203,8 @@ function initializeMap(){
   var marker = new google.maps.Marker({
     url:"#login-page",
     position:dbc,
+    draggable: true,
+    icon: "./imgs/user-icon.png"
   })
 
   marker.setMap(map)
@@ -257,7 +259,8 @@ function initializeMap(){
       var marker = new google.maps.Marker({
         position: new google.maps.LatLng(lat,lon),
         title: skatepark.name,
-        map: map
+        map: map,
+        icon: "./imgs/rollerskate.png"
       });
 
 
