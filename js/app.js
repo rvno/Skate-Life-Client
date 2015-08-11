@@ -1,17 +1,20 @@
 var userData;
-// var ref = new Firebase("https://skatelife.firebaseio.com");
-
+var ref = new Firebase('https://skatelife.firebaseio.com/');
 
 baseURL = 'https://skate-life-backend.herokuapp.com/';
 // baseURL = 'http://localhost:3000/';
 
 
 
+
+// Change this to onpage load?
 $(function() {
   authenticateUser();
-  // buildUserProfile();
 });
 
+
+
+// Google Oauth
 var authenticateUser = function() {
   $('.login-btn').on('click', function(event){
     event.preventDefault();
@@ -25,12 +28,12 @@ var authenticateUser = function() {
       backendUserAuth(authData);
       buildUserProfile();
     });
-    // .dispatchEvent(event);
   });
 }
 
 
-// Change Headers to User's 
+
+// Change Headers to User's Info
 var buildUserProfile = function() {
   userData = JSON.parse(window.localStorage.getItem('googleData'));
   var firstName = userData.google.displayName.split(' ')[0];
@@ -39,6 +42,8 @@ var buildUserProfile = function() {
 }
 
 
+
+// Authenticate user in heroku DB
 var backendUserAuth = function(userData) {
   var path = baseURL + 'api/users/' + userData.google.id + '/authenticate'
 
@@ -61,8 +66,10 @@ var backendUserAuth = function(userData) {
 
 
 
+
+
+
 $(document).on("pageinit", '#main-map-page',function(){
-  // alert("the next page is loading");
 
   $('.carousel').slick({
     arrows: false,
@@ -73,10 +80,10 @@ $(document).on("pageinit", '#main-map-page',function(){
   });
 
 
-  $('.back-btn')
-    .attr('href', '#')
-    .attr('data-rel', '')
-    .addClass('not-blue');
+  // $('.back-btn')
+  //   .attr('href', '#')
+  //   .attr('data-rel', '')
+  //   .addClass('not-blue');
 
   var path = baseURL + 'api/skateparks/';
   $.ajax({
@@ -86,19 +93,15 @@ $(document).on("pageinit", '#main-map-page',function(){
   })
 
   .done(function(response){
-    // console.log('done')
     
+
+    // Refactor this big time
     $.each(response, function(index, skatepark){
       //implement carousel
-      $('.carousel').slick('slickAdd', '<div class="carousel-img"><img src="https://maps.googleapis.com/maps/api/streetview?size=300x100&location='+skatepark.lat+','+skatepark.lon+'&fov=70&heading=235&pitch=0"/></div>')
+      // $('.carousel').slick('slickAdd', '<div class="carousel-img"><img src="https://maps.googleapis.com/maps/api/streetview?size=300x100&location='+skatepark.lat+','+skatepark.lon+'&fov=70&heading=235&pitch=0"/></div>')
       //end carousel
-      $('.skateparks').append(
-        $('<li>').append(
-          $('<a>')
-            .addClass('skatepark-link')
-            .attr('href', path+ skatepark.id)
-            // .attr('id', park.name)
-            .text(skatepark.name)));
+      buildSkateparkLink(skatepark, path);
+
    
     })
   })
@@ -107,6 +110,20 @@ $(document).on("pageinit", '#main-map-page',function(){
   })
 
 });
+
+
+
+var buildSkateparkLink = function(skatepark, path) {
+  $('.skateparks').append(
+    $('<li>').append(
+      $('<a>')
+        .addClass('skatepark-link')
+        .attr('href', path+ skatepark.id)
+        .text(skatepark.name)));
+}
+
+
+
 
 
 $(document).on("click", ".skatepark-link", function(e){
