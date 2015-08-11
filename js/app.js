@@ -537,8 +537,8 @@ $(document).on('pageshow', '#main-map-page', function (e, data) {
 
     var mapProps = {
 
-          center: new google.maps.LatLng(38.50, -90.50),
-          zoom:8,
+          center: new google.maps.LatLng(37.76, -122.39),
+          zoom:10,
           panControl:false,
           zoomControl:false,
           zoomControlOptions: {
@@ -557,18 +557,94 @@ $(document).on('pageshow', '#main-map-page', function (e, data) {
     }
     var map = new google.maps.Map(document.getElementById('googleMap'),
       mapProps
-    // {
-      // zoom: minZoomLevel,
-      // center: new google.maps.LatLng(38.50, -90.50),
-      // mapTypeId: google.maps.MapTypeId.ROADMAP
-    //}
     );
     var styledMapOptions = {
         name: 'Custom Style'
       };
       var customMapType = new google.maps.StyledMapType(featureOpts, styledMapOptions);
       map.mapTypes.set(MY_MAPTYPE_ID, customMapType)
+
+    //SET MARKER TO BE AT DBC (MAKE IT VARIABLE LATER)
+    dbc = new google.maps.LatLng(37.76, -122.39)
+    var marker = new google.maps.Marker({
+        url:"#login-page",
+        position:dbc,
+        draggable: true,
+        icon: "./imgs/user-icon.png"
+      })
+
+      marker.setMap(map)
+
+    //END MARKET SETUP
+
+      $.ajax({
+        url: baseURL + 'api/skateparks',
+        type: 'get',
+        dataType: 'json'
+      })
+
+
+    // var myLatlng = new google.maps.LatLng(-25.363882,131.044922);
+
+      .done(function(response) {
+        var markers = [];
+
+
+        $.each(response, function(index, skatepark) {
+          // debugger
+          // console.log(skatepark.lat);
+
+          if (skatepark.lat[0] === '-') {
+            var latParsed = skatepark.lat.substr(1);
+            var lat = parseFloat(skatepark.lat);
+          } else {
+            var lat = parseFloat(skatepark.lat);
+          }
+
+          if (skatepark.lon[0] === '-') {
+            var lonParsed = skatepark.lon.substr(1);
+            var lon = parseFloat(skatepark.lon);
+          } else {
+            var lon = parseFloat(skatepark.lon);
+          }
+
+          // debugger
+
+          var infowindow = new google.maps.InfoWindow({
+               content: '<p>'+skatepark.name+'</p><p>'+skatepark.address+'</p><a class="skatepark-link" href='+baseURL+'api/skateparks/'+skatepark.id+'>check it</a><p><img src="https://maps.googleapis.com/maps/api/streetview?size=300x100&location='+lat+','+lon+'&fov=70&heading=235&pitch=0"/></p>'
+          });
+
+
+
+          
+          var marker = new google.maps.Marker({
+            position: new google.maps.LatLng(lat,lon),
+            title: skatepark.name,
+            map: map,
+            icon: "./imgs/rollerskate.png"
+          });
+
+
+          markers.push(marker);
+
+          google.maps.event.addListener(marker, 'click', function() {
+              infowindow.open(map,marker);
+          });
+
+        });
+
+        var mc = new MarkerClusterer(map, markers);
+        
+
+
+      })
+
+      .fail(function(response) {
+
+      });
+
   }, 100);
+  
 }); 
 
 
