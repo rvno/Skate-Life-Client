@@ -425,7 +425,6 @@ $(document).on("panelbeforeopen", "#favoritesPanel", function(event, ui){
     $('.favorites').append(
       $('<li>').text('please login to see your favorites!'));
 
-    // <a href="#main-map-page" class="ui-btn login-btn" data-rel="back" data-prefetch="">Login</a>
   }
 })
 
