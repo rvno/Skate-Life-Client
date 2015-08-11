@@ -69,7 +69,13 @@ var backendUserAuth = function(userData) {
 
 
 
+
+
+
+
+// Map Home Page
 $(document).on("pageinit", '#main-map-page',function(){
+  var path = baseURL + 'api/skateparks/';
 
   $('.carousel').slick({
     arrows: false,
@@ -80,12 +86,6 @@ $(document).on("pageinit", '#main-map-page',function(){
   });
 
 
-  // $('.back-btn')
-  //   .attr('href', '#')
-  //   .attr('data-rel', '')
-  //   .addClass('not-blue');
-
-  var path = baseURL + 'api/skateparks/';
   $.ajax({
     url: path,
     method: 'get',
@@ -93,24 +93,22 @@ $(document).on("pageinit", '#main-map-page',function(){
   })
 
   .done(function(response){
-    
 
-    // Refactor this big time
-    $.each(response, function(index, skatepark){
-      //implement carousel
-      // $('.carousel').slick('slickAdd', '<div class="carousel-img"><img src="https://maps.googleapis.com/maps/api/streetview?size=300x100&location='+skatepark.lat+','+skatepark.lon+'&fov=70&heading=235&pitch=0"/></div>')
-      //end carousel
-      buildSkateparkLink(skatepark, path);
+    // Only pull first 20 parks. Refactor this so that it's location based
+    var i = 0;
+    while (i < 20) {
+      buildSkateparkLink(response[i], path);
+      buildCarouselImage(response[i], path);
+      i++;
+    }
 
-   
-    })
   })
+
   .fail(function(response){
     console.log('fail')
-  })
+  });
 
 });
-
 
 
 var buildSkateparkLink = function(skatepark, path) {
@@ -123,37 +121,58 @@ var buildSkateparkLink = function(skatepark, path) {
 }
 
 
+var buildCarouselImage = function(skatepark) {
+  $('.carousel').slick('slickAdd',
+    $('<div>').addClass('carousel-img').append(
+      $('<img>').attr('src', 'https://maps.googleapis.com/maps/api/streetview?size=300x100&location='+skatepark.lat+','+skatepark.lon+'&fov=70&heading=235&pitch=0')));
+}
 
 
 
-$(document).on("click", ".skatepark-link", function(e){
-  e.preventDefault();
-  console.log(e.target.href)
-  var path = e.target.href
+
+
+
+
+
+
+// SkatePark Show Page
+$(document).on("click", ".skatepark-link", function(event){
+  event.preventDefault();
+  var path = event.target.href
+
   $.ajax({
     url: path,
     method: 'get',
     dataType: 'json'
   })
+
   .done(function(response){
-    console.log(response)
-    if(response.name.includes("skatepark")){
-      response.name
-    }
-    else{
-      response.name = response.name + " skatepark"
-    }
-    $('#skatepark-page .skatepark-name').text(response.name.toUpperCase());
-    $('#skatepark-page .ui-content .skatepark-page').html('<h1>'+response.name+'</h1><p>Address: '+response.address+'</p><p>Favorited: '+response.fav_count+'</p><img src="https://maps.googleapis.com/maps/api/streetview?size=300x100&location='+response.lat+','+response.long+'&fov=70&heading=235&pitch=0"/><p class="skatepark-id" hidden>'+response.id+'</p>'
-      )
-
-
+    buildSkateparkPage(response)
     $.mobile.changePage('#skatepark-page');
   })
+
   .fail(function(response){
     console.log("failure")
-  })
-})
+  });
+});
+
+
+// Build page when link gets clicked
+var buildSkateparkPage = function(skatepark) {
+  $('#skatepark-page .skatepark-name').text(skatepark.name.toUpperCase());
+  var skateparkDiv = 
+    $('<div>').append(
+      $('<h1>').text(skatepark.name),
+      $('<p>').text('Address: ' + skatepark.address),
+      $('<p>').text('This spot has been favorited a whopping ' + skatepark.fav_count + 'times braski'),
+      $('<img>').attr('src', 'https://maps.googleapis.com/maps/api/streetview?size=300x100&location='+skatepark.lat+','+skatepark.lon+'&fov=70&heading=235&pitch=0'),
+      $('<p>')
+        .addClass('skatepark-id')
+        .text(skatepark.id)
+        .hide());
+
+  $('#skatepark-page .ui-content .skatepark-page').html(skateparkDiv);
+}
 
 // BEGIN BUILDING MAP
 
