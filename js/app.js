@@ -1,7 +1,11 @@
 var ref = new Firebase("https://skatelife.firebaseio.com");
 var userData;
 
+// HEROKU URL BELOW
 baseURL = 'https://skate-life-backend.herokuapp.com/';
+// LOCAL URL BELOW
+// baseURL = 'http://localhost:3000/';
+
 
 $(function() {
   authenticateUser();
@@ -45,7 +49,7 @@ var backendUserAuth = function(userData) {
   })
 
   .done(function(response) {
-    console.log(response);
+    window.localStorage.setItem('currentUserId', response.id);
   })
 
   .fail(function(response) {
@@ -329,11 +333,11 @@ $(document).on("panelbeforeopen", "#favoritesPanel", function(event, ui){
 $(document).on('click', '.favorite-button', function(){
   console.log(userData)
   var parkId = $('.skatepark-id').text()
-  var path = baseURL + 'api/users/' + userData.google.id + '/favorites/' + parkId
+  var userId = window.localStorage.getItem('currentUserId');
+  var path = baseURL + 'api/users/' + userId + '/favorites/' + parkId
   $.ajax({
     url: path,
-    method: 'post',
-    dataType: 'json'
+    method: 'post'
   })
   .done(function(response){
     console.log(response);
