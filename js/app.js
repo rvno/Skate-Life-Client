@@ -1,9 +1,8 @@
-var ref = new Firebase("https://skatelife.firebaseio.com");
 var userData;
+// var ref = new Firebase("https://skatelife.firebaseio.com");
 
-// HEROKU URL BELOW
+
 baseURL = 'https://skate-life-backend.herokuapp.com/';
-// LOCAL URL BELOW
 // baseURL = 'http://localhost:3000/';
 
 
@@ -30,13 +29,13 @@ var authenticateUser = function() {
   });
 }
 
+
+// Change Headers to User's 
 var buildUserProfile = function() {
   userData = JSON.parse(window.localStorage.getItem('googleData'));
   var firstName = userData.google.displayName.split(' ')[0];
   $('.username').text('Welcome ' + firstName);
   $('.welcome-header').text('Welcome ' + firstName);
-  // $('.login-btn').parent().remove();
-  // $("#main-map-page").prepend($('<img>').attr("src", userData.google.profileImageURL))
 }
 
 
@@ -58,6 +57,9 @@ var backendUserAuth = function(userData) {
     console.log(response);
   });
 }
+
+
+
 
 $(document).on("pageinit", '#main-map-page',function(){
   // alert("the next page is loading");
