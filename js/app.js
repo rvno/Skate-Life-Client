@@ -1,18 +1,19 @@
-var ref = new Firebase("https://skatelife.firebaseio.com");
 var userData;
+var ref = new Firebase('https://skatelife.firebaseio.com/');
 
-// HEROKU URL BELOW
 baseURL = 'https://skate-life-backend.herokuapp.com/';
-// LOCAL URL BELOW
 // baseURL = 'http://localhost:3000/';
 
 
 
+// User Authentication
+
 $(function() {
   authenticateUser();
-  // buildUserProfile();
 });
 
+
+// Google Oauth
 var authenticateUser = function() {
   $('.login-btn').on('click', function(event){
     event.preventDefault();
@@ -21,25 +22,45 @@ var authenticateUser = function() {
       googleData = authData;
       var gString = JSON.stringify(authData);
       window.localStorage.setItem('googleData', gString);
+
+      // does this make it faster?
       $.mobile.loadPage('#main-map-page');
       $.mobile.changePage('#main-map-page');
+
+
       backendUserAuth(authData);
       buildUserProfile();
     });
-    // .dispatchEvent(event);
   });
 }
 
+
+// google Oauth promise
+var googleOauth = function() {
+  var promise = new Promise(function(resolve, reject) {
+    ref.authWithOAuthPopup('google', function(error, authData) {
+      if (error) {
+        alert('login failed!');
+        reject(error);
+      } else {
+        resolve(authData);
+      }
+    });
+  });
+  return promise;
+}
+
+
+// Change Headers to User's Info
 var buildUserProfile = function() {
   userData = JSON.parse(window.localStorage.getItem('googleData'));
   var firstName = userData.google.displayName.split(' ')[0];
   $('.username').text('Welcome ' + firstName);
   $('.welcome-header').text('Welcome ' + firstName);
-  // $('.login-btn').parent().remove();
-  // $("#main-map-page").prepend($('<img>').attr("src", userData.google.profileImageURL))
 }
 
 
+// Authenticate user in heroku DB
 var backendUserAuth = function(userData) {
   var path = baseURL + 'api/users/' + userData.google.id + '/authenticate'
 
@@ -59,8 +80,22 @@ var backendUserAuth = function(userData) {
   });
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+// Main Map page
+
 $(document).on("pageinit", '#main-map-page',function(){
-  // alert("the next page is loading");
+  var path = baseURL + 'api/skateparks/';
 
   $('.carousel').slick({
     arrows: false,
@@ -71,12 +106,6 @@ $(document).on("pageinit", '#main-map-page',function(){
   });
 
 
-  $('.back-btn')
-    .attr('href', '#')
-    .attr('data-rel', '')
-    .addClass('not-blue');
-
-  var path = baseURL + 'api/skateparks/';
   $.ajax({
     url: path,
     method: 'get',
@@ -84,61 +113,59 @@ $(document).on("pageinit", '#main-map-page',function(){
   })
 
   .done(function(response){
-    // console.log('done')
-    
-    $.each(response, function(index, skatepark){
-      //implement carousel
-      $('.carousel').slick('slickAdd', '<div class="carousel-img"><img src="https://maps.googleapis.com/maps/api/streetview?size=300x100&location='+skatepark.lat+','+skatepark.lon+'&fov=70&heading=235&pitch=0"/></div>')
-      //end carousel
-      $('.skateparks').append(
-        $('<li>').append(
-          $('<a>')
-            .addClass('skatepark-link')
-            .attr('href', path+ skatepark.id)
-            // .attr('id', park.name)
-            .text(skatepark.name)));
-   
-    })
+
+    // Only pull first 20 parks. Refactor this so that it's location based
+    var i = 0;
+    while (i < 20) {
+      buildSkateparkLink(response[i], path);
+      buildCarouselImage(response[i], path);
+      i++;
+    }
+
   })
+
   .fail(function(response){
     console.log('fail')
-  })
+  });
 
 });
 
 
-$(document).on("click", ".skatepark-link", function(e){
-  e.preventDefault();
-  console.log(e.target.href)
-  var path = e.target.href
-  $.ajax({
-    url: path,
-    method: 'get',
-    dataType: 'json'
-  })
-  .done(function(response){
-    console.log(response)
-    if(response.name.includes("skatepark")){
-      response.name
-    }
-    else{
-      response.name = response.name + " skatepark"
-    }
-    $('#skatepark-page .skatepark-name').text(response.name.toUpperCase());
-    $('#skatepark-page .ui-content .skatepark-page').html('<h1>'+response.name+'</h1><p>Address: '+response.address+'</p><p>Favorited: '+response.fav_count+'</p><img src="https://maps.googleapis.com/maps/api/streetview?size=300x100&location='+response.lat+','+response.long+'&fov=70&heading=235&pitch=0"/><p class="skatepark-id" hidden>'+response.id+'</p>'
-      )
+var buildSkateparkLink = function(skatepark, path) {
+  $('.skateparks').append(
+    $('<li>').append(
+      $('<a>')
+        .addClass('skatepark-link')
+        .attr('href', path+ skatepark.id)
+        .text(skatepark.name)));
+}
 
 
-    $.mobile.changePage('#skatepark-page');
-  })
-  .fail(function(response){
-    console.log("failure")
-  })
-})
+var buildCarouselImage = function(skatepark) {
+  $('.carousel').slick('slickAdd',
+    $('<div>').addClass('carousel-img').append(
+      $('<img>').attr('src', 'https://maps.googleapis.com/maps/api/streetview?size=300x100&location='+skatepark.lat+','+skatepark.lon+'&fov=70&heading=235&pitch=0')));
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // BEGIN BUILDING MAP
 
-//set default location to madagascar
+//set default location to SOMA
 var latitude = 37.76;
 var longitude = -122.39;
 
@@ -224,15 +251,11 @@ function initializeMap(){
   })
 
 
-// var myLatlng = new google.maps.LatLng(-25.363882,131.044922);
-
   .done(function(response) {
     var markers = [];
 
-
+    // Refactor this
     $.each(response, function(index, skatepark) {
-      // debugger
-      // console.log(skatepark.lat);
 
       if (skatepark.lat[0] === '-') {
         var latParsed = skatepark.lat.substr(1);
@@ -248,7 +271,6 @@ function initializeMap(){
         var lon = parseFloat(skatepark.lon);
       }
 
-      // debugger
 
       var infowindow = new google.maps.InfoWindow({
            content: '<p>'+skatepark.name+'</p><p>'+skatepark.address+'</p><a class="skatepark-link" href='+baseURL+'api/skateparks/'+skatepark.id+'>check it</a><p><img src="https://maps.googleapis.com/maps/api/streetview?size=300x100&location='+lat+','+lon+'&fov=70&heading=235&pitch=0"/></p>'
@@ -274,89 +296,136 @@ function initializeMap(){
 
     var mc = new MarkerClusterer(map, markers);
     
-
   })
 
   .fail(function(response) {
-
+    console.log(response);
   });
-google.maps.event.trigger(map,'resize');
+
+  google.maps.event.trigger(map,'resize');
+
 }
 
 
 var onSuccess = function(position){
+  latitude = position.coords.latitude;
+  longitude = position.coords.longitude;
+  dbc = new google.maps.LatLng(latitude, longitude)
 
-	latitude = position.coords.latitude;
-	longitude = position.coords.longitude;
-	dbc = new google.maps.LatLng(latitude, longitude)
-
-
-	initializeMap();
+  initializeMap();
 }
+
 
 function onError(error) {
     alert('code: '    + error.code    + '\n' +
           'message: ' + error.message + '\n');
 }
 
+
 document.addEventListener("deviceready", onDeviceReady, false);
 
+
+// Gonna see if this is needed
 function onDeviceReady(){
-
-	navigator.geolocation.getCurrentPosition(onSuccess, onError)
-
+  navigator.geolocation.getCurrentPosition(onSuccess, onError)
 }
 
 onDeviceReady();
 
 google.maps.event.addDomListener(window, 'load', initializeMap);
 
-//end google map
 
-// authentication below
 
-var googleOauth = function() {
-  var promise = new Promise(function(resolve, reject) {
-    ref.authWithOAuthPopup('google', function(error, authData) {
-      if (error) {
-        alert('login failed!');
-        reject(error);
-      } else {
-        resolve(authData);
-      }
-    });
+
+
+
+
+// SkatePark Show Page
+
+$(document).on("click", ".skatepark-link", function(event){
+  event.preventDefault();
+  var path = event.target.href
+
+  $.ajax({
+    url: path,
+    method: 'get',
+    dataType: 'json'
+  })
+
+  .done(function(response){
+    buildSkateparkPage(response)
+    $.mobile.changePage('#skatepark-page');
+  })
+
+  .fail(function(response){
+    console.log("failure")
   });
-  return promise;
+});
+
+
+var buildSkateparkPage = function(skatepark) {
+  $('#skatepark-page .skatepark-name').text(skatepark.name.toUpperCase());
+  var skateparkDiv = 
+    $('<div>').append(
+      $('<h1>').text(skatepark.name),
+      $('<p>').text('Address: ' + skatepark.address),
+      $('<p>').text('This spot has been favorited a whopping ' + skatepark.fav_count + 'times braski'),
+      $('<img>').attr('src', 'https://maps.googleapis.com/maps/api/streetview?size=300x100&location='+skatepark.lat+','+skatepark.lon+'&fov=70&heading=235&pitch=0'),
+      $('<p>')
+        .addClass('skatepark-id')
+        .text(skatepark.id)
+        .hide());
+
+  $('#skatepark-page .ui-content .skatepark-page').html(skateparkDiv);
 }
 
 
 
 
 
-// before PANEL open event, load user favorites
+
+
+
+
+
+
+// Favorites Panel
+
 $(document).on("panelbeforeopen", "#favoritesPanel", function(event, ui){
-  // hit the route that goes to the user's favorites and append list items to show the favorite parks
   var userId = window.localStorage.getItem('currentUserId');
   var path = baseURL + 'api/users/' + userId + '/favorites'
-  //modify path later to grab current user's user id
-  $.ajax({
-    url: path,
-    method: 'get',
-    dataType: 'json'
-  })
-  .done(function(response){
-    console.log("hey harvey")
-    $('.favorites').empty();
-    // <li><a href="#">Default is right arrow</a></li>
-    $.each(response, function(index, favorite){
-      $('.favorites').prepend('<li><a class="skatepark-link" href='+baseURL+'api/skateparks/'+favorite.id+'>'+favorite.name+'</a></li>')
+
+  if (userId) {
+    $.ajax({
+      url: path,
+      method: 'get',
+      dataType: 'json'
     })
-    $('.favorites').append('<li id="logout"><a href="#">Logout</a></li>')
-    $('.favorites').listview('refresh')
-  })
-  .fail(function(response){
-    console.log("bye harvey")
-  })
+
+    .done(function(response){
+      $('.favorites').empty();
+      $.each(response, function(index, favorite){
+        $('.favorites').prepend('<li><a class="skatepark-link" href='+baseURL+'api/skateparks/'+favorite.id+'>'+favorite.name+'</a></li>')
+      })
+
+      $('.favorites').append(
+        $('<li>').attr('id', 'logout').append(
+        $('<a>').attr('href', '#').text('Logout')));
+
+      $('.favorites').listview('refresh')
+    })
+    .fail(function(response){
+      console.log("bye harvey")
+    })
+
+  } else {
+
+    // fix this don't know why its not working
+    $('.favorites').empty();
+    $('.favorites').append(
+      $('<li>').text('please login to see your favorites!'));
+
+  }
 })
 
 // allow user to favorite a map
