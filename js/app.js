@@ -385,8 +385,12 @@ $(document).on("click", ".skatepark-link", function(event){
 var initializeChatroom = function(skatepark) {
   var skateparkURL = skatepark.split(' ')[0];
   var messageRef = new Firebase('https://skatelife.firebaseio.com/parkchats/' + skatepark);
+  // userData = JSON.parse(window.localStorage.getItem('googleData'));
+  if (userData) {
+    var firstName = userData.google.displayName.split(' ')[0];
+    $('.chat-user').text(firstName);
+  }
 
-  console.log(skatepark);
   messageRef.on('child_added', function (snapshot){
     var message = snapshot.val();
     
@@ -407,7 +411,8 @@ var initializeChatroom = function(skatepark) {
     event.preventDefault();
 
 
-    var name = $('#name-input').val();
+    // var name = $('#name-input').val();
+    var name = $('.chat-user').text();
     var text = $('#message-input').val();
 
     var message = text;
