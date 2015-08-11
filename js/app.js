@@ -7,6 +7,7 @@ baseURL = 'https://skate-life-backend.herokuapp.com/';
 // baseURL = 'http://localhost:3000/';
 
 
+
 $(function() {
   authenticateUser();
   // buildUserProfile();
@@ -20,6 +21,7 @@ var authenticateUser = function() {
       googleData = authData;
       var gString = JSON.stringify(authData);
       window.localStorage.setItem('googleData', gString);
+      $.mobile.loadPage('#main-map-page');
       $.mobile.changePage('#main-map-page');
       backendUserAuth(authData);
       buildUserProfile();
@@ -72,7 +74,7 @@ $(document).on("pageinit", '#main-map-page',function(){
   })
 
   .done(function(response){
-    console.log('done')
+    // console.log('done')
     $.each(response, function(index, skatepark){
       $('.skateparks').append(
         $('<li>').append(
@@ -123,8 +125,8 @@ $(document).on("click", ".skatepark-link", function(e){
 // BEGIN BUILDING MAP
 
 //set default location to madagascar
-var latitude = -17.201472;
-var longitude = 46.977282;
+var latitude = 37.76;
+var longitude = -122.39;
 
 //begin map
 var dbc = new google.maps.LatLng(latitude, longitude)
@@ -154,7 +156,7 @@ function initializeMap(){
 
   var mapProp = {
     center:dbc,
-    zoom:15,
+    zoom:8,
     panControl:false,
     zoomControl:true,
     zoomControlOptions: {
@@ -173,6 +175,9 @@ function initializeMap(){
 
   // actually Build the map
   var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+
+
+
   //custom color segment//
   var styledMapOptions = {
     name: 'Custom Style'
@@ -206,6 +211,9 @@ function initializeMap(){
 // var myLatlng = new google.maps.LatLng(-25.363882,131.044922);
 
   .done(function(response) {
+    var markers = [];
+
+
     $.each(response, function(index, skatepark) {
       // debugger
       // console.log(skatepark.lat);
@@ -230,16 +238,26 @@ function initializeMap(){
            content: '<p>'+skatepark.name+'</p><p>'+skatepark.address+'</p><a class="skatepark-link" href='+baseURL+'api/skateparks/'+skatepark.id+'>check it</a><p><img src="https://maps.googleapis.com/maps/api/streetview?size=300x100&location='+lat+','+lon+'&fov=70&heading=235&pitch=0"/></p>'
       });
 
+
+      
       var marker = new google.maps.Marker({
         position: new google.maps.LatLng(lat,lon),
-        title: skatepark.name
+        title: skatepark.name,
+        map: map
       });
+
+
+      markers.push(marker);
+
       google.maps.event.addListener(marker, 'click', function() {
           infowindow.open(map,marker);
-        });
+      });
 
-      marker.setMap(map);
     });
+
+    var mc = new MarkerClusterer(map, markers);
+
+
   })
 
   .fail(function(response) {
@@ -249,14 +267,7 @@ function initializeMap(){
 }
 
 var onSuccess = function(position){
-	// alert('Latitude: '          + position.coords.latitude          + '\n' +
-	//          'Longitude: '         + position.coords.longitude         + '\n' +
-	//          'Altitude: '          + position.coords.altitude          + '\n' +
-	//          'Accuracy: '          + position.coords.accuracy          + '\n' +
-	//          'Altitude Accuracy: ' + position.coords.altitudeAccuracy  + '\n' +
-	//          'Heading: '           + position.coords.heading           + '\n' +
-	//          'Speed: '             + position.coords.speed             + '\n' +
-	//          'Timestamp: '         + position.timestamp                + '\n');
+
 	latitude = position.coords.latitude;
 	longitude = position.coords.longitude;
 	dbc = new google.maps.LatLng(latitude, longitude)
