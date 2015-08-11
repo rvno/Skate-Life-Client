@@ -449,7 +449,7 @@ var clearChat = function() {
 
 
 
->>>>>>> master
+
 var buildSkateparkPage = function(skatepark) {
   $('#skatepark-page .skatepark-name').text(skatepark.name.toUpperCase());
   var skateparkDiv =
