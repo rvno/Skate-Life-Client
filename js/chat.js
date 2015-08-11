@@ -7,25 +7,26 @@ $('body').on('click', '.skatepark-link', function(event) {
  
   messagesRef.on('child_added', function (snapshot) {
     var message = snapshot.val();
+    debugger
 
-    $('#messagesDiv').append(
+    $('#messages-div').append(
       $('<div>').append(
         $('<p>').text(message.name + ': '),
-        $('<p>').text(message.text)))
+        $('<p>').text(message.text)));
 
-    $('#messagesDiv')[0].scrollTop = $('#messagesDiv')[0].scrollHeight;
+    // $('#messages-div')[0].scrollTop = $('#messages-div')[0].scrollHeight;
   });
 
 });
 
 
-$('#message-form').on('submit', function (event) {
+$('#message-submit').on('click', function (event) {
   event.preventDefault();
-  var name = $('#nameInput').val();
-  var text = $('#messageInput').val();
+  var name = $('#name-input').val();
+  var text = $('#message-input').val();
 
   messagesRef.push({name: name, text: text});
-  $('#messageInput').val();
+  $('#message-input').val();
 });
 
 
