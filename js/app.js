@@ -370,8 +370,6 @@ $(document).on("click", ".skatepark-link", function(event){
   });
 });
 
-<<<<<<< HEAD
-=======
 
 
 var initializeChatroom = function(skatepark) {
