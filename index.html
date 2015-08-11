@@ -22,6 +22,12 @@
 <!-- Include the jQuery Mobile library -->
 <script src="./js/jquery-mobile.min.js"></script>
 
+<!-- carousel css-->
+<link rel="stylesheet" type="text/css" href="./css/slick-carousel.css">
+
+
+<!-- cordova -->
+
 <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
 
 
@@ -61,7 +67,7 @@
 
 	<!-- MAIN MAP PAGE -->
 	<div data-role="page" id="main-map-page">
-		<div data-role="panel" id="favoritesPanel" data-theme="b">
+		<div data-role="panel" id="favoritesPanel" data-display="overlay" data-theme="b">
 		<a href="#main-map-page" data-rel="close" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-a ui-icon-delete ui-btn-icon-left" data-prefetch >Close Favorites</a>
 
 		<ul data-role="listview" class="favorites">
@@ -91,10 +97,16 @@
 			</div>
 			<a href="#login-page">Go to Page One</a>
 			<a href="#skatepark-page">Go to a skatepark</a>
-
+		
 		</div>
 
 		<div data-role="footer" class="footer" data-theme="b">
+
+			<!-- begin attempt at carousel -->
+				<div class="carousel">
+					
+				</div>
+
 			<div data-role="navbar" class="navbar">
 				<ul>
 					<li><a href="#anylink" class="ui-btn ui-icon-back ui-btn-icon-bottom back-btn" data-rel="back"></a>
@@ -137,7 +149,6 @@
 	</div>
 
 	<!-- USER PROFILE -->
-
-
+	<script type="text/javascript" src="./js/slick-carousel.min.js"></script>
 </body>
 </html>
