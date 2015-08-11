@@ -28,5 +28,8 @@
     <access origin="http://auth.firebase.com" />
     <access uri="https://*.firebaseio.com" subdomains="true" />
 
+    <access origin="*.google.com"/>
+    <access origin="*.googleapis.com"/>
+
 
 </widget>

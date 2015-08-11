@@ -366,6 +366,26 @@ $(document).on('popupbeforeposition', '.ui-popup', function(){
     dataType: 'json'
   })
   .done(function(response){
+    var pageParkId = $('.skatepark-id').text()
+    var favoriteMatch = null;
+    $.each(response,function(index, park){
+      console.log(pageParkId)
+      console.log(favoriteMatch)
+      if(favoriteMatch === null){
+        if(park.id == pageParkId){
+          console.log("yup")
+          $('#favoritePopup p').text('This skatepark has already been favorited.')
+          favoriteMatch = true
+          console.log("STOP DUDE")
+        }
+        else{
+          console.log("no match buddy")
+          console.log('this is the' + park.id)
+          console.log('match' +pageParkId)
+        }
+      }
+    });
+    console.log($('#favoritePopup p').text())
     console.log("heyy hooo")
     console.log(response)
   })
