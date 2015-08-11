@@ -449,7 +449,7 @@ var clearChat = function() {
 
 
 
->>>>>>> master
+
 var buildSkateparkPage = function(skatepark) {
   $('#skatepark-page .skatepark-name').text(skatepark.name.toUpperCase());
   var skateparkDiv =
@@ -480,7 +480,6 @@ var buildSkateparkPage = function(skatepark) {
 $(document).on("panelbeforeopen", "#favoritesPanel", function(event, ui){
   var userId = window.localStorage.getItem('currentUserId');
   var path = baseURL + 'api/users/' + userId + '/favorites'
-
   if (userId) {
     $.ajax({
       url: path,
@@ -490,15 +489,17 @@ $(document).on("panelbeforeopen", "#favoritesPanel", function(event, ui){
 
     .done(function(response){
       $('.favorites').empty();
+      debugger
       $.each(response, function(index, favorite){
-        $('.favorites').prepend('<li><a class="skatepark-link" href='+baseURL+'api/skateparks/'+favorite.id+'>'+favorite.name+'</a></li>')
+        $('.favorites').append('<li><a class="skatepark-link" href='+baseURL+'api/skateparks/'+favorite.id+'>'+favorite.name+'</a></li>')
       })
 
-      $('.favorites').append(
+      $('.favorites').prepend(
         $('<li>').attr('id', 'logout').append(
         $('<a>').attr('href', '#').text('Logout')));
 
       $('.favorites').listview('refresh')
+      $('#logout > a').removeClass('ui-btn-icon-right ui-icon-carat-r')
     })
     .fail(function(response){
       console.log("bye harvey")
@@ -510,32 +511,48 @@ $(document).on("panelbeforeopen", "#favoritesPanel", function(event, ui){
     $('.favorites').empty();
     $('.favorites').append(
       $('<li>').text('please login to see your favorites!'));
+    $('.favorites').prepend(
+        $('<li>').attr('id', 'logout').append(
+        $('<a>').attr('href', '#').text('Logout')));
+    $('.favorites').listview('refresh');
+    $('#logout > a').removeClass('ui-btn-icon-right ui-icon-carat-r')
 
   }
 })
 
 // allow user to favorite a map
-$(document).on('click', '.favorite-button', function(){
+$(document).on('click', '.favorite-button', function(event){
   console.log(userData)
-  var parkId = $('.skatepark-id').text()
-  var userId = window.localStorage.getItem('currentUserId');
-  var path = baseURL + 'api/users/' + userId + '/favorites/' + parkId
-  $.ajax({
-    url: path,
-    method: 'post'
-  })
-  .done(function(response){
-    console.log(response);
-  })
-  .fail(function(response){
-    console.log(response);
-    console.log('toadd')
-  })
+
+  if(userData){
+    var parkId = $('.skatepark-id').text()
+    var userId = window.localStorage.getItem('currentUserId');
+    var path = baseURL + 'api/users/' + userId + '/favorites/' + parkId
+    $.ajax({
+      url: path,
+      method: 'post'
+    })
+    .done(function(response){
+      console.log(response);
+    })
+    .fail(function(response){
+      console.log(response);
+      console.log('toadd')
+    })
+  }
+  else{
+    event.preventDefault();
+    console.log("you cannot do that")
+    $('#favoriteErrorPopup').popup("open")
+  }
+
 })
 
 
 $(document).on("click", "#logout", function() {
   signOut();
+  $('.username').text('Welcome Skater');
+  $('.welcome-header').text('Skate Life, Breh');
 });
 
 $(document).on('popupbeforeposition', '.ui-popup', function(){
