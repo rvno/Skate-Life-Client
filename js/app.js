@@ -61,6 +61,15 @@ var backendUserAuth = function(userData) {
 
 $(document).on("pageinit", '#main-map-page',function(){
   // alert("the next page is loading");
+  $('.carousel').slick({
+    arrows: false,
+    focusOnSelect: true,
+    mobileFirst: true,
+    slidesToShow: 3,
+    slidesToScroll: 3,
+  });
+
+
   $('.back-btn')
     .attr('href', '#')
     .attr('data-rel', '')
@@ -75,7 +84,9 @@ $(document).on("pageinit", '#main-map-page',function(){
 
   .done(function(response){
     // console.log('done')
+    
     $.each(response, function(index, skatepark){
+      $('.carousel').slick('slickAdd', '<div class="carousel-img"><img src="https://maps.googleapis.com/maps/api/streetview?size=300x100&location='+skatepark.lat+','+skatepark.lon+'&fov=70&heading=235&pitch=0"/></div>')
       $('.skateparks').append(
         $('<li>').append(
           $('<a>')
@@ -83,7 +94,9 @@ $(document).on("pageinit", '#main-map-page',function(){
             .attr('href', path+ skatepark.id)
             // .attr('id', park.name)
             .text(skatepark.name)));
-
+    //begin
+    // $('.carousel').append('<div><img src="https://maps.googleapis.com/maps/api/streetview?size=300x100&location='+response.lat+','+response.long+'&fov=70&heading=235&pitch=0"/></div>')
+    //end 
     })
   })
   .fail(function(response){
