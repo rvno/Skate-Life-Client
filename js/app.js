@@ -1,5 +1,7 @@
 var userData;
 var ref = new Firebase('https://skatelife.firebaseio.com/');
+markers = [];
+geoMarkers = []
 
 baseURL = 'https://skate-life-backend.herokuapp.com/';
 // baseURL = 'http://localhost:3000/';
@@ -11,7 +13,6 @@ baseURL = 'https://skate-life-backend.herokuapp.com/';
 $(function() {
   authenticateUser();
 });
-
 
 // Google Oauth
 var authenticateUser = function() {
@@ -34,7 +35,6 @@ var authenticateUser = function() {
   });
 }
 
-
 // google Oauth promise
 var googleOauth = function() {
   var promise = new Promise(function(resolve, reject) {
@@ -50,7 +50,6 @@ var googleOauth = function() {
   return promise;
 }
 
-
 // Change Headers to User's Info
 var buildUserProfile = function() {
   userData = JSON.parse(window.localStorage.getItem('googleData'));
@@ -58,7 +57,6 @@ var buildUserProfile = function() {
   $('.username').text('Welcome ' + firstName);
   $('.welcome-header').text('Welcome ' + firstName);
 }
-
 
 // Authenticate user in heroku DB
 var backendUserAuth = function(userData) {
@@ -97,14 +95,13 @@ var backendUserAuth = function(userData) {
 $(document).on("pageinit", '#main-map-page',function(){
   var path = baseURL + 'api/skateparks/';
 
-  $('.carousel').slick({
-    arrows: false,
-    focusOnSelect: true,
-    mobileFirst: true,
-    slidesToShow: 3,
-    slidesToScroll: 3,
-  });
-
+  // $('.carousel').slick({
+  //   arrows: false,
+  //   focusOnSelect: true,
+  //   mobileFirst: true,
+  //   slidesToShow: 3,
+  //   slidesToScroll: 3,
+  // });
 
   $.ajax({
     url: path,
@@ -114,7 +111,6 @@ $(document).on("pageinit", '#main-map-page',function(){
 
   .done(function(response){
 
-    
     $.each(response, function(index, skatepark){
       //implement carousel
 
@@ -126,19 +122,16 @@ $(document).on("pageinit", '#main-map-page',function(){
             .attr('href', path+ skatepark.id)
             // .attr('id', park.name)
             .text(skatepark.name)));
-   
-    })
 
+    })
 
     // Only pull first 20 parks. Refactor this so that it's location based
     var i = 0;
-    while (i < 20) {
+    while (i < 8) {
       buildSkateparkLink(response[i], path);
-      buildCarouselImage(response[i], path);
+      // buildCarouselImage(response[i], path);
       i++;
     }
-
-
   })
 
   .fail(function(response){
@@ -146,7 +139,6 @@ $(document).on("pageinit", '#main-map-page',function(){
   });
 
 });
-
 
 var buildSkateparkLink = function(skatepark, path) {
   $('.skateparks').append(
@@ -156,9 +148,9 @@ var buildSkateparkLink = function(skatepark, path) {
         .attr('href', path+ skatepark.id)
         .text(skatepark.name)));
 }
-
-
+var count = 0;
 var buildCarouselImage = function(skatepark) {
+  console.log(skatepark);
   $('.carousel').slick('slickAdd',
     $('<div>').addClass('carousel-img').append(
       $('<img>').attr('src', 'https://maps.googleapis.com/maps/api/streetview?size=300x100&location='+skatepark.lat+','+skatepark.lon+'&fov=70&heading=235&pitch=0')));
@@ -282,9 +274,6 @@ var buildCarouselImage = function(skatepark) {
 //            content: '<p>'+skatepark.name+'</p><p>'+skatepark.address+'</p><a class="skatepark-link" href='+baseURL+'api/skateparks/'+skatepark.id+'>check it</a><p><img src="https://maps.googleapis.com/maps/api/streetview?size=300x100&location='+lat+','+lon+'&fov=70&heading=235&pitch=0"/></p>'
 //       });
 
-
-
-      
 //       var marker = new google.maps.Marker({
 //         position: new google.maps.LatLng(lat,lon),
 //         title: skatepark.name,
@@ -302,7 +291,7 @@ var buildCarouselImage = function(skatepark) {
 //     });
 
 //     var mc = new MarkerClusterer(map, markers);
-    
+
 
 
 //   })
@@ -348,6 +337,7 @@ var buildCarouselImage = function(skatepark) {
 
 
 
+
 // SkatePark Show Page
 
 $(document).on("click", ".skatepark-link", function(event){
@@ -370,10 +360,9 @@ $(document).on("click", ".skatepark-link", function(event){
   });
 });
 
-
 var buildSkateparkPage = function(skatepark) {
   $('#skatepark-page .skatepark-name').text(skatepark.name.toUpperCase());
-  var skateparkDiv = 
+  var skateparkDiv =
     $('<div>').append(
       $('<h1>').text(skatepark.name),
       $('<p>').text('Address: ' + skatepark.address),
@@ -386,7 +375,6 @@ var buildSkateparkPage = function(skatepark) {
 
   $('#skatepark-page .ui-content .skatepark-page').html(skateparkDiv);
 }
-
 
 
 
@@ -453,7 +441,6 @@ $(document).on('click', '.favorite-button', function(){
     console.log(response);
     console.log('toadd')
   })
-
 })
 
 
@@ -503,7 +490,7 @@ $(document).on('popupbeforeposition', '.ui-popup', function(){
 $(document).on('popupafteropen', '.ui-popup', function(){
   $(this).animate({ opacity: 100 });
   $(this).animate({ opacity: 0 }, 1500);
-  
+
 });
 
 var signOut = function() {
@@ -511,6 +498,13 @@ var signOut = function() {
   userData = null;
   $.mobile.changePage('#login-page')
 }
+
+
+
+
+
+
+
 
 
 //CHANGE MAP SIZE AND INITIALIZATION LOCATION
@@ -587,7 +581,6 @@ $(document).on('pageshow', '#main-map-page', function (e, data) {
     // var myLatlng = new google.maps.LatLng(-25.363882,131.044922);
 
       .done(function(response) {
-        var markers = [];
 
 
         $.each(response, function(index, skatepark) {
@@ -607,16 +600,12 @@ $(document).on('pageshow', '#main-map-page', function (e, data) {
           } else {
             var lon = parseFloat(skatepark.lon);
           }
-
           // debugger
 
           var infowindow = new google.maps.InfoWindow({
                content: '<p>'+skatepark.name+'</p><p>'+skatepark.address+'</p><a class="skatepark-link" href='+baseURL+'api/skateparks/'+skatepark.id+'>check it</a><p><img src="https://maps.googleapis.com/maps/api/streetview?size=300x100&location='+lat+','+lon+'&fov=70&heading=235&pitch=0"/></p>'
           });
 
-
-
-          
           var marker = new google.maps.Marker({
             position: new google.maps.LatLng(lat,lon),
             title: skatepark.name,
@@ -624,17 +613,43 @@ $(document).on('pageshow', '#main-map-page', function (e, data) {
             icon: "./imgs/rollerskate.png"
           });
 
-
           markers.push(marker);
 
           google.maps.event.addListener(marker, 'click', function() {
               infowindow.open(map,marker);
           });
-
         });
 
         var mc = new MarkerClusterer(map, markers);
-        
+
+        //------------------GEOfence----------------------------//
+
+          // Grab current latitude and longitude coordinates
+
+          // Construct geofence circle
+        var currentGeofence = new google.maps.Circle({
+          map: map,
+          radius: 32000,
+        });
+
+        currentGeofence.bindTo('center', marker, 'position');
+
+        $('.carousel').slick({
+          arrows: false,
+          focusOnSelect: true,
+          mobileFirst: true,
+          slidesToShow: 8,
+          slidesToScroll: 3,
+        });
+
+        markers.forEach(function(marker){
+          if (currentGeofence.getBounds().contains(marker.position)) {
+            var skatepark = {lat: marker.position.G, lon: marker.position.K }
+            buildCarouselImage(skatepark);
+            geoMarkers.push(marker);
+          }
+        });
+
 
 
       })
@@ -644,7 +659,10 @@ $(document).on('pageshow', '#main-map-page', function (e, data) {
       });
 
   }, 100);
-  
-}); 
+
+});
+
+
+
 
 
