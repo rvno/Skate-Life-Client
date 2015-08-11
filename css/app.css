@@ -28,7 +28,8 @@ a{
 }
 
 #login-page{
-	  background: url('http://25.media.tumblr.com/6430652cfc6aca35aca9c9bb42a59032/tumblr_mjd43hi5Av1r350k4o1_500.jpg');
+	  /*background: url('http://25.media.tumblr.com/6430652cfc6aca35aca9c9bb42a59032/tumblr_mjd43hi5Av1r350k4o1_500.jpg');*/
+	  background: url('../imgs/skate-life.jpg');
     background-size: cover;
     height:inherit;
 }
