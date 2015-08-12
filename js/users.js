@@ -1,10 +1,12 @@
 var ref = new Firebase('https://skatelife.firebaseio.com/');
 var baseURL = 'https://skate-life-backend.herokuapp.com/';
 var userData;
+var currentUserId;
 
 
 $(function() {
   authenticateUser();
+  bindAttendanceListener();
 });
 
 
@@ -75,6 +77,7 @@ var backendUserAuth = function(userData) {
 
   .done(function (response) {
     window.localStorage.setItem('currentUserId', response.id);
+    currentUserId = window.localStorage.getItem('currentUserId');
   })
 
   .fail(function (response) {
@@ -224,6 +227,34 @@ var signOut = function() {
   $.mobile.changePage('#login-page')
 }
 
+
+
+var bindAttendanceListener = function() {
+  $(document).on('click', '.attend', function(event) {
+
+    var parkId = $(event.target).siblings('p:first-child').text();
+    var path = baseURL + 'api/users/' + currentUserId + '/skateparks/' + parkId;
+    var attendButton = this;
+
+    $.ajax({
+      url: path,
+      type: 'post'
+    })
+
+    .done(function(response) {
+
+      // THIS STAYS AS LEAVE NO MATTER WHAT, MAYBE FIX
+      $(attendButton)
+        .toggleClass('attend leave')
+        .text('Leave');
+    })
+
+    .fail(function(response) {
+      console.log(response);
+      alert('U GOTTA LOG IN BRAWSKI');
+    })
+  });
+}
 
 
 
