@@ -1,4 +1,12 @@
+
+// THIS NEEDS TO GET GRABBED AS SOON AS IT IS NEEDED
+// GET ITEM BY
 var userData;
+
+
+
+
+
 var ref = new Firebase('https://skatelife.firebaseio.com/');
 var lastMessage;
 var lastSkatepark;
@@ -14,74 +22,83 @@ baseURL = 'https://skate-life-backend.herokuapp.com/';
 
 
 
-// User Authentication
 
-$(function() {
-  authenticateUser();
+
+
+$( document ).on( "pageshow", "#main-map-page", function( event ) {
+  userData = JSON.parse(window.localStorage.getItem('googleData'))
 });
 
-// Google Oauth
-var authenticateUser = function() {
-  $('.login-btn').on('click', function(event){
-    event.preventDefault();
 
-    googleOauth().then(function(authData) {
-      googleData = authData;
-      var gString = JSON.stringify(authData);
-      window.localStorage.setItem('googleData', gString);
 
-      // does this make it faster?
-      $.mobile.loadPage('#main-map-page');
-      $.mobile.changePage('#main-map-page');
+// User Authentication STUFFS
 
-      backendUserAuth(authData);
-      buildUserProfile();
-    });
-  });
-}
+// $(function() {
+//   authenticateUser();
+// });
 
-// google Oauth promise
-var googleOauth = function() {
-  var promise = new Promise(function(resolve, reject) {
-    ref.authWithOAuthPopup('google', function(error, authData) {
-      if (error) {
-        alert('login failed!');
-        reject(error);
-      } else {
-        resolve(authData);
-      }
-    });
-  });
-  return promise;
-}
+// // Google Oauth
+// var authenticateUser = function() {
+//   $('.login-btn').on('click', function(event){
+//     event.preventDefault();
 
-// Change Headers to User's Info
-var buildUserProfile = function() {
-  userData = JSON.parse(window.localStorage.getItem('googleData'));
-  var firstName = userData.google.displayName.split(' ')[0];
-  $('.username').text('Welcome ' + firstName);
-  $('.welcome-header').text('Welcome ' + firstName);
-}
+//     googleOauth().then(function(authData) {
+//       googleData = authData;
+//       var gString = JSON.stringify(authData);
+//       window.localStorage.setItem('googleData', gString);
 
-// Authenticate user in heroku DB
-var backendUserAuth = function(userData) {
-  var path = baseURL + 'api/users/' + userData.google.id + '/authenticate'
+//       // does this make it faster?
+//       $.mobile.loadPage('#main-map-page');
+//       $.mobile.changePage('#main-map-page');
 
-  $.ajax({
-    url: path,
-    type: 'post',
-    data: userData,
-    dataType: 'json'
-  })
+//       backendUserAuth(authData);
+//       buildUserProfile();
+//     });
+//   });
+// }
 
-  .done(function(response) {
-    window.localStorage.setItem('currentUserId', response.id);
-  })
+// // google Oauth promise
+// var googleOauth = function() {
+//   var promise = new Promise(function(resolve, reject) {
+//     ref.authWithOAuthPopup('google', function(error, authData) {
+//       if (error) {
+//         alert('login failed!');
+//         reject(error);
+//       } else {
+//         resolve(authData);
+//       }
+//     });
+//   });
+//   return promise;
+// }
 
-  .fail(function(response) {
-    console.log(response);
-  });
-}
+// // Change Headers to User's Info
+// var buildUserProfile = function() {
+//   userData = JSON.parse(window.localStorage.getItem('googleData'));
+//   var firstName = userData.google.displayName.split(' ')[0];
+//   $('.username').text('Welcome ' + firstName);
+//   $('.welcome-header').text('Welcome ' + firstName);
+// }
+
+// // Authenticate user in heroku DB
+// var backendUserAuth = function(userData) {
+//   var path = baseURL + 'api/users/' + userData.google.id + '/authenticate'
+
+//   $.ajax({
+//     url: path,
+//     type: 'post',
+//     data: userData,
+//     dataType: 'json'
+//   })
+
+//   .done(function(response) {
+//     window.localStorage.setItem('currentUserId', response.id);
+//   })
+
+//   .fail(function(response) {
+//     console.log(response);
+//   });
+// }
 
 
 
