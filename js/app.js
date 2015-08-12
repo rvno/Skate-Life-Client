@@ -5,6 +5,8 @@ geoMarkers = []
 // var messageRef = 'https://skatelife.firebaseio.com/parkchats/';
 var lastMessage;
 var lastSkatepark;
+var map;
+var userMarker;
 
 baseURL = 'https://skate-life-backend.herokuapp.com/';
 // baseURL = 'http://localhost:3000/';
@@ -152,7 +154,6 @@ var buildSkateparkLink = function(skatepark, path) {
 }
 var count = 0;
 var buildCarouselImage = function(skatepark) {
-  console.log(skatepark);
   $('.carousel').slick('slickAdd',
     $('<div>').addClass('carousel-img').append(
       $('<img>').attr('src', 'https://maps.googleapis.com/maps/api/streetview?size=300x100&location='+skatepark.lat+','+skatepark.lon+'&fov=70&heading=235&pitch=0')));
@@ -656,120 +657,171 @@ $(document).on('pageshow', '#main-map-page', function (e, data) {
           },
           mapTypeId: MY_MAPTYPE_ID
     }
-    var map = new google.maps.Map(document.getElementById('googleMap'),
+    map = new google.maps.Map(document.getElementById('googleMap'),
       mapProps
     );
     var styledMapOptions = {
         name: 'Custom Style'
-      };
-      var customMapType = new google.maps.StyledMapType(featureOpts, styledMapOptions);
-      map.mapTypes.set(MY_MAPTYPE_ID, customMapType)
+    };
+
+    var customMapType = new google.maps.StyledMapType(featureOpts, styledMapOptions);
+    map.mapTypes.set(MY_MAPTYPE_ID, customMapType)
 
     //SET MARKER TO BE AT DBC (MAKE IT VARIABLE LATER)
     dbc = new google.maps.LatLng(37.76, -122.39)
-    var marker = new google.maps.Marker({
-        url:"#login-page",
-        position:dbc,
-        draggable: true,
-        icon: "./imgs/user-icon.png"
-      })
-
-      marker.setMap(map)
-
-    //END MARKET SETUP
-
-      $.ajax({
-        url: baseURL + 'api/skateparks',
-        type: 'get',
-        dataType: 'json'
-      })
+    createNewUserMarker(map);
+    // var marker = new google.maps.Marker({
+    //   url:"#login-page",
+    //   position:dbc,
+    //   draggable: true,
+    //   icon: "./imgs/user-icon.png"
+    // });
 
 
-    // var myLatlng = new google.maps.LatLng(-25.363882,131.044922);
+  //END MARKET SETUP
 
-      .done(function(response) {
+    $.ajax({
+      url: baseURL + 'api/skateparks',
+      type: 'get',
+      dataType: 'json'
+    })
 
 
-        $.each(response, function(index, skatepark) {
-          // debugger
-          // console.log(skatepark.lat);
+  // var myLatlng = new google.maps.LatLng(-25.363882,131.044922);
 
-          if (skatepark.lat[0] === '-') {
-            var latParsed = skatepark.lat.substr(1);
-            var lat = parseFloat(skatepark.lat);
-          } else {
-            var lat = parseFloat(skatepark.lat);
-          }
+    .done(function(response) {
 
-          if (skatepark.lon[0] === '-') {
-            var lonParsed = skatepark.lon.substr(1);
-            var lon = parseFloat(skatepark.lon);
-          } else {
-            var lon = parseFloat(skatepark.lon);
-          }
-          // debugger
 
-          var infowindow = new google.maps.InfoWindow({
-               content: '<p>'+skatepark.name+'</p><p>'+skatepark.address+'</p><a class="skatepark-link" href='+baseURL+'api/skateparks/'+skatepark.id+'>check it</a><p><img src="https://maps.googleapis.com/maps/api/streetview?size=300x100&location='+lat+','+lon+'&fov=70&heading=235&pitch=0"/></p>'
-          });
+      $.each(response, function(index, skatepark) {
+        // debugger
+        // console.log(skatepark.lat);
 
-          var marker = new google.maps.Marker({
-            position: new google.maps.LatLng(lat,lon),
-            title: skatepark.name,
-            map: map,
-            icon: "./imgs/rollerskate.png"
-          });
+        if (skatepark.lat[0] === '-') {
+          var latParsed = skatepark.lat.substr(1);
+          var lat = parseFloat(skatepark.lat);
+        } else {
+          var lat = parseFloat(skatepark.lat);
+        }
 
-          markers.push(marker);
+        if (skatepark.lon[0] === '-') {
+          var lonParsed = skatepark.lon.substr(1);
+          var lon = parseFloat(skatepark.lon);
+        } else {
+          var lon = parseFloat(skatepark.lon);
+        }
+        // debugger
 
-          google.maps.event.addListener(marker, 'click', function() {
-              infowindow.open(map,marker);
-          });
+        var infowindow = new google.maps.InfoWindow({
+             content: '<p>'+skatepark.name+'</p><p>'+skatepark.address+'</p><a class="skatepark-link" href='+baseURL+'api/skateparks/'+skatepark.id+'>check it</a><p><img src="https://maps.googleapis.com/maps/api/streetview?size=300x100&location='+lat+','+lon+'&fov=70&heading=235&pitch=0"/></p>'
         });
 
-        var mc = new MarkerClusterer(map, markers);
-
-        //------------------GEOfence----------------------------//
-
-          // Grab current latitude and longitude coordinates
-
-          // Construct geofence circle
-        var currentGeofence = new google.maps.Circle({
+        var marker = new google.maps.Marker({
+          position: new google.maps.LatLng(lat,lon),
+          title: skatepark.name,
           map: map,
-          radius: 32000,
+          icon: "./imgs/rollerskate.png"
         });
 
-        currentGeofence.bindTo('center', marker, 'position');
+        markers.push(marker);
 
-        $('.carousel').slick({
-          arrows: false,
-          focusOnSelect: true,
-          mobileFirst: true,
-          slidesToShow: 8,
-          slidesToScroll: 3,
+        google.maps.event.addListener(marker, 'click', function() {
+            infowindow.open(map,marker);
         });
-
-        markers.forEach(function(marker){
-          if (currentGeofence.getBounds().contains(marker.position)) {
-            var skatepark = {lat: marker.position.G, lon: marker.position.K }
-            buildCarouselImage(skatepark);
-            geoMarkers.push(marker);
-          }
-        });
-
-
-
-      })
-
-      .fail(function(response) {
-
       });
+
+      var mc = new MarkerClusterer(map, markers);
+
+      //------------------GEOfence----------------------------//
+
+        // Grab current latitude and longitude coordinates
+
+        // Construct geofence circle
+      var currentGeofence = new google.maps.Circle({
+        map: map,
+        radius: 32000,
+      });
+
+      currentGeofence.bindTo('center', userMarker, 'position');
+
+      $('.carousel').slick({
+        arrows: false,
+        focusOnSelect: true,
+        mobileFirst: true,
+        slidesToShow: 8,
+        slidesToScroll: 3,
+      });
+
+      markers.forEach(function(marker){
+        if (currentGeofence.getBounds().contains(marker.position)) {
+          var skatepark = {lat: marker.position.G, lon: marker.position.K }
+          buildCarouselImage(skatepark);
+          geoMarkers.push(marker);
+        }
+      });
+
+
+
+    })
+
+    .fail(function(response) {
+
+    });
 
   }, 100);
 
 });
 
 
+
+    // dbc = new google.maps.LatLng(37.76, -122.39)
+    // var marker = new google.maps.Marker({
+    //   url:"#login-page",
+    //   position:dbc,
+    //   draggable: true,
+    //   icon: "./imgs/user-icon.png"
+    // });
+
+// Function for creating a User marker and associating it with data in firebase
+// Hardcoding in User Position until Harvey grabs current location from phone
+
+
+// This sets up reference to firebase database
+var userMarkerRef = new Firebase('https://skatelife.firebaseio.com/markers/');
+
+var createNewUserMarker = function(map) {
+  var firebaseMarker = {
+    url: '#login-page',
+    position: dbc,
+    draggable: true,
+    icon: './imgs/user-icon.png'
+  }
+
+  // var marker = new google.maps.Marker(firebaseMarker);
+
+  // marker.setMap(map)
+  userMarkerRef.push(firebaseMarker);
+
+  // return marker;
+}
+
+
+userMarkerRef.on('child_added', function (snapshot) {
+  // console.log(snapshot.val().position);
+  var markerPosition = snapshot.val().position;
+  var position = new google.maps.LatLng(37.76, -122.39)
+
+  // console.log(snapshot.val());
+  var marker = new google.maps.Marker({
+    url: '#login-page',
+    position: position,
+    draggable: true,
+    icon: './imgs/user-icon.png'
+  });
+
+  marker.setMap(map);
+  debugger
+  userMarker = marker;
+});
 
 
 
