@@ -1,5 +1,19 @@
-// SkatePark Show Page
+var userData;
+var lastMessage;
+var lastSkatepark;
 
+
+
+$( document ).on( "pageshow", "#main-map-page", function( event ) {
+  userData = JSON.parse(window.localStorage.getItem('googleData'))
+});
+
+
+
+
+
+
+// SkatePark Show Page
 $(document).on("click", ".skatepark-link", function(event){
   event.preventDefault();
   var path = event.target.href
@@ -81,12 +95,6 @@ var initializeChatroom = function(skatepark) {
 var clearChat = function() {
   $('.messages-div').empty();
 }
-
-
-
-
-
-
 
 
 var buildSkateparkPage = function(skatepark) {

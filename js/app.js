@@ -1,66 +1,11 @@
-
-// THIS NEEDS TO GET GRABBED AS SOON AS IT IS NEEDED
-// GET ITEM BY
-var userData;
-
-
-
-
-
 var ref = new Firebase('https://skatelife.firebaseio.com/');
-var lastMessage;
-var lastSkatepark;
-
+var baseURL = 'https://skate-life-backend.herokuapp.com/';
+// var baseURL = 'http://localhost:3000/';
 
 var map;
 var userMarker;
 var markers = [];
 var geoMarkers = [];
-
-baseURL = 'https://skate-life-backend.herokuapp.com/';
-// baseURL = 'http://localhost:3000/';
-
-
-
-
-$( document ).on( "pageshow", "#main-map-page", function( event ) {
-  userData = JSON.parse(window.localStorage.getItem('googleData'))
-});
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Main Map page
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
