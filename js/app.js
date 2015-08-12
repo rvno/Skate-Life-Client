@@ -18,9 +18,18 @@ $(document).on('pageshow', '#main-map-page', function (e, data) {
 
     buildMap();
 
+
     //SET MARKER TO BE AT defaultLocation (MAKE IT VARIABLE LATER)
     defaultLocation = new google.maps.LatLng(latitude, longitude)
     createNewUserMarker(map);
+
+
+
+    // Sets up Home button on Map div that will pan back to user marker postion
+    var homeControlDiv = document.createElement('div');
+    debugger
+    var homeControl = new HomeControl(homeControlDiv, map);
+    map.controls[google.maps.ControlPosition.TOP_RIGHT].push(homeControlDiv);
     
 
     // Ajax call to grab skatepark coordinates
@@ -272,6 +281,34 @@ function onDeviceReady(){
 }
 
 onDeviceReady();
+
+
+
+// CREATE BUTTON TO RETURN VIEW AND CURRENT USER MARKER TO CURRENT LOCATION
+function HomeControl(controlDiv, map) {
+  controlDiv.style.padding = '5px';
+
+  var controlUI = document.createElement('div');
+  controlUI.style.backgroundColor = 'black';
+  controlUI.style.color = 'orange';
+  controlUI.style.border = '1px solid orange';
+  controlUI.style.cursor = 'pointer';
+  controlUI.style.textAlign = 'center';
+  controlUI.title = 'current locaiton';
+  controlDiv.appendChild(controlUI);
+
+  var controlText = document.createElement('div');
+  controlText.style.fontFamily = 'Arial, sans-serif';
+  controlText.style.fontSize='12px';
+  controlText.style.paddingLeft = '4px';
+  controlText.style.paddingRight = '4px';
+  controlText.innerHTML = '<b>Home<b>'
+  controlUI.appendChild(controlText);
+
+  google.maps.event.addDomListener(controlUI, 'click', function() {
+    map.setCenter(userMarker.position);
+  })
+}
 
 
 
