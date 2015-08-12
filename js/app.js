@@ -27,7 +27,6 @@ $(document).on('pageshow', '#main-map-page', function (e, data) {
 
     // Sets up Home button on Map div that will pan back to user marker postion
     var homeControlDiv = document.createElement('div');
-    debugger
     var homeControl = new HomeControl(homeControlDiv, map);
     map.controls[google.maps.ControlPosition.TOP_RIGHT].push(homeControlDiv);
     
@@ -104,8 +103,8 @@ $(document).on('pageshow', '#main-map-page', function (e, data) {
         arrows: false,
         focusOnSelect: true,
         mobileFirst: true,
-        slidesToShow: 8,
-        slidesToScroll: 3,
+        slidesToShow: 1,
+        slidesToScroll: 1,
       });
 
 
@@ -119,6 +118,7 @@ $(document).on('pageshow', '#main-map-page', function (e, data) {
 
   }, 100);
 
+  
 });
 
 
@@ -309,6 +309,43 @@ function HomeControl(controlDiv, map) {
     map.setCenter(userMarker.position);
   })
 }
+
+//BEGIN CODING FOR MAP PAN BASED ON CAROUSEL
+  // console.log($('.slick-active-image').attr('src'))
+  // imageSrc = $('.slick-active-image').attr('src')
+  // // location =  grabLocationFromURL(imageSrc)
+  // console.log(location)
+$('.carousel').on('afterChange', function(){
+  console.log("HELLO")
+})
+
+
+var grabLocationFromURL = function (url) {
+  //grab the lat long value string
+  parkCoordinates = url.split("location=")[1].split("&")[0]
+  //grab the lat coordinate
+  parkLatitude = parseFloat(parkCoordinates.split(",")[0])
+  //grab the long coordinate
+  parkLongitude = parseFloat(parkCoordinates.split(",")[1])
+  parkPosition = {lat: parkLatitude, lon: parkLongitude}
+  return parkPosition
+}
+
+$(document).ready(function(){
+  $('.carousel').on('afterChange', function(){
+  console.log("HELLO")
+  console.log($('.slick-active > img').attr('src'))
+  imageSrc = $('.slick-active > img').attr('src')
+  parkLocation = grabLocationFromURL(imageSrc)
+  console.log(parkLocation)
+  newMarkerLat = parkLocation.lat
+  newMarkerLong = parkLocation.lon
+  console.log(newMarkerLat)
+  console.log(newMarkerLong)
+  newCenterPoint = {lat: newMarkerLat,lng: newMarkerLong}
+  map.setCenter(newCenterPoint)
+  })
+})
 
 
 
