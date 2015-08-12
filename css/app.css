@@ -100,6 +100,7 @@ div.ui-input-text.ui-body-inherit{
 }
 
 
+
 #skatepark-page > div.ui-content > div.ui-btn.ui-input-btn.ui-corner-all.ui-shadow{
 	width:20%;
 	height:25%;
@@ -113,6 +114,7 @@ div.ui-input-text.ui-body-inherit{
 .skatepark-page{
 	width:80%;
 	margin:auto;
+	text-align:center;
 }
 
 .ui-header{
@@ -130,3 +132,15 @@ div.ui-input-text.ui-body-inherit{
 	width:80%;
 	margin:auto;
 }
+
+.gm-style > div:first-child > div + div > div:last-child > div > div:first-child > div{
+	border-radius:10px !important;
+	border:1px solid #559641;
+}
+
+.messages-div{
+	width:65%;
+	margin:auto;
+}
+
+

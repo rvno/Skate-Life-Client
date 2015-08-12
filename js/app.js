@@ -736,7 +736,11 @@ $(document).on('pageshow', '#main-map-page', function (e, data) {
           // Construct geofence circle
         var currentGeofence = new google.maps.Circle({
           map: map,
-          radius: 32000,
+          radius: 9001,
+          fillColor: '#336688',
+          fillOpacity: .22,
+          strokeColor: '#D48817',
+          strokeWeight: 1.75
         });
 
         currentGeofence.bindTo('center', marker, 'position');
