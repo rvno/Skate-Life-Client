@@ -7,10 +7,10 @@
 
    <!-- versionCode is optional and Android only -->
 
-   <name>Skate Life Mobile Test REWORK</name>
+   <name>Skate Life Mobile</name>
 
    <description>
-       Skate Life mobile application test using jQuery Mobile.
+       Skate Life mobile application.
    </description>
 
    <author href="http://phonegap.com" email="harveydngo@gmail.com">
