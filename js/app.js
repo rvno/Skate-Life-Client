@@ -1,7 +1,9 @@
 var userData;
 var ref = new Firebase('https://skatelife.firebaseio.com/');
 markers = [];
-geoMarkers = []
+geoMarkers = [];
+var userMarker;
+
 // var messageRef = 'https://skatelife.firebaseio.com/parkchats/';
 var lastMessage;
 var lastSkatepark;
@@ -152,7 +154,6 @@ var buildSkateparkLink = function(skatepark, path) {
 }
 var count = 0;
 var buildCarouselImage = function(skatepark) {
-  console.log(skatepark);
   $('.carousel').slick('slickAdd',
     $('<div>').addClass('carousel-img').append(
       $('<img>').attr('src', 'https://maps.googleapis.com/maps/api/streetview?size=300x100&location='+skatepark.lat+','+skatepark.lon+'&fov=70&heading=235&pitch=0')));
@@ -667,14 +668,15 @@ $(document).on('pageshow', '#main-map-page', function (e, data) {
 
     //SET MARKER TO BE AT DBC (MAKE IT VARIABLE LATER)
     dbc = new google.maps.LatLng(37.76, -122.39)
-    var marker = new google.maps.Marker({
+    //user marker
+    userMarker = new google.maps.Marker({
         url:"#login-page",
         position:dbc,
         draggable: true,
         icon: "./imgs/user-icon.png"
       })
 
-      marker.setMap(map)
+      userMarker.setMap(map)
 
     //END MARKET SETUP
 
@@ -738,9 +740,15 @@ $(document).on('pageshow', '#main-map-page', function (e, data) {
           map: map,
           radius: 32000,
         });
+        currentGeofence.bindTo('center', userMarker, 'position');
 
-        currentGeofence.bindTo('center', marker, 'position');
 
+
+
+
+
+
+        //-----------------------CAROUSEL ADDING AND REMOVING-------------------------//
         $('.carousel').slick({
           arrows: false,
           focusOnSelect: true,
@@ -755,6 +763,18 @@ $(document).on('pageshow', '#main-map-page', function (e, data) {
             buildCarouselImage(skatepark);
             geoMarkers.push(marker);
           }
+        });
+
+        google.maps.event.addListener(userMarker, 'dragend', function(){
+          $('.carousel-img').remove();
+
+          markers.forEach(function(marker){
+            if (currentGeofence.getBounds().contains(marker.position)) {
+              var skatepark = {lat: marker.position.G, lon: marker.position.K }
+              buildCarouselImage(skatepark);
+              geoMarkers.push(marker);
+            }
+          });
         });
 
 
