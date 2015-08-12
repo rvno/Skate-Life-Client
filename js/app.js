@@ -15,62 +15,15 @@ var latitude = 37.663836;
 var longitude = -122.080266;
 $(document).on('pageshow', '#main-map-page', function (e, data) {
   setTimeout(function () {
-  // This is the minimum zoom level that we'll allow
-    var MY_MAPTYPE_ID = 'custom_style';
-    var featureOpts = [
-        {
-          stylers: [
-            {hue: '#F2A516'},
-            {visibility: 'simplified'},
-            {gamma: 0.8},
-            {weight: 0.5}
-          ]
-        },
-        {
-          featureType: 'water',
-          stylers: [
-            {color: '#2E2D2A'}
-          ]
-        }
-      ];
 
-    var mapProps = {
+    buildMap();
 
-          center: new google.maps.LatLng(37.76, -122.39),
-          zoom:10,
-          panControl:false,
-          zoomControl:false,
-          zoomControlOptions: {
-            style:google.maps.ZoomControlStyle.LARGE,
-          },
-          mapTypeControl:false,
-          scaleControl:true,
-          streetViewControl:true,
-          overviewMapControl:false,
-          rotateControl:false,
-          mapTypeId: google.maps.MapTypeId.ROADMAP,
-          mapTypeControlOptions: {
-          mapTypeIds: [google.maps.MapTypeId.ROADMAP, MY_MAPTYPE_ID]
-          },
-          mapTypeId: MY_MAPTYPE_ID
-    }
-    map = new google.maps.Map(document.getElementById('googleMap'),
-      mapProps
-    );
-    var styledMapOptions = {
-        name: 'Custom Style'
-    };
-
-    var customMapType = new google.maps.StyledMapType(featureOpts, styledMapOptions);
-    map.mapTypes.set(MY_MAPTYPE_ID, customMapType)
-
-    //SET MARKER TO BE AT DBC (MAKE IT VARIABLE LATER)
-    dbc = new google.maps.LatLng(latitude, longitude)
+    //SET MARKER TO BE AT defaultLocation (MAKE IT VARIABLE LATER)
+    defaultLocation = new google.maps.LatLng(latitude, longitude)
     createNewUserMarker(map);
     
 
-  //END MARKER SETUP
-
+    // Ajax call to grab skatepark coordinates
     $.ajax({
       url: baseURL + 'api/skateparks',
       type: 'get',
@@ -192,6 +145,59 @@ $(document).on('pageshow', '#main-map-page', function (e, data) {
 
 
 
+var buildMap = function() {
+  var MY_MAPTYPE_ID = 'custom_style';
+    var featureOpts = [
+      {
+        stylers: [
+          {hue: '#F2A516'},
+          {visibility: 'simplified'},
+          {gamma: 0.8},
+          {weight: 0.5}
+        ]
+      },
+      {
+        featureType: 'water',
+        stylers: [
+          {color: '#2E2D2A'}
+        ]
+      }
+    ];
+
+  // Set up map properties for custom stuff
+  var mapProps = {
+    center: new google.maps.LatLng(latitude, longitude),
+    zoom:10,
+    panControl:false,
+    zoomControl:false,
+    zoomControlOptions: {
+      style:google.maps.ZoomControlStyle.LARGE,
+    },
+    mapTypeControl:false,
+    scaleControl:true,
+    streetViewControl:true,
+    overviewMapControl:false,
+    rotateControl:false,
+    mapTypeId: google.maps.MapTypeId.ROADMAP,
+    mapTypeControlOptions: {
+    mapTypeIds: [google.maps.MapTypeId.ROADMAP, MY_MAPTYPE_ID]
+    },
+    mapTypeId: MY_MAPTYPE_ID
+  }
+
+  map = new google.maps.Map(document.getElementById('googleMap'),
+    mapProps
+  );
+  var styledMapOptions = {
+      name: 'Custom Style'
+  };
+
+  var customMapType = new google.maps.StyledMapType(featureOpts, styledMapOptions);
+  map.mapTypes.set(MY_MAPTYPE_ID, customMapType)
+}
+
+
+
 
 var buildCarouselImage = function(skatepark) {
   $('.carousel').slick('slickAdd',
@@ -211,7 +217,7 @@ var userMarkerRef = new Firebase('https://skatelife.firebaseio.com/markers/');
 var createNewUserMarker = function(map) {
   var firebaseMarker = {
     url: '#login-page',
-    position: dbc,
+    position: defaultLocation,
     draggable: true,
     icon: './imgs/user-icon.png'
   }
@@ -243,7 +249,7 @@ var onSuccess = function(position){
 
  latitude = position.coords.latitude;
  longitude = position.coords.longitude;
- dbc = new google.maps.LatLng(latitude, longitude)
+ defaultLocation = new google.maps.LatLng(latitude, longitude)
 
  initializeMap();
 }
