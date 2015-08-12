@@ -7,6 +7,8 @@ var userMarker;
 // var messageRef = 'https://skatelife.firebaseio.com/parkchats/';
 var lastMessage;
 var lastSkatepark;
+var map;
+// var userMarker;
 
 baseURL = 'https://skate-life-backend.herokuapp.com/';
 // baseURL = 'http://localhost:3000/';
@@ -490,7 +492,7 @@ $(document).on("panelbeforeopen", "#favoritesPanel", function(event, ui){
 
     .done(function(response){
       $('.favorites').empty();
-      debugger
+      // debugger
       $.each(response, function(index, favorite){
         $('.favorites').append('<li><a class="skatepark-link" href='+baseURL+'api/skateparks/'+favorite.id+'>'+favorite.name+'</a></li>')
       })
@@ -657,90 +659,90 @@ $(document).on('pageshow', '#main-map-page', function (e, data) {
           },
           mapTypeId: MY_MAPTYPE_ID
     }
-    var map = new google.maps.Map(document.getElementById('googleMap'),
+    map = new google.maps.Map(document.getElementById('googleMap'),
       mapProps
     );
     var styledMapOptions = {
         name: 'Custom Style'
-      };
-      var customMapType = new google.maps.StyledMapType(featureOpts, styledMapOptions);
-      map.mapTypes.set(MY_MAPTYPE_ID, customMapType)
+    };
+
+    var customMapType = new google.maps.StyledMapType(featureOpts, styledMapOptions);
+    map.mapTypes.set(MY_MAPTYPE_ID, customMapType)
 
     //SET MARKER TO BE AT DBC (MAKE IT VARIABLE LATER)
     dbc = new google.maps.LatLng(37.76, -122.39)
-    //user marker
-    userMarker = new google.maps.Marker({
-        url:"#login-page",
-        position:dbc,
-        draggable: true,
-        icon: "./imgs/user-icon.png"
-      })
+    createNewUserMarker(map);
+    
 
-      userMarker.setMap(map)
+  //END MARKER SETUP
 
-    //END MARKET SETUP
-
-      $.ajax({
-        url: baseURL + 'api/skateparks',
-        type: 'get',
-        dataType: 'json'
-      })
+    $.ajax({
+      url: baseURL + 'api/skateparks',
+      type: 'get',
+      dataType: 'json'
+    })
 
 
-    // var myLatlng = new google.maps.LatLng(-25.363882,131.044922);
 
-      .done(function(response) {
+    .done(function(response) {
 
 
-        $.each(response, function(index, skatepark) {
-          // debugger
-          // console.log(skatepark.lat);
+      $.each(response, function(index, skatepark) {
 
-          if (skatepark.lat[0] === '-') {
-            var latParsed = skatepark.lat.substr(1);
-            var lat = parseFloat(skatepark.lat);
-          } else {
-            var lat = parseFloat(skatepark.lat);
-          }
+        // DO THIS IN RUBY
+        if (skatepark.lat[0] === '-') {
+          var latParsed = skatepark.lat.substr(1);
+          var lat = parseFloat(skatepark.lat);
+        } else {
+          var lat = parseFloat(skatepark.lat);
+        }
 
-          if (skatepark.lon[0] === '-') {
-            var lonParsed = skatepark.lon.substr(1);
-            var lon = parseFloat(skatepark.lon);
-          } else {
-            var lon = parseFloat(skatepark.lon);
-          }
-          // debugger
+        if (skatepark.lon[0] === '-') {
+          var lonParsed = skatepark.lon.substr(1);
+          var lon = parseFloat(skatepark.lon);
+        } else {
+          var lon = parseFloat(skatepark.lon);
+        }
 
-          var infowindow = new google.maps.InfoWindow({
-               content: '<p>'+skatepark.name+'</p><p>'+skatepark.address+'</p><a class="skatepark-link" href='+baseURL+'api/skateparks/'+skatepark.id+'>check it</a><p><img src="https://maps.googleapis.com/maps/api/streetview?size=300x100&location='+lat+','+lon+'&fov=70&heading=235&pitch=0"/></p>'
-          });
-
-          var marker = new google.maps.Marker({
-            position: new google.maps.LatLng(lat,lon),
-            title: skatepark.name,
-            map: map,
-            icon: "./imgs/rollerskate.png"
-          });
-
-          markers.push(marker);
-
-          google.maps.event.addListener(marker, 'click', function() {
-              infowindow.open(map,marker);
-          });
+        var infowindow = new google.maps.InfoWindow({
+             content: '<p>'+skatepark.name+'</p><p>'+skatepark.address+'</p><a class="skatepark-link" href='+baseURL+'api/skateparks/'+skatepark.id+'>check it</a><p><img src="https://maps.googleapis.com/maps/api/streetview?size=300x100&location='+lat+','+lon+'&fov=70&heading=235&pitch=0"/></p>'
         });
 
-        var mc = new MarkerClusterer(map, markers);
-
-        //------------------GEOfence----------------------------//
-
-          // Grab current latitude and longitude coordinates
-
-          // Construct geofence circle
-        var currentGeofence = new google.maps.Circle({
+        var marker = new google.maps.Marker({
+          position: new google.maps.LatLng(lat,lon),
+          title: skatepark.name,
           map: map,
-          radius: 32000,
+          icon: "./imgs/rollerskate.png"
         });
-        currentGeofence.bindTo('center', userMarker, 'position');
+
+        markers.push(marker);
+
+        google.maps.event.addListener(marker, 'click', function() {
+            infowindow.open(map,marker);
+        });
+      });
+
+      var mc = new MarkerClusterer(map, markers);
+
+      //------------------GEOfence----------------------------//
+
+        // Grab current latitude and longitude coordinates
+
+        // Construct geofence circle
+      var currentGeofence = new google.maps.Circle({
+        map: map,
+        radius: 32000,
+      });
+
+      currentGeofence.bindTo('center', userMarker, 'position');
+
+      $('.carousel').slick({
+        arrows: false,
+        focusOnSelect: true,
+        mobileFirst: true,
+        slidesToShow: 8,
+        slidesToScroll: 3,
+      });
 
 
 
@@ -749,21 +751,15 @@ $(document).on('pageshow', '#main-map-page', function (e, data) {
 
 
         //-----------------------CAROUSEL ADDING AND REMOVING-------------------------//
-        $('.carousel').slick({
-          arrows: false,
-          focusOnSelect: true,
-          mobileFirst: true,
-          slidesToShow: 8,
-          slidesToScroll: 3,
-        });
 
-        markers.forEach(function(marker){
-          if (currentGeofence.getBounds().contains(marker.position)) {
-            var skatepark = {lat: marker.position.G, lon: marker.position.K }
-            buildCarouselImage(skatepark);
-            geoMarkers.push(marker);
-          }
-        });
+
+      markers.forEach(function(marker){
+        if (currentGeofence.getBounds().contains(marker.position)) {
+          var skatepark = {lat: marker.position.G, lon: marker.position.K }
+          buildCarouselImage(skatepark);
+          geoMarkers.push(marker);
+        }
+      });
 
         google.maps.event.addListener(userMarker, 'dragend', function(){
           $('.carousel-img').remove();
@@ -779,17 +775,53 @@ $(document).on('pageshow', '#main-map-page', function (e, data) {
 
 
 
-      })
+    })
 
-      .fail(function(response) {
+    .fail(function(response) {
 
-      });
+    });
 
   }, 100);
 
 });
 
 
+
+// Function for creating a User marker and associating it with data in firebase
+// Hardcoding in User Position until Harvey grabs current location from phone
+
+
+// This sets up reference to firebase database
+var userMarkerRef = new Firebase('https://skatelife.firebaseio.com/markers/');
+
+var createNewUserMarker = function(map) {
+  var firebaseMarker = {
+    url: '#login-page',
+    position: dbc,
+    draggable: true,
+    icon: './imgs/user-icon.png'
+  }
+
+
+  userMarkerRef.push(firebaseMarker);
+
+}
+
+
+userMarkerRef.on('child_added', function (snapshot) {
+  var markerPosition = snapshot.val().position;
+  var position = new google.maps.LatLng(markerPosition.G, markerPosition.K);
+
+  var marker = new google.maps.Marker({
+    url: '#login-page',
+    position: position,
+    draggable: true,
+    icon: './imgs/user-icon.png'
+  });
+
+  marker.setMap(map);
+  userMarker = marker;
+});
 
 
 
