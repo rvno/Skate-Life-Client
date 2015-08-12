@@ -2,6 +2,7 @@ var ref = new Firebase('https://skatelife.firebaseio.com/');
 var baseURL = 'https://skate-life-backend.herokuapp.com/';
 // var baseURL = 'http://localhost:3000/';
 
+
 var map;
 var userMarker;
 var markers = [];
@@ -25,11 +26,18 @@ $(document).on('pageshow', '#main-map-page', function (e, data) {
 
 
 
+
+
     // Sets up Home button on Map div that will pan back to user marker postion
     var homeControlDiv = document.createElement('div');
     var homeControl = new HomeControl(homeControlDiv, map);
     map.controls[google.maps.ControlPosition.TOP_RIGHT].push(homeControlDiv);
     
+    //call function to append the location control
+    var currentLocationCtrlDiv = document.createElement('div');
+    var locationCtrl = new CurrentLocationCtrl(currentLocationCtrlDiv, map);
+    map.controls[google.maps.ControlPosition.TOP_RIGHT].push(currentLocationCtrlDiv);
+    //end call to function to append location control button
 
     // Ajax call to grab skatepark coordinates
     $.ajax({
@@ -264,6 +272,8 @@ var onSuccess = function(position){
 
  latitude = position.coords.latitude;
  longitude = position.coords.longitude;
+ window.localStorage.setItem('')
+ // pause here
  defaultLocation = new google.maps.LatLng(latitude, longitude)
 
  initializeMap();
@@ -307,6 +317,35 @@ function HomeControl(controlDiv, map) {
 
   google.maps.event.addDomListener(controlUI, 'click', function() {
     map.setCenter(userMarker.position);
+  })
+}
+
+//begin current location controller creation
+function CurrentLocationCtrl(controlDiv, map){
+  controlDiv.style.padding = '5px';
+  
+  var controlUI = document.createElement('div');
+  controlUI.style.color= 'red';
+  controlUI.style.border = '1px solid blue';
+  controlUI.style.cursor = 'pointer';
+  controlUI.style.textAlign = 'center';
+  controlDiv.appendChild(controlUI);
+  controlDiv.appendChild(controlUI);
+
+  var controlText = document.createElement('div');
+  controlText.style.fontFamily = 'Arial', 'sans-serif';
+  controlText.style.fontSize='12px';
+  controlText.style.paddingLeft = '4px';
+  controlText.style.paddingRight ='4px';
+  controlText.innerHTML = '<b>my location</b>';
+  controlUI.appendChild(controlText);
+
+  google.maps.event.addDomListener(controlUI, 'click', function(){
+    console.log("we should be at dbc")
+    // console.log(currentLocation)
+    console.log("the user is at ")
+    debugger
+    console.log(userMarker.position)
   })
 }
 
