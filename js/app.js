@@ -1,14 +1,13 @@
 var userData;
 var ref = new Firebase('https://skatelife.firebaseio.com/');
-markers = [];
-geoMarkers = [];
-var userMarker;
-
-// var messageRef = 'https://skatelife.firebaseio.com/parkchats/';
 var lastMessage;
 var lastSkatepark;
+
+
 var map;
-// var userMarker;
+var userMarker;
+var markers = [];
+var geoMarkers = [];
 
 baseURL = 'https://skate-life-backend.herokuapp.com/';
 // baseURL = 'http://localhost:3000/';
@@ -101,14 +100,6 @@ var backendUserAuth = function(userData) {
 $(document).on("pageinit", '#main-map-page',function(){
   var path = baseURL + 'api/skateparks/';
 
-  // $('.carousel').slick({
-  //   arrows: false,
-  //   focusOnSelect: true,
-  //   mobileFirst: true,
-  //   slidesToShow: 3,
-  //   slidesToScroll: 3,
-  // });
-
   $.ajax({
     url: path,
     method: 'get',
@@ -117,27 +108,6 @@ $(document).on("pageinit", '#main-map-page',function(){
 
   .done(function(response){
 
-    $.each(response, function(index, skatepark){
-      //implement carousel
-
-      //end carousel
-      $('.skateparks').append(
-        $('<li>').append(
-          $('<a>')
-            .addClass('skatepark-link')
-            .attr('href', path+ skatepark.id)
-            // .attr('id', park.name)
-            .text(skatepark.name)));
-
-    })
-
-    // Only pull first 20 parks. Refactor this so that it's location based
-    var i = 0;
-    while (i < 8) {
-      buildSkateparkLink(response[i], path);
-      // buildCarouselImage(response[i], path);
-      i++;
-    }
   })
 
   .fail(function(response){
@@ -429,19 +399,6 @@ var clearChat = function() {
 }
 
 
-// $('.back-btn').on('click', function(event) {
-//   debugger
-//   clearChat();
-// });
-
-// $(document).on('click','.back-btn', function(event) {
-//   debugger
-//   clearChat();
-// });
-
-// $(document).on('click', '.home-btn', function(event) {
-//   clearChat();
-// });
 
 
 
