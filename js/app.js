@@ -8,7 +8,7 @@ var userMarker;
 var lastMessage;
 var lastSkatepark;
 var map;
-var userMarker;
+// var userMarker;
 
 baseURL = 'https://skate-life-backend.herokuapp.com/';
 // baseURL = 'http://localhost:3000/';
@@ -492,7 +492,7 @@ $(document).on("panelbeforeopen", "#favoritesPanel", function(event, ui){
 
     .done(function(response){
       $('.favorites').empty();
-      debugger
+      // debugger
       $.each(response, function(index, favorite){
         $('.favorites').append('<li><a class="skatepark-link" href='+baseURL+'api/skateparks/'+favorite.id+'>'+favorite.name+'</a></li>')
       })
@@ -726,14 +726,12 @@ $(document).on('pageshow', '#main-map-page', function (e, data) {
              content: '<p>'+skatepark.name+'</p><p>'+skatepark.address+'</p><a class="skatepark-link" href='+baseURL+'api/skateparks/'+skatepark.id+'>check it</a><p><img src="https://maps.googleapis.com/maps/api/streetview?size=300x100&location='+lat+','+lon+'&fov=70&heading=235&pitch=0"/></p>'
         });
 
-        // var marker = new google.maps.Marker({
-        //   position: new google.maps.LatLng(lat,lon),
-        //   title: skatepark.name,
-        //   map: map,
-        //   icon: "./imgs/rollerskate.png"
-        // });
-
-        // createNewUserMarker(map);
+        var marker = new google.maps.Marker({
+          position: new google.maps.LatLng(lat,lon),
+          title: skatepark.name,
+          map: map,
+          icon: "./imgs/rollerskate.png"
+        });
 
         markers.push(marker);
 
@@ -853,7 +851,7 @@ userMarkerRef.on('child_added', function (snapshot) {
   });
 
   marker.setMap(map);
-  debugger
+  // debugger
   userMarker = marker;
 });
 
