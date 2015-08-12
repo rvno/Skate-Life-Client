@@ -460,7 +460,7 @@ var buildSkateparkPage = function(skatepark) {
       $('<h1>').text(skatepark.name),
       $('<p>').text('Address: ' + skatepark.address),
       $('<p>').text('This spot has been favorited a whopping ' + skatepark.fav_count + 'times braski'),
-      $('<img>').attr('src', 'https://maps.googleapis.com/maps/api/streetview?size=300x100&location='+skatepark.lat+','+skatepark.lon+'&fov=70&heading=235&pitch=0'),
+      $('<img >').attr('src', 'https://maps.googleapis.com/maps/api/streetview?size=300x100&location='+skatepark.lat+','+skatepark.lon+'&fov=70&heading=235&pitch=0'),
       $('<p>')
         .addClass('skatepark-id')
         .text(skatepark.id)
@@ -704,9 +704,11 @@ $(document).on('pageshow', '#main-map-page', function (e, data) {
           var lon = parseFloat(skatepark.lon);
         }
 
-        var infowindow = new google.maps.InfoWindow({
-             content: '<p>'+skatepark.name+'</p><p>'+skatepark.address+'</p><a class="skatepark-link" href='+baseURL+'api/skateparks/'+skatepark.id+'>check it</a><p><img src="https://maps.googleapis.com/maps/api/streetview?size=300x100&location='+lat+','+lon+'&fov=70&heading=235&pitch=0"/></p>'
-        });
+
+          var infowindow = new google.maps.InfoWindow({
+               content: '<p class="center">'+skatepark.name+'</p><p class="center">'+skatepark.address+'</p><a class="skatepark-link center" href='+baseURL+'api/skateparks/'+skatepark.id+'>check it</a><p class="center center-img"><img src="https://maps.googleapis.com/maps/api/streetview?size=300x100&location='+lat+','+lon+'&fov=70&heading=235&pitch=0"/></p>'
+          });
+
 
         var marker = new google.maps.Marker({
           position: new google.maps.LatLng(lat,lon),
@@ -728,11 +730,17 @@ $(document).on('pageshow', '#main-map-page', function (e, data) {
 
         // Grab current latitude and longitude coordinates
 
-        // Construct geofence circle
-      var currentGeofence = new google.maps.Circle({
-        map: map,
-        radius: 32000,
-      });
+
+          // Construct geofence circle
+        var currentGeofence = new google.maps.Circle({
+          map: map,
+          radius: 9001,
+          fillColor: '#336688',
+          fillOpacity: .22,
+          strokeColor: '#D48817',
+          strokeWeight: 1.75
+        });
+
 
       currentGeofence.bindTo('center', userMarker, 'position');
 
