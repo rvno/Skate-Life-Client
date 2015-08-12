@@ -97,34 +97,8 @@ var backendUserAuth = function(userData) {
 
 // Main Map page
 
-$(document).on("pageinit", '#main-map-page',function(){
-  var path = baseURL + 'api/skateparks/';
 
-  $.ajax({
-    url: path,
-    method: 'get',
-    dataType: 'json'
-  })
 
-  .done(function(response){
-
-  })
-
-  .fail(function(response){
-    console.log('fail')
-  });
-
-});
-
-var buildSkateparkLink = function(skatepark, path) {
-  $('.skateparks').append(
-    $('<li>').append(
-      $('<a>')
-        .addClass('skatepark-link')
-        .attr('href', path+ skatepark.id)
-        .text(skatepark.name)));
-}
-var count = 0;
 var buildCarouselImage = function(skatepark) {
   $('.carousel').slick('slickAdd',
     $('<div>').addClass('carousel-img').append(
