@@ -401,6 +401,7 @@ var initializeChatroom = function(skatepark) {
 
 
   $('#message-submit').on('click', function (event) {
+
     event.preventDefault();
 
 
@@ -618,6 +619,8 @@ var signOut = function() {
 
 
 //CHANGE MAP SIZE AND INITIALIZATION LOCATION
+var latitude = 37.663836;
+var longitude = -122.080266;
 $(document).on('pageshow', '#main-map-page', function (e, data) {
   setTimeout(function () {
   // This is the minimum zoom level that we'll allow
@@ -670,7 +673,7 @@ $(document).on('pageshow', '#main-map-page', function (e, data) {
     map.mapTypes.set(MY_MAPTYPE_ID, customMapType)
 
     //SET MARKER TO BE AT DBC (MAKE IT VARIABLE LATER)
-    dbc = new google.maps.LatLng(37.76, -122.39)
+    dbc = new google.maps.LatLng(latitude, longitude)
     createNewUserMarker(map);
     
 
@@ -830,6 +833,30 @@ userMarkerRef.on('child_added', function (snapshot) {
   marker.setMap(map);
   userMarker = marker;
 });
+
+
+// IMPLEMENT GEOLOCATION BELOW TO GET USER'S CURRENT POSITION
+var onSuccess = function(position){
+
+ latitude = position.coords.latitude;
+ longitude = position.coords.longitude;
+ dbc = new google.maps.LatLng(latitude, longitude)
+
+ initializeMap();
+}
+
+function onError(error) {
+    alert('code: '    + error.code    + '\n' +
+          'message: ' + error.message + '\n');
+}
+
+document.addEventListener("deviceready", onDeviceReady, false);
+
+function onDeviceReady(){
+  navigator.geolocation.getCurrentPosition(onSuccess, onError)
+}
+
+onDeviceReady();
 
 
 
