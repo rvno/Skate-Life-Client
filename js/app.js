@@ -6,13 +6,13 @@ var map;
 var userMarker;
 var markers = [];
 var geoMarkers = [];
+var latitude = 37.663836;
+var longitude = -122.080266;
 
 
 
 
 //CHANGE MAP SIZE AND INITIALIZATION LOCATION
-var latitude = 37.663836;
-var longitude = -122.080266;
 $(document).on('pageshow', '#main-map-page', function (e, data) {
   setTimeout(function () {
 
@@ -34,8 +34,6 @@ $(document).on('pageshow', '#main-map-page', function (e, data) {
 
     .done(function(response) {
 
-
-
       // WE DONT NEED THIS ANYMORE, SEE IF YOU CAN KEEP - IN BACKEND DB
       $.each(response, function(index, skatepark) {
 
@@ -55,9 +53,8 @@ $(document).on('pageshow', '#main-map-page', function (e, data) {
         }
 
 
-          var infowindow = new google.maps.InfoWindow({
-               content: '<p class="center">'+skatepark.name+'</p><p class="center">'+skatepark.address+'</p><a class="skatepark-link center" href='+baseURL+'api/skateparks/'+skatepark.id+'>check it</a><p class="center center-img"><img src="https://maps.googleapis.com/maps/api/streetview?size=300x100&location='+lat+','+lon+'&fov=70&heading=235&pitch=0"/></p>'
-          });
+
+        var infowindow = buildSkateparkInfoWindow(skatepark, lat, lon);
 
 
         var marker = new google.maps.Marker({
@@ -81,15 +78,15 @@ $(document).on('pageshow', '#main-map-page', function (e, data) {
         // Grab current latitude and longitude coordinates
 
 
-          // Construct geofence circle
-        var currentGeofence = new google.maps.Circle({
-          map: map,
-          radius: 9001,
-          fillColor: '#336688',
-          fillOpacity: .22,
-          strokeColor: '#D48817',
-          strokeWeight: 1.75
-        });
+        // Construct geofence circle
+      var currentGeofence = new google.maps.Circle({
+        map: map,
+        radius: 9001,
+        fillColor: '#336688',
+        fillOpacity: .22,
+        strokeColor: '#D48817',
+        strokeWeight: 1.75
+      });
 
 
       currentGeofence.bindTo('center', userMarker, 'position');
@@ -103,35 +100,7 @@ $(document).on('pageshow', '#main-map-page', function (e, data) {
       });
 
 
-
-
-
-
-
-        //-----------------------CAROUSEL ADDING AND REMOVING-------------------------//
-
-
-      markers.forEach(function(marker){
-        if (currentGeofence.getBounds().contains(marker.position)) {
-          var skatepark = {lat: marker.position.G, lon: marker.position.K }
-          buildCarouselImage(skatepark);
-          geoMarkers.push(marker);
-        }
-      });
-
-        google.maps.event.addListener(userMarker, 'dragend', function(){
-          $('.carousel-img').remove();
-
-          markers.forEach(function(marker){
-            if (currentGeofence.getBounds().contains(marker.position)) {
-              var skatepark = {lat: marker.position.G, lon: marker.position.K }
-              buildCarouselImage(skatepark);
-              geoMarkers.push(marker);
-            }
-          });
-        });
-
-
+      fireAutomaticCarouselBuilder(markers, currentGeofence);
 
     })
 
@@ -145,6 +114,7 @@ $(document).on('pageshow', '#main-map-page', function (e, data) {
 
 
 
+// port these things to global variables and pass them in to the function
 var buildMap = function() {
   var MY_MAPTYPE_ID = 'custom_style';
     var featureOpts = [
@@ -199,10 +169,46 @@ var buildMap = function() {
 
 
 
+// Adds and Removes from Carousel dependent on current location of User
+var fireAutomaticCarouselBuilder = function(markers, geofence) {
+  markers.forEach(function(marker){
+    if (geofence.getBounds().contains(marker.position)) {
+      var skatepark = {lat: marker.position.G, lon: marker.position.K }
+      buildCarouselImage(skatepark);
+      geoMarkers.push(marker);
+    }
+  });
+
+  google.maps.event.addListener(userMarker, 'dragend', function(){
+    $('.carousel-img').remove();
+
+    markers.forEach(function(marker){
+      if (geofence.getBounds().contains(marker.position)) {
+        var skatepark = {lat: marker.position.G, lon: marker.position.K }
+        buildCarouselImage(skatepark);
+        geoMarkers.push(marker);
+      }
+    });
+  });
+}
+
+
 var buildCarouselImage = function(skatepark) {
   $('.carousel').slick('slickAdd',
     $('<div>').addClass('carousel-img').append(
       $('<img>').attr('src', 'https://maps.googleapis.com/maps/api/streetview?size=300x100&location='+skatepark.lat+','+skatepark.lon+'&fov=70&heading=235&pitch=0')));
+}
+
+
+// builds little pop up window that is associated with every skatepark marker
+// DEFINITELY need to refactor this
+var buildSkateparkInfoWindow = function(skatepark, lat, lon) {
+  var infowindow = new google.maps.InfoWindow({
+       content: '<p class="center">'+skatepark.name+'</p><p class="center">'+skatepark.address+'</p><a class="skatepark-link center" href='+baseURL+'api/skateparks/'+skatepark.id+'>check it</a><p class="center center-img"><img src="https://maps.googleapis.com/maps/api/streetview?size=300x100&location='+lat+','+lon+'&fov=70&heading=235&pitch=0"/></p>'
+  });
+
+  return infowindow;
+
 }
 
 
