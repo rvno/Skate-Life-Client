@@ -811,7 +811,6 @@ var createNewUserMarker = function(map) {
 userMarkerRef.on('child_added', function (snapshot) {
   var markerPosition = snapshot.val().position;
   var position = new google.maps.LatLng(markerPosition.G, markerPosition.K);
-  debugger
 
   var marker = new google.maps.Marker({
     url: '#login-page',
