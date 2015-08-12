@@ -457,7 +457,7 @@ var buildSkateparkPage = function(skatepark) {
       $('<h1>').text(skatepark.name),
       $('<p>').text('Address: ' + skatepark.address),
       $('<p>').text('This spot has been favorited a whopping ' + skatepark.fav_count + 'times braski'),
-      $('<img>').attr('src', 'https://maps.googleapis.com/maps/api/streetview?size=300x100&location='+skatepark.lat+','+skatepark.lon+'&fov=70&heading=235&pitch=0'),
+      $('<img >').attr('src', 'https://maps.googleapis.com/maps/api/streetview?size=300x100&location='+skatepark.lat+','+skatepark.lon+'&fov=70&heading=235&pitch=0'),
       $('<p>')
         .addClass('skatepark-id')
         .text(skatepark.id)
@@ -710,7 +710,7 @@ $(document).on('pageshow', '#main-map-page', function (e, data) {
           // debugger
 
           var infowindow = new google.maps.InfoWindow({
-               content: '<p>'+skatepark.name+'</p><p>'+skatepark.address+'</p><a class="skatepark-link" href='+baseURL+'api/skateparks/'+skatepark.id+'>check it</a><p><img src="https://maps.googleapis.com/maps/api/streetview?size=300x100&location='+lat+','+lon+'&fov=70&heading=235&pitch=0"/></p>'
+               content: '<p class="center">'+skatepark.name+'</p><p class="center">'+skatepark.address+'</p><a class="skatepark-link center" href='+baseURL+'api/skateparks/'+skatepark.id+'>check it</a><p class="center center-img"><img src="https://maps.googleapis.com/maps/api/streetview?size=300x100&location='+lat+','+lon+'&fov=70&heading=235&pitch=0"/></p>'
           });
 
           var marker = new google.maps.Marker({
