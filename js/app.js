@@ -680,14 +680,14 @@ $(document).on('pageshow', '#main-map-page', function (e, data) {
     // });
 
     //user marker
-    userMarker = new google.maps.Marker({
-        url:"#login-page",
-        position:dbc,
-        draggable: true,
-        icon: "./imgs/user-icon.png"
-      })
+    // userMarker = new google.maps.Marker({
+    //     url:"#login-page",
+    //     position:dbc,
+    //     draggable: true,
+    //     icon: "./imgs/user-icon.png"
+    //   })
 
-    userMarker.setMap(map)
+    // userMarker.setMap(map)
 
   //END MARKET SETUP
 
@@ -726,12 +726,14 @@ $(document).on('pageshow', '#main-map-page', function (e, data) {
              content: '<p>'+skatepark.name+'</p><p>'+skatepark.address+'</p><a class="skatepark-link" href='+baseURL+'api/skateparks/'+skatepark.id+'>check it</a><p><img src="https://maps.googleapis.com/maps/api/streetview?size=300x100&location='+lat+','+lon+'&fov=70&heading=235&pitch=0"/></p>'
         });
 
-        var marker = new google.maps.Marker({
-          position: new google.maps.LatLng(lat,lon),
-          title: skatepark.name,
-          map: map,
-          icon: "./imgs/rollerskate.png"
-        });
+        // var marker = new google.maps.Marker({
+        //   position: new google.maps.LatLng(lat,lon),
+        //   title: skatepark.name,
+        //   map: map,
+        //   icon: "./imgs/rollerskate.png"
+        // });
+
+        // createNewUserMarker(map);
 
         markers.push(marker);
 
@@ -761,12 +763,6 @@ $(document).on('pageshow', '#main-map-page', function (e, data) {
         slidesToShow: 8,
         slidesToScroll: 3,
       });
-          // Construct geofence circle
-      var currentGeofence = new google.maps.Circle({
-        map: map,
-        radius: 32000,
-      });
-      currentGeofence.bindTo('center', userMarker, 'position');
 
 
 
@@ -775,14 +771,7 @@ $(document).on('pageshow', '#main-map-page', function (e, data) {
 
 
         //-----------------------CAROUSEL ADDING AND REMOVING-------------------------//
-        // $('.carousel').slick({
-        //   arrows: false,
-        //   focusOnSelect: true,
-        //   mobileFirst: true,
-        //   slidesToShow: 8,
-        //   slidesToScroll: 3,
-        // });
-// >>>>>>> master
+
 
       markers.forEach(function(marker){
         if (currentGeofence.getBounds().contains(marker.position)) {
