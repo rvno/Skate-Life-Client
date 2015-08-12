@@ -672,24 +672,9 @@ $(document).on('pageshow', '#main-map-page', function (e, data) {
     //SET MARKER TO BE AT DBC (MAKE IT VARIABLE LATER)
     dbc = new google.maps.LatLng(37.76, -122.39)
     createNewUserMarker(map);
-    // var marker = new google.maps.Marker({
-    //   url:"#login-page",
-    //   position:dbc,
-    //   draggable: true,
-    //   icon: "./imgs/user-icon.png"
-    // });
+    
 
-    //user marker
-    // userMarker = new google.maps.Marker({
-    //     url:"#login-page",
-    //     position:dbc,
-    //     draggable: true,
-    //     icon: "./imgs/user-icon.png"
-    //   })
-
-    // userMarker.setMap(map)
-
-  //END MARKET SETUP
+  //END MARKER SETUP
 
     $.ajax({
       url: baseURL + 'api/skateparks',
@@ -698,15 +683,13 @@ $(document).on('pageshow', '#main-map-page', function (e, data) {
     })
 
 
-  // var myLatlng = new google.maps.LatLng(-25.363882,131.044922);
 
     .done(function(response) {
 
 
       $.each(response, function(index, skatepark) {
-        // debugger
-        // console.log(skatepark.lat);
 
+        // DO THIS IN RUBY
         if (skatepark.lat[0] === '-') {
           var latParsed = skatepark.lat.substr(1);
           var lat = parseFloat(skatepark.lat);
@@ -720,7 +703,6 @@ $(document).on('pageshow', '#main-map-page', function (e, data) {
         } else {
           var lon = parseFloat(skatepark.lon);
         }
-        // debugger
 
         var infowindow = new google.maps.InfoWindow({
              content: '<p>'+skatepark.name+'</p><p>'+skatepark.address+'</p><a class="skatepark-link" href='+baseURL+'api/skateparks/'+skatepark.id+'>check it</a><p><img src="https://maps.googleapis.com/maps/api/streetview?size=300x100&location='+lat+','+lon+'&fov=70&heading=235&pitch=0"/></p>'
@@ -805,14 +787,6 @@ $(document).on('pageshow', '#main-map-page', function (e, data) {
 
 
 
-    // dbc = new google.maps.LatLng(37.76, -122.39)
-    // var marker = new google.maps.Marker({
-    //   url:"#login-page",
-    //   position:dbc,
-    //   draggable: true,
-    //   icon: "./imgs/user-icon.png"
-    // });
-
 // Function for creating a User marker and associating it with data in firebase
 // Hardcoding in User Position until Harvey grabs current location from phone
 
@@ -828,21 +802,17 @@ var createNewUserMarker = function(map) {
     icon: './imgs/user-icon.png'
   }
 
-  // var marker = new google.maps.Marker(firebaseMarker);
 
-  // marker.setMap(map)
   userMarkerRef.push(firebaseMarker);
 
-  // return marker;
 }
 
 
 userMarkerRef.on('child_added', function (snapshot) {
-  // console.log(snapshot.val().position);
   var markerPosition = snapshot.val().position;
-  var position = new google.maps.LatLng(37.76, -122.39)
+  var position = new google.maps.LatLng(markerPosition.G, markerPosition.K);
+  debugger
 
-  // console.log(snapshot.val());
   var marker = new google.maps.Marker({
     url: '#login-page',
     position: position,
@@ -851,7 +821,6 @@ userMarkerRef.on('child_added', function (snapshot) {
   });
 
   marker.setMap(map);
-  // debugger
   userMarker = marker;
 });
 
