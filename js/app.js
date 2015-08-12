@@ -391,6 +391,7 @@ var initializeChatroom = function(skatepark) {
       $('.messages-div').append(
         $('<div>').addClass('message').append(
             $('<p>').text(message.name + ': ' + message.text)));
+      debugger
     }
 
     lastMessage = message.text
@@ -514,10 +515,10 @@ $(document).on("panelbeforeopen", "#favoritesPanel", function(event, ui){
     // fix this don't know why its not working
     $('.favorites').empty();
     $('.favorites').append(
-      $('<li>').text('please login to see your favorites!'));
+      $('<li>').text('Login to see your favorites.'));
     $('.favorites').prepend(
         $('<li>').attr('id', 'logout').append(
-        $('<a>').attr('href', '#').text('Logout')));
+        $('<a>').attr('href', '#').text('Login')));
     $('.favorites').listview('refresh');
     $('#logout > a').removeClass('ui-btn-icon-right ui-icon-carat-r')
 
