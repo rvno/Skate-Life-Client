@@ -1,7 +1,9 @@
 var userData;
 var ref = new Firebase('https://skatelife.firebaseio.com/');
 markers = [];
-geoMarkers = []
+geoMarkers = [];
+var userMarker;
+
 // var messageRef = 'https://skatelife.firebaseio.com/parkchats/';
 var lastMessage;
 var lastSkatepark;
@@ -677,6 +679,15 @@ $(document).on('pageshow', '#main-map-page', function (e, data) {
     //   icon: "./imgs/user-icon.png"
     // });
 
+    //user marker
+    userMarker = new google.maps.Marker({
+        url:"#login-page",
+        position:dbc,
+        draggable: true,
+        icon: "./imgs/user-icon.png"
+      })
+
+    userMarker.setMap(map)
 
   //END MARKET SETUP
 
@@ -750,6 +761,28 @@ $(document).on('pageshow', '#main-map-page', function (e, data) {
         slidesToShow: 8,
         slidesToScroll: 3,
       });
+          // Construct geofence circle
+      var currentGeofence = new google.maps.Circle({
+        map: map,
+        radius: 32000,
+      });
+      currentGeofence.bindTo('center', userMarker, 'position');
+
+
+
+
+
+
+
+        //-----------------------CAROUSEL ADDING AND REMOVING-------------------------//
+        // $('.carousel').slick({
+        //   arrows: false,
+        //   focusOnSelect: true,
+        //   mobileFirst: true,
+        //   slidesToShow: 8,
+        //   slidesToScroll: 3,
+        // });
+// >>>>>>> master
 
       markers.forEach(function(marker){
         if (currentGeofence.getBounds().contains(marker.position)) {
@@ -758,6 +791,18 @@ $(document).on('pageshow', '#main-map-page', function (e, data) {
           geoMarkers.push(marker);
         }
       });
+
+        google.maps.event.addListener(userMarker, 'dragend', function(){
+          $('.carousel-img').remove();
+
+          markers.forEach(function(marker){
+            if (currentGeofence.getBounds().contains(marker.position)) {
+              var skatepark = {lat: marker.position.G, lon: marker.position.K }
+              buildCarouselImage(skatepark);
+              geoMarkers.push(marker);
+            }
+          });
+        });
 
 
 
