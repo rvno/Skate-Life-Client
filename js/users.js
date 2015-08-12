@@ -78,22 +78,28 @@ var backendUserAuth = function(userData) {
   })
 
   .fail(function (response) {
-    console.log(response);
+    // console.log(response);
   });
 }
 
 
 
 
+// working on external panels
 
+var externalPanel = '<div data-role="panel" id="favoritesPanel" data-display="overlay" data-theme="b"><a href="#main-map-page" data-rel="close" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-a ui-icon-delete ui-btn-icon-left" data-prefetch >Close Favorites</a><ul data-role="listview" class="favorites"><li id="logout"><a href="#">Logout</a></li></ul></div>';
 
-
+$(document).one('pagebeforecreate', function(){
+  $.mobile.pageContainer.prepend(externalPanel);
+  $('#favoritesPanel').panel().enhanceWithin();
+})
+//I THINK THAT THIS EXTERNAL PANEL STUFF WORKS GUYS!!
+//WOOOOOOOOOOO.....WOOOOOO
 
 
 // Favorites Panel DEFINITELY gonna refactor this
 
 $(document).on("panelbeforeopen", "#favoritesPanel", function(event, ui){
-  debugger
   var userId = window.localStorage.getItem('currentUserId');
   var path = baseURL + 'api/users/' + userId + '/favorites'
   if (userId) {
@@ -118,7 +124,7 @@ $(document).on("panelbeforeopen", "#favoritesPanel", function(event, ui){
       $('#logout > a').removeClass('ui-btn-icon-right ui-icon-carat-r')
     })
     .fail(function(response){
-      console.log("bye harvey")
+      // console.log("bye harvey")
     })
 
   } else {
@@ -148,10 +154,10 @@ $(document).on('click', '.favorite-button', function(event){
       method: 'post'
     })
     .done(function(response){
-      console.log(response);
+      // console.log(response);
     })
     .fail(function(response){
-      console.log(response);
+      // console.log(response);
     })
   } else {
     event.preventDefault();
@@ -168,7 +174,7 @@ $(document).on("click", "#logout", function() {
 });
 
 $(document).on('popupbeforeposition', '.ui-popup', function(){
-  console.log("hello")
+  // console.log("hello")
   var parkId = $('.skatepark-id').text()
   var userId = window.localStorage.getItem('currentUserId');
   var path = baseURL + 'api/users/' + userId + '/favorites/'
@@ -181,28 +187,28 @@ $(document).on('popupbeforeposition', '.ui-popup', function(){
     var pageParkId = $('.skatepark-id').text()
     var favoriteMatch = null;
     $.each(response,function(index, park){
-      console.log(pageParkId)
-      console.log(favoriteMatch)
+      // console.log(pageParkId)
+      // console.log(favoriteMatch)
       if(favoriteMatch === null){
         if(park.id == pageParkId){
-          console.log("yup")
+          // console.log("yup")
           $('#favoritePopup p').text('This skatepark has already been favorited.')
           favoriteMatch = true
-          console.log("STOP DUDE")
+          // console.log("STOP DUDE")
         }
         else{
-          console.log("no match buddy")
-          console.log('this is the' + park.id)
-          console.log('match' +pageParkId)
+          // console.log("no match buddy")
+          // console.log('this is the' + park.id)
+          // console.log('match' +pageParkId)
         }
       }
     });
-    console.log($('#favoritePopup p').text())
-    console.log("heyy hooo")
-    console.log(response)
+    // console.log($('#favoritePopup p').text())
+    // console.log("heyy hooo")
+    // console.log(response)
   })
   .fail(function(response){
-    console.log("oh nooo")
+    // console.log("oh nooo")
   })
 })
 
