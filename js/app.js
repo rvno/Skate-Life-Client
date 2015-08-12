@@ -126,7 +126,6 @@ $(document).on('pageshow', '#main-map-page', function (e, data) {
 
   }, 100);
 
-  
 });
 
 
@@ -272,7 +271,9 @@ var onSuccess = function(position){
 
  latitude = position.coords.latitude;
  longitude = position.coords.longitude;
- window.localStorage.setItem('')
+ window.localStorage.setItem('accessedLat', latitude);
+ window.localStorage.setItem('accessedLong', longitude); 
+
  // pause here
  defaultLocation = new google.maps.LatLng(latitude, longitude)
 
@@ -325,6 +326,7 @@ function CurrentLocationCtrl(controlDiv, map){
   controlDiv.style.padding = '5px';
   
   var controlUI = document.createElement('div');
+  controlUI.id = "my-location";
   controlUI.style.color= 'red';
   controlUI.style.border = '1px solid blue';
   controlUI.style.cursor = 'pointer';
@@ -340,12 +342,21 @@ function CurrentLocationCtrl(controlDiv, map){
   controlText.innerHTML = '<b>my location</b>';
   controlUI.appendChild(controlText);
 
+
   google.maps.event.addDomListener(controlUI, 'click', function(){
     console.log("we should be at dbc")
     // console.log(currentLocation)
     console.log("the user is at ")
     debugger
     console.log(userMarker.position)
+    if(window.localStorage.getItem('accessedLat')){
+      userDefaultPosition = {lat: parseFloat(window.localStorage.getItem('accessedLat')), lng: parseFloat(window.localStorage.getItem('accessedLong'))}
+      map.panTo(userDefaultPosition)
+      console.log(userMarker)
+      console.log(userMarker.position)
+      userMarker.setPosition(userDefaultPosition)
+      debugger
+    }
   })
 }
 
@@ -384,7 +395,9 @@ $(document).ready(function(){
   newCenterPoint = {lat: newMarkerLat,lng: newMarkerLong}
   map.setCenter(newCenterPoint)
   })
+
 })
+
 
 
 
