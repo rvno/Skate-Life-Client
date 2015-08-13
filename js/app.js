@@ -86,6 +86,7 @@ $(document).on('pageshow', '#main-map-page', function (e, data) {
         markers.push(marker);
 
         google.maps.event.addListener(marker, 'click', function() {
+            getAttendees(skatepark.id);
             infowindow.open(map,marker);
         });
       });
@@ -133,6 +134,21 @@ $(document).on('pageshow', '#main-map-page', function (e, data) {
   
 });
 
+var getAttendees = function(skateparkId) {
+  var path = baseURL + 'api/skateparks/' + skateparkId + '/attendees';
+
+  $.ajax({
+    url: path,
+    type: 'get',
+    dataType: 'json'
+  })
+  .done(function(response){
+    
+  })
+  .fail(function(response){
+    console.log(response)
+  })
+};
 
 
 // port these things to global variables and pass them in to the function
