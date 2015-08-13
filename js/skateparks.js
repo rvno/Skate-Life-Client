@@ -16,7 +16,8 @@ var bindEvents = function() {
   $(document).on("click", ".skatepark-link", function(event){
     event.preventDefault();
     var path = event.target.href
-    var skatepark = event.target.text
+    // var skatepark = event.target.text
+    var skatepark = $(this).siblings('p:nth-child(2)').text();
 
 
     $.ajax({
@@ -67,7 +68,6 @@ var initializeChatroom = function(skatepark) {
 
 
   $('#message-submit').on('click', function (event) {
-    debugger
     event.preventDefault();
 
     if (userData) {
@@ -94,7 +94,6 @@ var initializeChatroom = function(skatepark) {
 $(document).on('pagehide', '#skatepark-page', function(event, ui){
   clearChat();
   $(document).off('click', '.skatepark-link');
-  // $(document).off('click', '#message-submit');
   $('#message-submit').off('click');
   messageRef.off('child_added');
 
