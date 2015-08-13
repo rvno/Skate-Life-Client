@@ -223,7 +223,7 @@ var buildCarouselImage = function(skatepark) {
 // DEFINITELY need to refactor this
 var buildSkateparkInfoWindow = function(skatepark, lat, lon) {
   var infowindow = new google.maps.InfoWindow({
-       content: '<p class="park-id" hidden>'+skatepark.id+'</p><p class="center">'+skatepark.name+'</p><p class="center">'+skatepark.address+'</p><a class="skatepark-link center" href='+baseURL+'api/skateparks/'+skatepark.id+'>check it</a><button class="attend center">Attend</button><p class="center center-img"><img src="https://maps.googleapis.com/maps/api/streetview?size=300x100&location='+lat+','+lon+'&fov=70&heading=235&pitch=0"/></p>'
+       content: '<p class="park-id" hidden>'+skatepark.id+'</p><p class="center info-w-name">'+skatepark.name+'</p><p class="center info-w-address">'+skatepark.address+'</p><a class="skatepark-link center" href='+baseURL+'api/skateparks/'+skatepark.id+'>check it</a><button class="attend center">Attend</button><p class="center center-img"><img src="https://maps.googleapis.com/maps/api/streetview?size=300x100&location='+lat+','+lon+'&fov=70&heading=235&pitch=0"/></p>'
   });
 
   return infowindow;

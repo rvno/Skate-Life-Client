@@ -173,3 +173,30 @@ div.ui-input-text.ui-body-inherit{
 .message-text{
 	display:inline-block;
 }
+
+.skatepark-link.center{
+	display:inline-block;
+	float:left;
+	margin-left:2em;
+	margin-bottom:10px;
+	color:black;
+	font-weight:450;
+}
+
+.center.info-w-name{
+	font-weight:450;
+}
+
+.center.info-w-address{
+	font-weight:450;
+}
+
+button.attend.center, button.leave{
+	display:inline-block;
+	float:right;
+	background-color:black;
+	color:white;
+	border:none;
+	border-radius:12px;
+	margin-bottom:10px;
+}
