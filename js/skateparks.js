@@ -103,6 +103,10 @@ var initializeChatroom = function(skatepark) {
 }
 
 
+$(document).on('pagehide', '#skatepark-page', function(event, ui){
+  clearChat();
+});
+
 var clearChat = function() {
   $('.messages-div').empty();
 }
