@@ -200,3 +200,7 @@ button.attend.center, button.leave{
 	border-radius:12px;
 	margin-bottom:10px;
 }
+
+.bold{
+	font-weight:550;
+}
