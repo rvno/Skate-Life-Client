@@ -9,7 +9,8 @@ var markers = [];
 var geoMarkers = [];
 var latitude = 37.663836;
 var longitude = -122.080266;
-
+var infoWindows = [];
+var previousWindow = null;
 
 
 
@@ -72,6 +73,7 @@ $(document).on('pageshow', '#main-map-page', function (e, data) {
 
 
         var infowindow = buildSkateparkInfoWindow(skatepark, lat, lon);
+        infoWindows.push(infowindow)
 
 
         var marker = new google.maps.Marker({
@@ -225,7 +227,9 @@ var buildSkateparkInfoWindow = function(skatepark, lat, lon) {
   var infowindow = new google.maps.InfoWindow({
        content: '<p class="park-id" hidden>'+skatepark.id+'</p><p class="center info-w-name">'+skatepark.name+'</p><p class="center info-w-address">'+skatepark.address+'</p><a class="skatepark-link center" href='+baseURL+'api/skateparks/'+skatepark.id+'>check it</a><button class="attend center">Attend</button><p class="center center-img"><img src="https://maps.googleapis.com/maps/api/streetview?size=300x100&location='+lat+','+lon+'&fov=70&heading=235&pitch=0"/></p>'
   });
-
+  //try to add position coordinates to infowindow
+  infoLatLng = {lat: lat, lng:lon}
+  infowindow.setPosition(infoLatLng)
   return infowindow;
 
 }
@@ -386,7 +390,17 @@ $(document).ready(function(){
     console.log(newMarkerLong)
     newCenterPoint = {lat: newMarkerLat,lng: newMarkerLong}
     map.panTo(newCenterPoint)
+    //OPEN INFO WINDOW UPON CAROUSEL SCROLL, time permitting, try to close window when scrolling
+    $.each(infoWindows, function(index, infoWindow){
+      if(infoWindow.position['G'] === newCenterPoint['lat'] && infoWindow.position['K'] === newCenterPoint['lng']){
+        console.log('gotemmmm')
+        previousWindow = infoWindow;
+        infoWindow.open(map);
+      }
+    })
   })
+    
+
 
 
 
