@@ -7,7 +7,7 @@
 
    <!-- versionCode is optional and Android only -->
 
-   <name>Skate Life Mobile</name>
+   <name>Skate Life Mobile toast test</name>
 
    <description>
        Skate Life mobile application.
@@ -19,6 +19,7 @@
 
     <gap:plugin name="org.apache.cordova.inappbrowser"/>
     <gap:plugin name="org.apache.cordova.geolocation" />
+    <gap:plugin name="nl.x-services.plugins.toast" version="1.0" />
     <access origin="*"/>
     <preference name="permissions" value="none"/>
 
