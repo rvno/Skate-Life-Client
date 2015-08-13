@@ -347,7 +347,6 @@ function CurrentLocationCtrl(controlDiv, map){
   controlUI.style.cursor = 'pointer';
   controlUI.style.textAlign = 'center';
   controlDiv.appendChild(controlUI);
-  controlDiv.appendChild(controlUI);
 
   var controlText = document.createElement('div');
   controlText.style.fontFamily = 'sans-serif';
