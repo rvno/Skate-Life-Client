@@ -224,6 +224,7 @@ $(document).on('popupafteropen', '.ui-popup', function(){
 var signOut = function() {
   localStorage.clear();
   userData = null;
+  currentUserId = null;
   $.mobile.changePage('#login-page')
 }
 
