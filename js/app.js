@@ -77,7 +77,7 @@ $(document).on('pageshow', '#main-map-page', function (e, data) {
           position: new google.maps.LatLng(lat,lon),
           title: skatepark.name,
           map: map,
-          icon: "./imgs/rollerskate.png"
+          icon: "./imgs/skatepark.png"
         });
 
         markers.push(marker);
@@ -106,6 +106,8 @@ $(document).on('pageshow', '#main-map-page', function (e, data) {
 
 
       currentGeofence.bindTo('center', userMarker, 'position');
+      userMarker.setIcon('./imgs/user-icon.png');
+      userMarker.set('draggable', true);
 
       $('.carousel').slick({
         arrows: false,
@@ -125,7 +127,7 @@ $(document).on('pageshow', '#main-map-page', function (e, data) {
     });
 
   }, 100);
-
+  
 });
 
 
@@ -240,10 +242,9 @@ var createNewUserMarker = function(map) {
   var firebaseMarker = {
     url: '#login-page',
     position: defaultLocation,
-    draggable: true,
-    icon: './imgs/user-icon.png'
+    draggable: false,
+    icon: './imgs/user.png'
   }
-
 
   userMarkerRef.push(firebaseMarker);
 
@@ -257,12 +258,25 @@ userMarkerRef.on('child_added', function (snapshot) {
   var marker = new google.maps.Marker({
     url: '#login-page',
     position: position,
-    draggable: true,
-    icon: './imgs/user-icon.png'
+    draggable: false,
+    icon: './imgs/user.png'
   });
+
+
+  // marker.setId(0);
+  //is this where we initialize the user's marker?
 
   marker.setMap(map);
   userMarker = marker;
+
+  // if(currentUserId){
+  //   userMarker.set("id", currentUserId)
+  // } else {
+  //   userMarker.set("id", 0)
+  // }
+
+
+
 });
 
 
@@ -344,10 +358,6 @@ function CurrentLocationCtrl(controlDiv, map){
 
 
   google.maps.event.addDomListener(controlUI, 'click', function(){
-    console.log("we should be at dbc")
-    // console.log(currentLocation)
-    console.log("the user is at ")
-    debugger
     console.log(userMarker.position)
     if(window.localStorage.getItem('accessedLat')){
       userDefaultPosition = {lat: parseFloat(window.localStorage.getItem('accessedLat')), lng: parseFloat(window.localStorage.getItem('accessedLong'))}
@@ -355,7 +365,6 @@ function CurrentLocationCtrl(controlDiv, map){
       console.log(userMarker)
       console.log(userMarker.position)
       userMarker.setPosition(userDefaultPosition)
-      debugger
     }
   })
 }
@@ -365,9 +374,6 @@ function CurrentLocationCtrl(controlDiv, map){
   // imageSrc = $('.slick-active-image').attr('src')
   // // location =  grabLocationFromURL(imageSrc)
   // console.log(location)
-$('.carousel').on('afterChange', function(){
-  console.log("HELLO")
-})
 
 
 var grabLocationFromURL = function (url) {
