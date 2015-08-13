@@ -290,7 +290,7 @@ var onSuccess = function(position){
  window.localStorage.setItem('accessedLong', longitude); 
 
  // pause here
- defaultLocation = new google.maps.LatLng(latitude, longitude)
+ defaultLocation = new google.maps.LatLng(latitude, longitude);
 
  // initializeMap();
 }
@@ -310,63 +310,49 @@ onDeviceReady();
 
 
 
-// CREATE BUTTON TO RETURN VIEW AND CURRENT USER MARKER TO CURRENT LOCATION
+// CREATE BUTTON TO RETURN VIEW TO CURRENT MARKER LOCATION
 function HomeControl(controlDiv, map) {
   controlDiv.style.padding = '5px';
 
   var controlUI = document.createElement('div');
-  controlUI.style.backgroundColor = 'black';
+  controlUI.style.width = '32px';
+  controlUI.style.height = '32px';
   controlUI.id = "map-home-btn";
-  controlUI.style.color = 'white';
   controlUI.style.cursor = 'pointer';
   controlUI.style.textAlign = 'center';
   controlUI.title = 'current locaiton';
+  controlUI.style.backgroundImage = "url(../imgs/pin.png)";
   controlDiv.appendChild(controlUI);
-
-  var controlText = document.createElement('div');
-  controlText.style.fontFamily = 'sans-serif';
-  controlText.style.fontSize='12px';
-  controlText.style.paddingLeft = '4px';
-  controlText.style.paddingRight = '4px';
-  controlText.innerHTML = '<p class="home-btn-text">Home<p>'
-  controlUI.appendChild(controlText);
 
   google.maps.event.addDomListener(controlUI, 'click', function() {
     map.panTo(userMarker.position);
-  })
+  });
 }
 
-//begin current location controller creation
+// CREATE BUTTON TO RETURN VIEW AND MARKER TO USER'S CURRENT LOCATION
 function CurrentLocationCtrl(controlDiv, map){
   controlDiv.style.padding = '5px';
   
   var controlUI = document.createElement('div');
-  controlUI.style.backgroundColor = 'black';
+  controlUI.style.width = '32px';
+  controlUI.style.height = '32px';
   controlUI.id = "my-location";
-  controlUI.style.color= 'white';
   controlUI.style.cursor = 'pointer';
   controlUI.style.textAlign = 'center';
+
+  controlUI.style.backgroundImage = "url(../imgs/target.png)";
   controlDiv.appendChild(controlUI);
 
-  var controlText = document.createElement('div');
-  controlText.style.fontFamily = 'sans-serif';
-  controlText.style.fontSize='12px';
-  controlText.style.paddingLeft = '4px';
-  controlText.style.paddingRight ='4px';
-  controlText.innerHTML = '<p class="location-btn-text">my location</p>';
-  controlUI.appendChild(controlText);
-
-
   google.maps.event.addDomListener(controlUI, 'click', function(){
-    console.log(userMarker.position)
+    console.log(userMarker.position);
     if(window.localStorage.getItem('accessedLat')){
-      userDefaultPosition = {lat: parseFloat(window.localStorage.getItem('accessedLat')), lng: parseFloat(window.localStorage.getItem('accessedLong'))}
-      map.panTo(userDefaultPosition)
-      console.log(userMarker)
-      console.log(userMarker.position)
-      userMarker.setPosition(userDefaultPosition)
+      userDefaultPosition = {lat: parseFloat(window.localStorage.getItem('accessedLat')), lng: parseFloat(window.localStorage.getItem('accessedLong'))};
+      map.panTo(userDefaultPosition);
+      console.log(userMarker);
+      console.log(userMarker.position);
+      userMarker.setPosition(userDefaultPosition);
     }
-  })
+  });
 }
 
 //BEGIN CODING FOR MAP PAN BASED ON CAROUSEL
