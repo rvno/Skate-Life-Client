@@ -1,7 +1,5 @@
 var userData;
-var lastMessage;
-var lastSkatepark;
-
+var messageRef;
 
 
 $( document ).on( "pageshow", "#main-map-page", function( event ) {
@@ -19,10 +17,6 @@ var bindEvents = function() {
     event.preventDefault();
     var path = event.target.href
     var skatepark = event.target.text
-
-    // if (skatepark !== lastSkatepark) {
-    //   clearChat();
-    // }
 
 
     $.ajax({
@@ -51,7 +45,7 @@ var bindEvents = function() {
 
 var initializeChatroom = function(skatepark) {
   var skateparkURL = skatepark.split(' ')[0];
-  var messageRef = new Firebase('https://skatelife.firebaseio.com/parkchats/' + skatepark);
+  messageRef = new Firebase('https://skatelife.firebaseio.com/parkchats/' + skatepark);
   // userData = JSON.parse(window.localStorage.getItem('googleData'));
   if (userData) {
     var firstName = userData.google.displayName.split(' ')[0];
@@ -63,16 +57,11 @@ var initializeChatroom = function(skatepark) {
 
   messageRef.on('child_added', function (snapshot){
     var message = snapshot.val();
-
-    if (message.text !== lastMessage && message !== '') {
-      $('.messages-div').append(
-        $('<div>').addClass('message').append(
-          $('<img>').addClass('user-profile-img').attr('src', message.avatarURL),
-          $('<p>').text(message.name + ': ' + message.text)));
-    }
-
-    lastMessage = message.text
-    lastSkatepark = skatepark
+    debugger
+    $('.messages-div').append(
+      $('<div>').addClass('message').append(
+        $('<img>').addClass('user-profile-img').attr('src', message.avatarURL),
+        $('<p>').text(message.name + ': ' + message.text)));
   });
 
 
@@ -94,14 +83,12 @@ var initializeChatroom = function(skatepark) {
     var name = $('.chat-user').text();
     var message = $('#message-input').val();
 
-    if (message !== lastMessage && message !== '') {
-      messageRef.push({
-        name: name, 
-        text: message, 
-        avatarURL: avatarURL});
+    messageRef.push({
+      name: name,
+      text: message,
+      avatarURL: avatarURL});
 
-      $('#message-input').val('');
-    }
+    $('#message-input').val('');
 
   });
 
@@ -111,6 +98,9 @@ var initializeChatroom = function(skatepark) {
 $(document).on('pagehide', '#skatepark-page', function(event, ui){
   clearChat();
   $(document).off('click', '.skatepark-link');
+  $(document).off('click', '#message-submit');
+  messageRef.off('child_added');
+
   console.log('events unbound');
 });
 
