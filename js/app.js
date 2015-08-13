@@ -339,6 +339,7 @@ function CurrentLocationCtrl(controlDiv, map){
   controlUI.id = "my-location";
   controlUI.style.cursor = 'pointer';
   controlUI.style.textAlign = 'center';
+
   controlUI.style.backgroundImage = "url(../imgs/target.png)";
   controlDiv.appendChild(controlUI);
 
