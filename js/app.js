@@ -13,12 +13,13 @@ var longitude = -122.080266;
 
 
 
+
+
 //CHANGE MAP SIZE AND INITIALIZATION LOCATION
 $(document).on('pageshow', '#main-map-page', function (e, data) {
   setTimeout(function () {
 
     buildMap();
-
 
     //SET MARKER TO BE AT defaultLocation (MAKE IT VARIABLE LATER)
     defaultLocation = new google.maps.LatLng(latitude, longitude)
@@ -109,13 +110,13 @@ $(document).on('pageshow', '#main-map-page', function (e, data) {
       userMarker.setIcon('./imgs/user-icon.png');
       userMarker.set('draggable', true);
 
-      $('.carousel').slick({
-        arrows: false,
-        focusOnSelect: true,
-        mobileFirst: true,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-      });
+      // $('.carousel').slick({
+      //   arrows: false,
+      //   focusOnSelect: true,
+      //   mobileFirst: true,
+      //   slidesToShow: 1,
+      //   slidesToScroll: 1,
+      // });
 
 
       fireAutomaticCarouselBuilder(markers, currentGeofence);
@@ -389,18 +390,28 @@ var grabLocationFromURL = function (url) {
 
 $(document).ready(function(){
   $('.carousel').on('afterChange', function(){
-  console.log("HELLO")
-  console.log($('.slick-active > img').attr('src'))
-  imageSrc = $('.slick-active > img').attr('src')
-  parkLocation = grabLocationFromURL(imageSrc)
-  console.log(parkLocation)
-  newMarkerLat = parkLocation.lat
-  newMarkerLong = parkLocation.lon
-  console.log(newMarkerLat)
-  console.log(newMarkerLong)
-  newCenterPoint = {lat: newMarkerLat,lng: newMarkerLong}
-  map.setCenter(newCenterPoint)
+    console.log("HELLO")
+    console.log($('.slick-active > img').attr('src'))
+    imageSrc = $('.slick-active > img').attr('src')
+    parkLocation = grabLocationFromURL(imageSrc)
+    console.log(parkLocation)
+    newMarkerLat = parkLocation.lat
+    newMarkerLong = parkLocation.lon
+    console.log(newMarkerLat)
+    console.log(newMarkerLong)
+    newCenterPoint = {lat: newMarkerLat,lng: newMarkerLong}
+    map.setCenter(newCenterPoint)
   })
+
+
+
+  $('.carousel').slick({
+    arrows: false,
+    focusOnSelect: true,
+    mobileFirst: true,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  });
 
 })
 
