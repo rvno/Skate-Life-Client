@@ -57,7 +57,6 @@ var initializeChatroom = function(skatepark) {
 
   messageRef.on('child_added', function (snapshot){
     var message = snapshot.val();
-    debugger
     $('.messages-div').append(
       $('<div>').addClass('message').append(
         $('<img>').addClass('user-profile-img').attr('src', message.avatarURL),
@@ -68,12 +67,9 @@ var initializeChatroom = function(skatepark) {
 
 
   $('#message-submit').on('click', function (event) {
-
+    debugger
     event.preventDefault();
 
-
-    // var name = $('#name-input').val();
-    // var avatarURL = $('.user-profile-img').attr('src');
     if (userData) {
       var avatarURL = userData.google.profileImageURL;
     } else {
@@ -98,7 +94,8 @@ var initializeChatroom = function(skatepark) {
 $(document).on('pagehide', '#skatepark-page', function(event, ui){
   clearChat();
   $(document).off('click', '.skatepark-link');
-  $(document).off('click', '#message-submit');
+  // $(document).off('click', '#message-submit');
+  $('#message-submit').off('click');
   messageRef.off('child_added');
 
   console.log('events unbound');
