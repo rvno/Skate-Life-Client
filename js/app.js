@@ -292,7 +292,7 @@ var onSuccess = function(position){
  // pause here
  defaultLocation = new google.maps.LatLng(latitude, longitude)
 
- initializeMap();
+ // initializeMap();
 }
 
 function onError(error) {
@@ -316,23 +316,23 @@ function HomeControl(controlDiv, map) {
 
   var controlUI = document.createElement('div');
   controlUI.style.backgroundColor = 'black';
-  controlUI.style.color = 'orange';
-  controlUI.style.border = '1px solid orange';
+  controlUI.id = "map-home-btn";
+  controlUI.style.color = 'white';
   controlUI.style.cursor = 'pointer';
   controlUI.style.textAlign = 'center';
   controlUI.title = 'current locaiton';
   controlDiv.appendChild(controlUI);
 
   var controlText = document.createElement('div');
-  controlText.style.fontFamily = 'Arial, sans-serif';
+  controlText.style.fontFamily = 'sans-serif';
   controlText.style.fontSize='12px';
   controlText.style.paddingLeft = '4px';
   controlText.style.paddingRight = '4px';
-  controlText.innerHTML = '<b>Home<b>'
+  controlText.innerHTML = '<p class="home-btn-text">Home<p>'
   controlUI.appendChild(controlText);
 
   google.maps.event.addDomListener(controlUI, 'click', function() {
-    map.setCenter(userMarker.position);
+    map.panTo(userMarker.position);
   })
 }
 
@@ -341,20 +341,20 @@ function CurrentLocationCtrl(controlDiv, map){
   controlDiv.style.padding = '5px';
   
   var controlUI = document.createElement('div');
+  controlUI.style.backgroundColor = 'black';
   controlUI.id = "my-location";
-  controlUI.style.color= 'red';
-  controlUI.style.border = '1px solid blue';
+  controlUI.style.color= 'white';
   controlUI.style.cursor = 'pointer';
   controlUI.style.textAlign = 'center';
   controlDiv.appendChild(controlUI);
   controlDiv.appendChild(controlUI);
 
   var controlText = document.createElement('div');
-  controlText.style.fontFamily = 'Arial', 'sans-serif';
+  controlText.style.fontFamily = 'sans-serif';
   controlText.style.fontSize='12px';
   controlText.style.paddingLeft = '4px';
   controlText.style.paddingRight ='4px';
-  controlText.innerHTML = '<b>my location</b>';
+  controlText.innerHTML = '<p class="location-btn-text">my location</p>';
   controlUI.appendChild(controlText);
 
 
@@ -400,7 +400,7 @@ $(document).ready(function(){
     console.log(newMarkerLat)
     console.log(newMarkerLong)
     newCenterPoint = {lat: newMarkerLat,lng: newMarkerLong}
-    map.setCenter(newCenterPoint)
+    map.panTo(newCenterPoint)
   })
 
 

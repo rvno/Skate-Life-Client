@@ -7,7 +7,6 @@ $('body').on('click', '.skatepark-link', function(event) {
  
   messagesRef.on('child_added', function (snapshot) {
     var message = snapshot.val();
-    debugger
 
     $('#messages-div').append(
       $('<div>').append(
