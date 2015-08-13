@@ -295,7 +295,6 @@ var bindAttendanceListener = function() {
 
     // grabs all users attending current park
     // debugger
-    getSkaters(parkId);
 
     $.ajax({
       url: path,
@@ -303,7 +302,7 @@ var bindAttendanceListener = function() {
     })
 
     .done(function(response) {
-
+      getSkaters(parkId);
       // THIS STAYS AS LEAVE NO MATTER WHAT, MAYBE FIX
       $(attendButton)
         .toggleClass('attend leave')
@@ -332,6 +331,8 @@ var bindAttendanceListener = function() {
     })
 
     .done(function(response) {
+      getSkaters(parkId);
+
       $(leaveButton)
         .toggleClass('leave attend')
         .text('Attend');
@@ -340,6 +341,9 @@ var bindAttendanceListener = function() {
     .fail(function(response) {
       console.log(response);
     })
+
+
+
   });
 }
 
