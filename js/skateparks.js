@@ -50,8 +50,11 @@ var initializeChatroom = function(skatepark) {
   // userData = JSON.parse(window.localStorage.getItem('googleData'));
   if (userData) {
     var firstName = userData.google.displayName.split(' ')[0];
-    $('.chat-user').text(firstName);
+  } else {
+    var firstName = 'Mystery Thrasher';
   }
+
+  $('.chat-user').text(firstName);
 
   messageRef.on('child_added', function (snapshot){
     var message = snapshot.val();
@@ -59,7 +62,8 @@ var initializeChatroom = function(skatepark) {
     if (message.text !== lastMessage && message !== '') {
       $('.messages-div').append(
         $('<div>').addClass('message').append(
-            $('<p>').text(message.name + ': ' + message.text)));
+          $('<img>').addClass('user-profile-img').attr('src', message.avatarURL),
+          $('<p>').text(message.name + ': ' + message.text)));
     }
 
     lastMessage = message.text
@@ -75,17 +79,24 @@ var initializeChatroom = function(skatepark) {
 
 
     // var name = $('#name-input').val();
-    var name = $('.chat-user').text();
-    var text = $('#message-input').val();
-
-    var message = text;
-
-    if (message !== lastMessage && message !== '') {
-      messageRef.push({name: name, text: text});
-      $('#message-input').val('');
+    // var avatarURL = $('.user-profile-img').attr('src');
+    if (userData) {
+      var avatarURL = userData.google.profileImageURL;
+    } else {
+      var avatarURL = './imgs/johnny_hash.jpg';
     }
 
-    var lastMessage = text;
+    var name = $('.chat-user').text();
+    var message = $('#message-input').val();
+
+    if (message !== lastMessage && message !== '') {
+      messageRef.push({
+        name: name, 
+        text: message, 
+        avatarURL: avatarURL});
+
+      $('#message-input').val('');
+    }
 
   });
 
