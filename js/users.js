@@ -293,6 +293,10 @@ var bindAttendanceListener = function() {
     var path = baseURL + 'api/users/' + currentUserId + '/skateparks/' + parkId;
     var attendButton = this;
 
+    // grabs all users attending current park
+    // debugger
+    getSkaters(parkId);
+
     $.ajax({
       url: path,
       type: 'post'
@@ -310,12 +314,17 @@ var bindAttendanceListener = function() {
       console.log(response);
       alert('U GOTTA LOG IN BRAWSKI');
     })
+
+
+
+
   });
 
   $(document).on('click', '.leave', function(event) {
     var parkId = $(event.target).siblings('p:first-child').text();
     var path = baseURL + 'api/users/' + currentUserId + '/skateparks/' + parkId;
     var leaveButton = this;
+
 
     $.ajax({
       url: path,
@@ -333,6 +342,30 @@ var bindAttendanceListener = function() {
     })
   });
 }
+
+
+
+
+// Grab all attendees of a skatepark
+var getSkaters = function(skateparkId) {
+  var path = baseURL + 'api/skateparks/' + skateparkId + '/attendees';
+
+  $.ajax({
+    url: path,
+    type: 'get',
+    dataType: 'json'
+  })
+
+  .done(function(response){
+    var park = $('.park-id:contains('+skateparkId+')')
+    park.siblings('.skater_count').text('Current Skaters: ' + response.length);
+
+  })
+
+  .fail(function(response){
+    console.log(response)
+  });
+};
 
 
 
