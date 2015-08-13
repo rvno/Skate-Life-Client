@@ -293,13 +293,16 @@ var bindAttendanceListener = function() {
     var path = baseURL + 'api/users/' + currentUserId + '/skateparks/' + parkId;
     var attendButton = this;
 
+    // grabs all users attending current park
+    // debugger
+
     $.ajax({
       url: path,
       type: 'post'
     })
 
     .done(function(response) {
-
+      getSkaters(parkId);
       // THIS STAYS AS LEAVE NO MATTER WHAT, MAYBE FIX
       $(attendButton)
         .toggleClass('attend leave')
@@ -310,6 +313,10 @@ var bindAttendanceListener = function() {
       console.log(response);
       alert('U GOTTA LOG IN BRAWSKI');
     })
+
+
+
+
   });
 
   $(document).on('click', '.leave', function(event) {
@@ -317,12 +324,15 @@ var bindAttendanceListener = function() {
     var path = baseURL + 'api/users/' + currentUserId + '/skateparks/' + parkId;
     var leaveButton = this;
 
+
     $.ajax({
       url: path,
       type: 'delete'
     })
 
     .done(function(response) {
+      getSkaters(parkId);
+
       $(leaveButton)
         .toggleClass('leave attend')
         .text('Attend');
@@ -331,8 +341,35 @@ var bindAttendanceListener = function() {
     .fail(function(response) {
       console.log(response);
     })
+
+
+
   });
 }
+
+
+
+
+// Grab all attendees of a skatepark
+var getSkaters = function(skateparkId) {
+  var path = baseURL + 'api/skateparks/' + skateparkId + '/attendees';
+
+  $.ajax({
+    url: path,
+    type: 'get',
+    dataType: 'json'
+  })
+
+  .done(function(response){
+    var park = $('.park-id:contains('+skateparkId+')')
+    park.siblings('.skater_count').text('Current Skaters: ' + response.length);
+
+  })
+
+  .fail(function(response){
+    console.log(response)
+  });
+};
 
 
 

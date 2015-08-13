@@ -86,6 +86,7 @@ $(document).on('pageshow', '#main-map-page', function (e, data) {
         markers.push(marker);
 
         google.maps.event.addListener(marker, 'click', function() {
+            getAttendees(skatepark.id);
             infowindow.open(map,marker);
         });
       });
@@ -133,6 +134,25 @@ $(document).on('pageshow', '#main-map-page', function (e, data) {
   
 });
 
+
+// Grab all attendees of a skatepark
+var getAttendees = function(skateparkId) {
+  var path = baseURL + 'api/skateparks/' + skateparkId + '/attendees';
+  $.ajax({
+    url: path,
+    type: 'get',
+    dataType: 'json'
+  })
+
+  .done(function(response){
+    var park = $('.park-id:contains('+skateparkId+')')
+    park.siblings('.skater_count').text('Current Skaters: ' + response.length);
+  })
+
+  .fail(function(response){
+    console.log(response)
+  });
+};
 
 
 // port these things to global variables and pass them in to the function
@@ -225,7 +245,7 @@ var buildCarouselImage = function(skatepark) {
 // DEFINITELY need to refactor this
 var buildSkateparkInfoWindow = function(skatepark, lat, lon) {
   var infowindow = new google.maps.InfoWindow({
-       content: '<p class="park-id" hidden>'+skatepark.id+'</p><p class="center info-w-name">'+skatepark.name+'</p><p class="center info-w-address">'+skatepark.address+'</p><a class="skatepark-link center" href='+baseURL+'api/skateparks/'+skatepark.id+'>check it</a><button class="attend center">Attend</button><p class="center center-img"><img src="https://maps.googleapis.com/maps/api/streetview?size=300x100&location='+lat+','+lon+'&fov=70&heading=235&pitch=0"/></p>'
+       content: '<p class="park-id" hidden>'+skatepark.id+'</p><p class="center info-w-name">'+skatepark.name+'</p><p class="center info-w-address">'+skatepark.address+'</p><a class="skatepark-link center" href='+baseURL+'api/skateparks/'+skatepark.id+'>check it</a><button class="attend center">Attend</button><p class="center center-img"><img src="https://maps.googleapis.com/maps/api/streetview?size=300x100&location='+lat+','+lon+'&fov=70&heading=235&pitch=0"/></p><p class="skater_count"></p>'
   });
   //try to add position coordinates to infowindow
   infoLatLng = {lat: lat, lng:lon}
