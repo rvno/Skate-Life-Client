@@ -6,41 +6,46 @@ var lastSkatepark;
 
 $( document ).on( "pageshow", "#main-map-page", function( event ) {
   userData = JSON.parse(window.localStorage.getItem('googleData'))
+  bindEvents();
+  console.log('events bound');
 });
 
 
 
+var bindEvents = function() {
+
+  // SkatePark Show Page
+  $(document).on("click", ".skatepark-link", function(event){
+    event.preventDefault();
+    var path = event.target.href
+    var skatepark = event.target.text
+
+    // if (skatepark !== lastSkatepark) {
+    //   clearChat();
+    // }
 
 
+    $.ajax({
+      url: path,
+      method: 'get',
+      dataType: 'json'
+    })
 
-// SkatePark Show Page
-$(document).on("click", ".skatepark-link", function(event){
-  event.preventDefault();
-  var path = event.target.href
-  var skatepark = event.target.text
+    .done(function(response){
+      initializeChatroom(skatepark);
 
-  if (skatepark !== lastSkatepark) {
-    clearChat();
-  }
+      buildSkateparkPage(response)
+      $.mobile.changePage('#skatepark-page');
+    })
 
-
-  $.ajax({
-    url: path,
-    method: 'get',
-    dataType: 'json'
-  })
-
-  .done(function(response){
-    initializeChatroom(skatepark);
-
-    buildSkateparkPage(response)
-    $.mobile.changePage('#skatepark-page');
-  })
-
-  .fail(function(response){
-    console.log("failure")
+    .fail(function(response){
+      console.log("failure")
+    });
   });
-});
+  
+  
+}
+
 
 
 
@@ -106,6 +111,7 @@ var initializeChatroom = function(skatepark) {
 $(document).on('pagehide', '#skatepark-page', function(event, ui){
   clearChat();
   $(document).off('click', '.skatepark-link');
+  console.log('events unbound');
 });
 
 var clearChat = function() {
