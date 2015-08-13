@@ -4,6 +4,12 @@ var messageRef;
 
 $( document ).on( "pageshow", "#main-map-page", function( event ) {
   userData = JSON.parse(window.localStorage.getItem('googleData'))
+  
+  // This is a hacky thing that prevents the chatroom events from binding
+  // twice if a user decides to log in
+  if (messageRef)
+    unBindEvents();
+
   bindEvents();
   console.log('events bound');
 });
@@ -39,6 +45,16 @@ var bindEvents = function() {
   });
   
   
+}
+
+
+
+var unBindEvents = function() {
+  $(document).off('click', '.skatepark-link');
+  $('#message-submit').off('click');
+  messageRef.off('child_added');
+
+  console.log('events unbound');
 }
 
 
@@ -93,11 +109,7 @@ var initializeChatroom = function(skatepark) {
 
 $(document).on('pagehide', '#skatepark-page', function(event, ui){
   clearChat();
-  $(document).off('click', '.skatepark-link');
-  $('#message-submit').off('click');
-  messageRef.off('child_added');
-
-  console.log('events unbound');
+  unBindEvents();
 });
 
 var clearChat = function() {
