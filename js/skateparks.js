@@ -1,6 +1,6 @@
 var userData;
 var messageRef;
-
+var favoriteSkateparks = [];
 
 $( document ).on( "pageshow", "#main-map-page", function( event ) {
   userData = JSON.parse(window.localStorage.getItem('googleData'))
@@ -105,6 +105,31 @@ var initializeChatroom = function(skatepark) {
   });
 
 }
+
+//grab the user's favorites and store them in a global array
+$(document).on('pageshow', '#skatepark-page', function(event, ui){
+  console.log("hi")
+  if(userData){
+    console.log(currentUserId)
+    var path = baseURL + 'api/users/' + currentUserId + '/favorites'
+    console.log(path)
+    $.ajax({
+      url: path,
+      method: 'get',
+      dataType: 'json'
+    })
+    .done(function(response){
+      console.log(response)
+      $.each(response, function(index, skatepark){
+        favoriteSkateparks.push(skatepark)
+        console.log(skatepark)
+      })
+    })
+    .fail(function(response){
+      console.log('failure')
+    })
+  }
+})
 
 
 $(document).on('pagehide', '#skatepark-page', function(event, ui){

@@ -203,22 +203,43 @@ $(document).on("panelbeforeopen", "#chatPanel", function(event, ui){
 
 // allow user to favorite a map
 $(document).on('click', '.favorite-button', function(event){
-
+  // var favoriteEvent = event
+  var match = null;
+  //if there's a user..check their favorites to see if the park has already been added
   if(userData){
+
     var parkId = $('.skatepark-id').text()
-    var userId = window.localStorage.getItem('currentUserId');
-    var path = baseURL + 'api/users/' + userId + '/favorites/' + parkId
-    $.ajax({
-      url: path,
-      method: 'post'
+    //try to iterate through, if a match is found, change the popup text
+    $.each(favoriteSkateparks, function(index, favoritedPark){
+      if(favoritedPark.id == parkId){
+        console.log('we have a match')
+        $('#favoritePopup p').text('This skatepark has already been favorited.')
+        $('#favoritePopup').popup('open');
+        match = true;
+        event.preventDefault();
+      }
+      else{
+        event.preventDefault();
+      }
     })
-    .done(function(response){
-      // console.log(response);
-    })
-    .fail(function(response){
-      // console.log(response);
-    })
-  } else {
+
+    if(match === null){
+      var userId = window.localStorage.getItem('currentUserId');
+      var path = baseURL + 'api/users/' + userId + '/favorites/' + parkId
+      $.ajax({
+        url: path,
+        method: 'post'
+      })
+      .done(function(response){
+        $('#favoritePopup p').text("Added to your favorites!")
+        $('#favoritePopup').popup('open')
+      })
+      .fail(function(response){
+      })
+    } 
+  }
+
+  else {
     event.preventDefault();
     $('#favoriteErrorPopup').popup("open")
   }
@@ -232,44 +253,6 @@ $(document).on("click", "#logout", function() {
   $('.welcome-header').text('Skate Life, Breh');
 });
 
-$(document).on('popupbeforeposition', '.ui-popup', function(){
-  // console.log("hello")
-  var parkId = $('.skatepark-id').text()
-  var userId = window.localStorage.getItem('currentUserId');
-  var path = baseURL + 'api/users/' + userId + '/favorites/'
-  $.ajax({
-    url: path,
-    method: 'get',
-    dataType: 'json'
-  })
-  .done(function(response){
-    var pageParkId = $('.skatepark-id').text()
-    var favoriteMatch = null;
-    $.each(response,function(index, park){
-      // console.log(pageParkId)
-      // console.log(favoriteMatch)
-      if(favoriteMatch === null){
-        if(park.id == pageParkId){
-          // console.log("yup")
-          $('#favoritePopup p').text('This skatepark has already been favorited.')
-          favoriteMatch = true
-          // console.log("STOP DUDE")
-        }
-        else{
-          // console.log("no match buddy")
-          // console.log('this is the' + park.id)
-          // console.log('match' +pageParkId)
-        }
-      }
-    });
-    // console.log($('#favoritePopup p').text())
-    // console.log("heyy hooo")
-    // console.log(response)
-  })
-  .fail(function(response){
-    // console.log("oh nooo")
-  })
-})
 
 $(document).on('popupafteropen', '.ui-popup', function(){
   $(this).animate({ opacity: 100 });
