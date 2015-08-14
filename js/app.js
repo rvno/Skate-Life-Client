@@ -364,7 +364,7 @@ function CurrentLocationCtrl(controlDiv, map){
   controlUI.style.cursor = 'pointer';
   controlUI.style.textAlign = 'center';
 
-  controlUI.style.backgroundImage = "url(../imgs/target.png)";
+  controlUI.style.backgroundImage = "url(https://cdn3.iconfinder.com/data/icons/metro-explorer/512/geolocation-512.png)";
   controlDiv.appendChild(controlUI);
 
   google.maps.event.addDomListener(controlUI, 'click', function(){
