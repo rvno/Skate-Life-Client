@@ -220,10 +220,10 @@ button.attend.center, button.leave{
 	background-color: #F2A516;
 }
 
-#map-home-btn{
-	margin-top:40px;
+#map-home-btn, #my-location-btn{
+	height:1.5em;
+	border-radius:10px;
+	display:table;
 }
 
-#my-location{
-	margin-top:40px;
-}
+

@@ -336,47 +336,65 @@ onDeviceReady();
 
 // CREATE BUTTON TO RETURN VIEW TO CURRENT MARKER LOCATION
 function HomeControl(controlDiv, map) {
-  controlDiv.style.padding = '5px';
+ controlDiv.style.padding = '5px';
 
   var controlUI = document.createElement('div');
-  controlUI.style.width = '32px';
-  controlUI.style.height = '32px';
-  controlUI.id = "map-home-btn";
+  controlUI.style.backgroundColor = 'orange';
+  controlUI.style.color = 'black';
   controlUI.style.cursor = 'pointer';
   controlUI.style.textAlign = 'center';
-  controlUI.title = 'current locaiton';
-  controlUI.style.backgroundImage = "url(../imgs/pin.png)";
+  controlUI.title = 'current location';
+  controlUI.id="map-home-btn";
   controlDiv.appendChild(controlUI);
 
+  var controlText = document.createElement('div');
+  controlText.style.fontFamily = 'Arial, sans-serif';
+  controlText.style.fontSize='12px';
+  controlText.style.paddingLeft = '4px';
+  controlText.style.paddingRight = '4px';
+  controlText.innerHTML = '<p>Home<p>'
+  controlUI.appendChild(controlText);
+
   google.maps.event.addDomListener(controlUI, 'click', function() {
-    map.panTo(userMarker.position);
-  });
+    map.setCenter(userMarker.position);
+  })
 }
 
 // CREATE BUTTON TO RETURN VIEW AND MARKER TO USER'S CURRENT LOCATION
 function CurrentLocationCtrl(controlDiv, map){
   controlDiv.style.padding = '5px';
-  
-  var controlUI = document.createElement('div');
-  controlUI.style.width = '32px';
-  controlUI.style.height = '32px';
-  controlUI.id = "my-location";
-  controlUI.style.cursor = 'pointer';
-  controlUI.style.textAlign = 'center';
+    
+    var controlUI = document.createElement('div');
+    controlUI.style.backgroundColor = 'orange';
+    controlUI.style.color = 'black';
+    controlUI.style.cursor = 'pointer';
+    controlUI.style.textAlign = 'center';
+    controlUI.title = 'current location';
+    controlUI.id="my-location-btn";
+    controlDiv.appendChild(controlUI);
 
-  controlUI.style.backgroundImage = "url(https://cdn3.iconfinder.com/data/icons/metro-explorer/512/geolocation-512.png)";
-  controlDiv.appendChild(controlUI);
+    var controlText = document.createElement('div');
+    controlText.style.fontFamily = 'Arial', 'sans-serif';
+    controlText.style.fontSize='12px';
+    controlText.style.paddingLeft = '4px';
+    controlText.style.paddingRight ='4px';
+    controlText.innerHTML = '<p>my location</p>';
+    controlUI.appendChild(controlText);
 
-  google.maps.event.addDomListener(controlUI, 'click', function(){
-    console.log(userMarker.position);
-    if(window.localStorage.getItem('accessedLat')){
-      userDefaultPosition = {lat: parseFloat(window.localStorage.getItem('accessedLat')), lng: parseFloat(window.localStorage.getItem('accessedLong'))};
-      map.panTo(userDefaultPosition);
-      console.log(userMarker);
-      console.log(userMarker.position);
-      userMarker.setPosition(userDefaultPosition);
-    }
-  });
+
+    google.maps.event.addDomListener(controlUI, 'click', function(){
+      console.log("we should be at dbc")
+      // console.log(currentLocation)
+      console.log("the user is at ")
+      console.log(userMarker.position)
+      if(window.localStorage.getItem('accessedLat')){
+        userDefaultPosition = {lat: parseFloat(window.localStorage.getItem('accessedLat')), lng: parseFloat(window.localStorage.getItem('accessedLong'))}
+        map.panTo(userDefaultPosition)
+        console.log(userMarker)
+        console.log(userMarker.position)
+        userMarker.setPosition(userDefaultPosition)
+      }
+    })
 }
 
 //BEGIN CODING FOR MAP PAN BASED ON CAROUSEL
