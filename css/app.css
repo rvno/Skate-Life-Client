@@ -219,3 +219,11 @@ button.attend.center, button.leave{
 	margin:auto;
 	background-color: #F2A516;
 }
+
+#map-home-btn{
+	margin-top:40px;
+}
+
+#my-location{
+	margin-top:40px;
+}
