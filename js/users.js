@@ -81,34 +81,37 @@ var backendUserAuth = function(userData) {
   })
 
   .fail(function (response) {
-    // console.log(response);
+    console.log(response);
   });
 }
 
 
 
 
-// working on external panels
+
+
+
+
+
+// FAVORITES & CHAT PANELS
+
 
 var externalPanel = '<div data-role="panel" id="favoritesPanel" data-display="overlay" data-theme="b"><a href="#" data-rel="close" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-a ui-icon-delete ui-btn-icon-left" data-prefetch >Close Favorites</a><ul data-role="listview" class="favorites"><li id="logout"><a href="#">Logout</a></li></ul></div>';
+// var chatPanel = '<div data-role="panel" id="chatPanel" data-display="overlay" data-position="right" data-theme="b"><a href="#" data-rel="close" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-a ui-icon-delete ui-btn-icon-right" data-prefetch >Close Messages</a><ul data-role="listview" class="chat-messages"></ul></div>';
 
-var chatPanel = '<div data-role="panel" id="chatPanel" data-display="overlay" data-position="right" data-theme="b"><a href="#" data-rel="close" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-a ui-icon-delete ui-btn-icon-right" data-prefetch >Close Messages</a><ul data-role="listview" class="chat-messages"></ul></div>';
-
-$(document).one('pagebeforecreate', function(){
+$(document).on('pagebeforecreate', function(){
   $.mobile.pageContainer.prepend(externalPanel);
   $('#favoritesPanel').panel().enhanceWithin();
-  $.mobile.pageContainer.prepend(chatPanel);
-  $('#chatPanel').panel().enhanceWithin();
+  // $.mobile.pageContainer.prepend(chatPanel);
+  // $('#chatPanel').panel().enhanceWithin();
 })
-//I THINK THAT THIS EXTERNAL PANEL STUFF WORKS GUYS!!
-//WOOOOOOOOOOO.....WOOOOOO
 
 
-// Favorites Panel DEFINITELY gonna refactor this
-
+// Build favorites panel whenever user opens it
 $(document).on("panelbeforeopen", "#favoritesPanel", function(event, ui){
   var userId = window.localStorage.getItem('currentUserId');
   var path = baseURL + 'api/users/' + userId + '/favorites'
+
   if (userId) {
     $.ajax({
       url: path,
@@ -117,21 +120,28 @@ $(document).on("panelbeforeopen", "#favoritesPanel", function(event, ui){
     })
 
     .done(function(response){
-      $('.favorites').empty();
-      // debugger
-      $.each(response, function(index, favorite){
-        $('.favorites').append('<li><a class="skatepark-link" href='+baseURL+'api/skateparks/'+favorite.id+'>'+favorite.name+'</a></li>')
-      })
 
+      // empty out favorites panel and repopulate it with user's favs
+      $('.favorites').empty();
       $('.favorites').prepend(
         $('<li>').attr('id', 'logout').append(
         $('<a>').attr('href', '#').text('Logout')));
+
+      $.each(response, function(index, favorite){
+        $('.favorites').append(
+          $('<li>').append(
+            $('<a>')
+              .attr('href', baseURL + 'api/skateparks/' + favorite.id)
+              .addClass('skatepark-link')
+              .text(favorite.name)));
+      });
+
 
       $('.favorites').listview('refresh')
       $('#logout > a').removeClass('ui-btn-icon-right ui-icon-carat-r')
     })
     .fail(function(response){
-      // console.log("bye harvey")
+      console.log(response);
     })
 
   } else {
@@ -150,53 +160,28 @@ $(document).on("panelbeforeopen", "#favoritesPanel", function(event, ui){
 })
 
 
-// CHAT PANEL (INSERT FIREBASE RELATED LOGIC HERE)
-$(document).on("panelbeforeopen", "#chatPanel", function(event, ui){
-  var userId = window.localStorage.getItem('currentUserId');
-  // var path = baseURL + 'api/users/' + userId + '/favorites'
-  if (userId) {
-    // $.ajax({
-    //   url: 
-    //   method: 
-    //   dataType: 
-    // })
-
-    // .done(function(response){
-    //   $('.chat-messages').empty();
-
-    //   $.each(response, function(index, favorite){
-    //     $('.chat-messages').append('<li>' CHAT CONTENT HERE '</li>')
-    //   })
-
-      // VVV IF YOU WANT, ADD MESSAGE FORM BELOW VVVVV
-      // $('.chat-messages').prepend(
-      //   $('<li>').attr('id', 'logout').append(
-      //   $('<a>').attr('href', '#').text('Logout')));
-
-      // $('.chat-messages').listview('refresh')
-      // $('#logout > a').removeClass('ui-btn-icon-right ui-icon-carat-r')
-    // })
-    // .fail(function(response){
-    //   // console.log("bye harvey")
-    // })
-    console.log('somebody talk to me plz')
-  } else {
-
-    // fix this don't know why its not working
-    $('.chat-messages').empty();
-    $('.chat-messages').append(
-      $('<li>').text('Login to check your messages.'));
-    $('.chat-messages').prepend(
-        $('<li>').attr('id', 'logout').append(
-        $('<a>').attr('href', '#').text('Login')));
-    $('.chat-messages').listview('refresh');
-    $('#logout > a').removeClass('ui-btn-icon-right ui-icon-carat-r')
-
-  }
-})
 
 
+// // CHAT PANEL (INSERT FIREBASE RELATED LOGIC HERE)
+// $(document).on("panelbeforeopen", "#chatPanel", function(event, ui){
+//   var userId = window.localStorage.getItem('currentUserId');
+//   // var path = baseURL + 'api/users/' + userId + '/favorites'
+//   if (userId) {
+//     console.log('somebody talk to me plz')
+//   } else {
 
+//     // fix this don't know why its not working
+//     $('.chat-messages').empty();
+//     $('.chat-messages').append(
+//       $('<li>').text('Login to check your messages.'));
+//     $('.chat-messages').prepend(
+//         $('<li>').attr('id', 'logout').append(
+//         $('<a>').attr('href', '#').text('Login')));
+//     $('.chat-messages').listview('refresh');
+//     $('#logout > a').removeClass('ui-btn-icon-right ui-icon-carat-r')
+
+//   }
+// })
 
 
 
@@ -247,6 +232,8 @@ $(document).on('click', '.favorite-button', function(event){
 })
 
 
+
+
 $(document).on("click", "#logout", function() {
   signOut();
   $('.username').text('Welcome Skater');
@@ -260,13 +247,13 @@ $(document).on('popupafteropen', '.ui-popup', function(){
 
 });
 
+
 var signOut = function() {
   localStorage.clear();
   userData = null;
   currentUserId = null;
   $.mobile.changePage('#login-page')
 }
-
 
 
 var bindAttendanceListener = function() {
@@ -277,7 +264,6 @@ var bindAttendanceListener = function() {
     var attendButton = this;
 
     // grabs all users attending current park
-    // debugger
 
     $.ajax({
       url: path,
@@ -296,8 +282,6 @@ var bindAttendanceListener = function() {
       console.log(response);
       alert('U GOTTA LOG IN BRAWSKI');
     })
-
-
 
 
   });
@@ -329,7 +313,6 @@ var bindAttendanceListener = function() {
 
   });
 }
-
 
 
 
