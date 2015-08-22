@@ -113,15 +113,6 @@ $(document).on('pageshow', '#main-map-page', function (e, data) {
       userMarker.setIcon('./imgs/user-icon.png');
       userMarker.set('draggable', true);
 
-      // $('.carousel').slick({
-      //   arrows: false,
-      //   focusOnSelect: true,
-      //   mobileFirst: true,
-      //   slidesToShow: 1,
-      //   slidesToScroll: 1,
-      // });
-
-
       fireAutomaticCarouselBuilder(markers, currentGeofence);
 
     })
@@ -288,17 +279,8 @@ userMarkerRef.on('child_added', function (snapshot) {
   });
 
 
-  // marker.setId(0);
-  //is this where we initialize the user's marker?
-
   marker.setMap(map);
   userMarker = marker;
-
-  // if(currentUserId){
-  //   userMarker.set("id", currentUserId)
-  // } else {
-  //   userMarker.set("id", 0)
-  // }
 
 
 
@@ -315,8 +297,6 @@ var onSuccess = function(position){
 
  // pause here
  defaultLocation = new google.maps.LatLng(latitude, longitude);
-
- // initializeMap();
 }
 
 function onError(error) {
@@ -398,10 +378,6 @@ function CurrentLocationCtrl(controlDiv, map){
 }
 
 //BEGIN CODING FOR MAP PAN BASED ON CAROUSEL
-  // console.log($('.slick-active-image').attr('src'))
-  // imageSrc = $('.slick-active-image').attr('src')
-  // // location =  grabLocationFromURL(imageSrc)
-  // console.log(location)
 
 
 var grabLocationFromURL = function (url) {
@@ -415,10 +391,12 @@ var grabLocationFromURL = function (url) {
   return parkPosition
 }
 
+
+// Slick the carousel on doc ready
+
 $(document).ready(function(){
+
   $('.carousel').on('afterChange', function(){
-    console.log("HELLO")
-    console.log($('.slick-active > img').attr('src'))
     imageSrc = $('.slick-active > img').attr('src')
     parkLocation = grabLocationFromURL(imageSrc)
     console.log(parkLocation)
