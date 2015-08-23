@@ -49,31 +49,28 @@ $(document).on('panelbeforeopen', '#favoritesPanel', function (event, ui) {
 
 // Possibly refactor this
 $(document).on('click', '.favorite-button', function (event) {
+  event.preventDefault();
   var match = null;
 
   if (userData) {
     var parkId = $('.skatepark-id').text()
 
     $.each(favoriteSkateparks, function (index, favoritePark) {
-      
       if (favoritePark.id == parkId) {
         $('#favoritePopup p').text('This skatepark has already been favorited.');
         $('#favoritePopup').popup('open');
         match = true;
 
         // REFACTOR THIS?
-        event.preventDefault();
+        // event.preventDefault();
       } else {
-        event.preventDefault();
+        // event.preventDefault();
       }
-
     });
 
     if (match === null) {
-
-      // MAY NOT NEED TO GRAB THIS AGAIN
       currentUserId = window.localStorage.getItem('currentUserId');
-      var path = baseURL + 'api/users/' + userId + '/favorites/' + parkId;
+      var path = baseURL + 'api/users/' + currentUserId + '/favorites/' + parkId;
 
       $.ajax({
         url: path,
@@ -92,7 +89,7 @@ $(document).on('click', '.favorite-button', function (event) {
   } else {
 
     // REFACTOR THIS?
-    event.preventDefault();
+    // event.preventDefault();
     $('#favoriteErrorPopup').popup('open');
   }
 
