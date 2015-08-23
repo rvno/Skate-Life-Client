@@ -14,7 +14,7 @@
 
 	<!-- jQuery & jQuery mobile scripts -->
 	<script src="./js/jquery.min.js"></script>
-	<script src=".js/jqueyr-mobile.min.js"></script>
+	<script src="./js/jquery-mobile.min.js"></script>
 	<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
 
 	<!-- Firebase & Google maps scripts -->
@@ -26,9 +26,85 @@
 </head>
 
 <body>
+
+
+
 	
 	<!-- Login Page -->
-	<div data-role="page" id="login-page"></div>
+	<div data-role="page" id="login-page">
+		<div data-role="header" data-theme="b">
+			<h1 class="welcome-header">Skate Life</h1>
+		</div>
+		
+		<div data-role="main" class="ui-content">
+			<h1 class="intro-text" style="display:none">Skate Life</h1>
+		</div>
+
+		<div data-role="footer" class="footer" data-theme="b">
+			<div data-role="navbar" class="navbar">
+				<ul>
+					<li>
+					<!-- VALIDATE WHETHER OR NOT DATA-PREFETCH WORKS -->
+						<a href="#main-map-page" class="ui-btn login-btn" data-rel="back" data-prefetch>Login With Gmail</a>
+					</li>
+					<li>
+						<a href="#main-map-page" class="ui-btn explore-btn" data-role="button" data-prefetch>Explore</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+
+
+
+
+	<!-- Main Page (Map) -->
+	<div data-role="page" id="main-map-page">
+		<div data-role="header" data-theme="b" class="map-header">
+			<a href="#favoritesPanel" class="ui-btn ui-btn-inline ui-corner-all ui-shadow ui-icon-bars ui-btn-icon-left ui-nodisc-icon">Menu</a>
+
+			<!-- FIX THIS SO THAT IT ALWAYS SHOWS NAME OF LOGGED IN USER NO MATTER WHAT -->
+			<h1 class="username">Welcome Skater</h1>
+			<a href="#chatPanel" class="ui-btn ui-btn-inline ui-corner-all ui-shadow ui-icon-comment ui-btn-icon-right ui-nodisc-icon">Messages</a>
+		</div>
+
+		<div data-role="main" class="ui-content main-map-content">
+			<div data-role="content" id="content">
+				<div id="googleMap" style="height:100%;"></div>
+			</div>
+		</div>
+
+		<div data-role="footer" class="footer" data-theme="b">
+			<div class="carousel"></div>
+		</div>
+	</div>
+
+
+
+
+
+	<!-- Skatepark show page -->
+	<div data-role="page" id="skatepark-page">
+		<div data-role="header" data-theme="b">
+			<a href="#favoritesPanel" class="ui-btn ui-btn-inline ui-corner-all ui-shadow ui-icon-bars ui-btn-icon-left ui-nodisc-icon">Menu</a>
+			<h1 class="skatepark-name"></h1>
+			<a href="#chatPanel" class="ui-btn ui-btn-inline ui-corner-all ui-shadow ui-icon-comment ui-btn-icon-right ui-nodisc-icon">Messages</a>
+		</div>
+
+		<div data-role="main" class="ui-content">
+			<div class="skatepark-page"></div>
+			<div class="messages-div"></div>
+			<h4 class="chat-user" hideen></h4>
+			<input type="text" id="message-input" placeholder="Message">
+			<br/>
+			<button id="message-submit">Post</button>
+		</div>
+	</div>
+
+
+
+
 
 
 
