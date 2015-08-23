@@ -21,7 +21,6 @@ $(document).on('pagebeforecreate', function () {
 
 
 
-// Attend Leave button
 $(document).on('click', '.attend', function (event) {
   toggleAttendance(this, true);
 });
@@ -31,14 +30,13 @@ $(document).on('click', '.leave', function (event) {
 });
 
 
-// Favorite Button
 $(document).on('click', '.favorite-button', function (event) {
   event.preventDefault();
 
   checkIfFavorited();
 });
 
-// Favorite popup
+
 $(document).on('popupafteropen', '.ui-popup', function() {
   $(this).animate({ opacity: 100 });
   $(this).animate({ opacity: 0 }, 1500);

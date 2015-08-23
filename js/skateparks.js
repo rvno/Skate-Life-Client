@@ -1,17 +1,26 @@
-// var userData;
 var messageRef;
 var favoriteSkateparks = [];
 
 
-$(document).on('pageshow', function (event) {
-  bindEvents();
-  console.log('events bound');
+$(document).on('pageshow', '#main-map-page', function (event, ui) {
+  bindSkateparkChatListener();
+});
+
+$(document).on('pageshow', '#skatepark-page', function (event, ui){
+  if(userData)
+    populateFavoriteSkateparks();
+})
+
+$(document).on('pagehide', '#skatepark-page', function (event, ui){
+  clearChat();
+  unBindSkateparkEventListener();
 });
 
 
-var bindEvents = function() {
 
-  // SkatePark Show Page
+
+
+var bindSkateparkChatListener = function() {
   $(document).on("click", ".skatepark-link", function(event){
     event.preventDefault();
     var path = event.target.href
@@ -36,12 +45,13 @@ var bindEvents = function() {
     });
   });
   
+  console.log('chat event bound');
   
 }
 
 
 
-var unBindEvents = function() {
+var unBindSkateparkEventListener = function() {
   $(document).off('click', '.skatepark-link');
   $('#message-submit').off('click');
   messageRef.off('child_added');
@@ -51,6 +61,7 @@ var unBindEvents = function() {
 
 
 
+// Possibly break this up into 2 functions
 var initializeChatroom = function(skatepark) {
   var skateparkURL = skatepark.split(' ')[0];
   messageRef = new Firebase('https://skatelife.firebaseio.com/parkchats/' + skatepark);
@@ -97,37 +108,6 @@ var initializeChatroom = function(skatepark) {
 
 }
 
-//grab the user's favorites and store them in a global array
-$(document).on('pageshow', '#skatepark-page', function(event, ui){
-
-  if(userData){
-    var path = baseURL + 'api/users/' + currentUserId + '/favorites'
-
-    $.ajax({
-      url: path,
-      method: 'get',
-      dataType: 'json'
-    })
-
-    .done(function(response){
-      console.log(response)
-      $.each(response, function(index, skatepark){
-        favoriteSkateparks.push(skatepark)
-        console.log(skatepark)
-      })
-    })
-
-    .fail(function(response){
-      console.log('failure')
-    })
-  }
-})
-
-
-$(document).on('pagehide', '#skatepark-page', function(event, ui){
-  clearChat();
-  unBindEvents();
-});
 
 var clearChat = function() {
   $('.messages-div').empty();
@@ -148,4 +128,26 @@ var buildSkateparkPage = function(skatepark) {
         .hide());
 
   $('#skatepark-page .ui-content .skatepark-page').html(skateparkDiv);
+}
+
+var populateFavoriteSkateparks = function() {
+  var path = baseURL + 'api/users/' + currentUserId + '/favorites'
+
+  $.ajax({
+    url: path,
+    method: 'get',
+    dataType: 'json'
+  })
+
+  .done(function(response){
+    console.log(response)
+    $.each(response, function(index, skatepark){
+      favoriteSkateparks.push(skatepark)
+      console.log(skatepark)
+    })
+  })
+
+  .fail(function(response){
+    console.log('failure')
+  })
 }
