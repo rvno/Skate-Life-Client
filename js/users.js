@@ -26,7 +26,6 @@ $(document).on('panelbeforeopen', '#favoritesPanel', function (event, ui) {
   var path = baseURL + 'api/users/' + currentUserId + '/favorites';
 
   if (currentUserId) {
-
     $.ajax({
       url: path,
       method: 'get',
@@ -42,20 +41,61 @@ $(document).on('panelbeforeopen', '#favoritesPanel', function (event, ui) {
     });
 
   } else {
-
     emptyFavorites();
-
   }
 });
 
 
 
+// Possibly refactor this
 $(document).on('click', '.favorite-button', function (event) {
   var match = null;
 
   if (userData) {
-    
+    var parkId = $('.skatepark-id').text()
+
+    $.each(favoriteSkateparks, function (index, favoritePark) {
+      
+      if (favoritePark.id == parkId) {
+        $('#favoritePopup p').text('This skatepark has already been favorited.');
+        $('#favoritePopup').popup('open');
+        match = true;
+
+        // REFACTOR THIS?
+        event.preventDefault();
+      } else {
+        event.preventDefault();
+      }
+
+    });
+
+    if (match === null) {
+
+      // MAY NOT NEED TO GRAB THIS AGAIN
+      currentUserId = window.localStorage.getItem('currentUserId');
+      var path = baseURL + 'api/users/' + userId + '/favorites/' + parkId;
+
+      $.ajax({
+        url: path,
+        method: 'post'
+      })
+
+      .done(function (response) {
+        $('#favoritePopup p').text('Added to your favorites!');
+        $('#favoritePopup').popup('open');
+      })
+
+      .fail(function(response) {
+        console.log(response);
+      })
+    }
+  } else {
+
+    // REFACTOR THIS?
+    event.preventDefault();
+    $('#favoriteErrorPopup').popup('open');
   }
+
 });
 
 
