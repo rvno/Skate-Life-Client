@@ -8,7 +8,7 @@ var chatPanel = '<div data-role="panel" id="chatPanel" data-display="overlay" da
 
 
 
-
+// Load up Favs and Chat panel, also populate userData
 $(document).on('pagebeforecreate', function () {
   userData = JSON.parse(window.localStorage.getItem('googleData'));
 
@@ -21,6 +21,25 @@ $(document).on('pagebeforecreate', function () {
 
 
 
+// Attend Leave button
+$(document).on('click', '.attend', function (event) {
+  toggleAttendance(this, true);
+});
+
+$(document).on('click', '.leave', function (event) {
+  toggleAttendance(this, false);
+});
+
+
+// Favorite Button
+$(document).on('click', '.favorite-button', function (event) {
+  event.preventDefault();
+
+  checkIfFavorited();
+});
+
+
+// Favorites Panel
 $(document).on('panelbeforeopen', '#favoritesPanel', function (event, ui) {
   currentUserId = window.localStorage.getItem('currentUserId');
   var path = baseURL + 'api/users/' + currentUserId + '/favorites';
@@ -47,45 +66,12 @@ $(document).on('panelbeforeopen', '#favoritesPanel', function (event, ui) {
 
 
 
-// Possibly refactor this
-$(document).on('click', '.favorite-button', function (event) {
-  event.preventDefault();
-  var match = null;
 
-  if (userData) {
-    var parkId = $('.skatepark-id').text()
 
-    $.each(favoriteSkateparks, function (index, favoritePark) {
-      if (favoritePark.id == parkId) {
-        $('#favoritePopup p').text('This skatepark has already been favorited.');
-        $('#favoritePopup').popup('open');
-        match = true;
-      }
-    });
 
-    if (match === null) {
-      currentUserId = window.localStorage.getItem('currentUserId');
-      var path = baseURL + 'api/users/' + currentUserId + '/favorites/' + parkId;
 
-      $.ajax({
-        url: path,
-        method: 'post'
-      })
 
-      .done(function (response) {
-        $('#favoritePopup p').text('Added to your favorites!');
-        $('#favoritePopup').popup('open');
-      })
 
-      .fail(function(response) {
-        console.log(response);
-      })
-    }
-  } else {
-    $('#favoriteErrorPopup').popup('open');
-  }
-
-});
 
 
 
@@ -113,6 +99,44 @@ $(document).on('click', '.favorite-button', function (event) {
 // })
 
 
+var checkIfFavorited = function () {
+  var match;
+
+  if (userData) {
+    var parkId = $('.skatepark-id').text()
+
+    $.each(favoriteSkateparks, function (index, favoritePark) {
+      if (favoritePark.id == parkId) {
+        $('#favoritePopup p').text('This skatepark has already been favorited.');
+        $('#favoritePopup').popup('open');
+        match = true;
+      }
+    });
+
+    if (!match) {
+      currentUserId = window.localStorage.getItem('currentUserId');
+      var path = baseURL + 'api/users/' + currentUserId + '/favorites/' + parkId;
+
+      $.ajax({
+        url: path,
+        method: 'post'
+      })
+
+      .done(function (response) {
+        $('#favoritePopup p').text('Added to your favorites!');
+        $('#favoritePopup').popup('open');
+      })
+
+      .fail(function(response) {
+        console.log(response);
+      })
+    }
+  } else {
+    $('#favoriteErrorPopup').popup('open');
+  }
+}
+
+
 var populateFavorites = function(favData) {
   $('.favorites').empty();
   $('.favorites').prepend(
@@ -137,8 +161,7 @@ var populateFavorites = function(favData) {
 
 var emptyFavorites = function() {
   $('.favorites').empty();
-  $('.favorites').append(
-    $('<li>').text('Login to see your favorites.'));
+  $('.favorites').append($('<li>').text('Login to see your favorites.'));
 
   $('.favorites').prepend(
       $('<li>').attr('id', 'logout').append(
@@ -150,27 +173,12 @@ var emptyFavorites = function() {
 
 
 
-
-
-
-
-
-$(document).on('click', '.attend', function (event) {
-  toggleAttendance(this, true);
-});
-
-$(document).on('click', '.leave', function (event) {
-  toggleAttendance(this, false);
-});
-
-
 var toggleAttendance = function (target, attending) {
   var parkId = $(target).siblings('p:first-child').text();
   var path = baseURL + 'api/users/' + currentUserId + '/skateparks/' + parkId;
   var button = target;
 
   if (attending) {
-    debugger
     var method = 'post'
   } else {
     var method = 'delete'
@@ -183,7 +191,6 @@ var toggleAttendance = function (target, attending) {
 
   .done(function (response) {
     getSkaters(parkId);
-
     if (attending) {
       $(button)
         .toggleClass('attend leave')
@@ -193,7 +200,6 @@ var toggleAttendance = function (target, attending) {
         .toggleClass('leave attend')
         .text('Attend')
     }
-
   })
 
   .fail(function (response) {
