@@ -6,12 +6,8 @@ var currentUserId;
 
 
 
-
-
-
 var authenticateUserOnLogin = function() {
   $('.login-btn').on('click', function(event) {
-    debugger
     event.preventDefault();
 
     googleOauth().then(function(authData) {
@@ -81,10 +77,8 @@ var backendUserAuth = function(userData) {
 
 
 
-
-
-
 // FAVORITES & CHAT PANEL WOULD NORMALLY BE HERE
+
 
 
 
