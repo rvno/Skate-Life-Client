@@ -113,15 +113,6 @@ $(document).on('click', '.favorite-button', function (event) {
 // })
 
 
-
-
-
-
-
-
-// bindAttendanceListener();
-
-
 var populateFavorites = function(favData) {
   $('.favorites').empty();
   $('.favorites').prepend(
@@ -156,3 +147,94 @@ var emptyFavorites = function() {
   $('.favorites').listview('refresh');
   $('#logout > a').removeClass('ui-btn-icon-right ui-icon-carat-r');
 }
+
+
+
+
+
+
+
+
+
+$(document).on('click', '.attend', function (event) {
+  var parkId = $(this).siblings('p:first-child').text();
+  var path = baseURL + 'api/users/' + currentUserId + '/skateparks/' + parkId;
+  var button = this;
+
+  $.ajax({
+    url: path,
+    type: 'post'
+  })
+
+  .done(function (response) {
+    getSkaters(parkId);
+
+    $(button)
+      .toggleClass('attend leave')
+      .text('Leave');
+  })
+
+  .fail(function (response) {
+    alert('U GOTTA LOG IN BRAWSKI');
+  })
+});
+
+
+
+$(document).on('click', '.leave', function (event) {
+  var parkId = $(event.target).siblings('p:first-child').text();
+  var path = baseURL + 'api/users/' + currentUserId + '/skateparks/' + parkId;
+  var button = this;
+
+  $.ajax({
+    url: path,
+    type: 'delete'
+  })
+
+  .done(function (response) {
+    getSkaters(parkId);
+
+    $(button)
+      .toggleClass('leave attend')
+      .text('Attend');
+  })
+
+  .fail(function (response) {
+    console.log(response);
+  })
+});
+
+
+
+var getSkaters = function(skateparkId) {
+  var path = baseURL + 'api/skateparks/' + skateparkId + '/attendees';
+
+  $.ajax({
+    url: path,
+    type: 'get',
+    dataType: 'json'
+  })
+
+  .done(function (response) {
+    var park = $('.park-id:contains('+skateparkId+')');
+    park.siblings('.skater_count').text('Current Skaters: ' + response.length);
+  })
+
+  .fail(function (response) {
+    console.log(response);
+  });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

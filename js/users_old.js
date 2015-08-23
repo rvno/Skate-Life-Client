@@ -342,6 +342,9 @@ var getSkaters = function(skateparkId) {
 
 
 
+// ADD IN BIND ATTENDANCE LISTENER
+
+
 
 
 
