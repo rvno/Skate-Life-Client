@@ -155,54 +155,55 @@ var emptyFavorites = function() {
 
 
 
-
 $(document).on('click', '.attend', function (event) {
-  var parkId = $(this).siblings('p:first-child').text();
-  var path = baseURL + 'api/users/' + currentUserId + '/skateparks/' + parkId;
-  var button = this;
-
-  $.ajax({
-    url: path,
-    type: 'post'
-  })
-
-  .done(function (response) {
-    getSkaters(parkId);
-
-    $(button)
-      .toggleClass('attend leave')
-      .text('Leave');
-  })
-
-  .fail(function (response) {
-    alert('U GOTTA LOG IN BRAWSKI');
-  })
+  toggleAttendance(this, true);
 });
-
-
 
 $(document).on('click', '.leave', function (event) {
-  var parkId = $(event.target).siblings('p:first-child').text();
+  toggleAttendance(this, false);
+});
+
+
+var toggleAttendance = function (target, attending) {
+  var parkId = $(target).siblings('p:first-child').text();
   var path = baseURL + 'api/users/' + currentUserId + '/skateparks/' + parkId;
-  var button = this;
+  var button = target;
+
+  if (attending) {
+    debugger
+    var method = 'post'
+  } else {
+    var method = 'delete'
+  }
 
   $.ajax({
     url: path,
-    type: 'delete'
+    type: method
   })
 
   .done(function (response) {
     getSkaters(parkId);
 
-    $(button)
-      .toggleClass('leave attend')
-      .text('Attend');
+    if (attending) {
+      $(button)
+        .toggleClass('attend leave')
+        .text('Leave');
+    } else {
+      $(button)
+        .toggleClass('leave attend')
+        .text('Attend')
+    }
+
   })
 
   .fail(function (response) {
-    console.log(response);
-  })
-});
+    if (attending) {
+      alert('U GOTTA LOG IN BRAWSKI');
+    } else {
+      console.log(response);
+    }
+  });
+}
 
 
 
