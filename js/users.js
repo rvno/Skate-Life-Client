@@ -38,6 +38,12 @@ $(document).on('click', '.favorite-button', function (event) {
   checkIfFavorited();
 });
 
+// Favorite popup
+$(document).on('popupafteropen', '.ui-popup', function() {
+  $(this).animate({ opacity: 100 });
+  $(this).animate({ opacity: 0 }, 1500);
+});
+
 
 // Favorites Panel
 $(document).on('panelbeforeopen', '#favoritesPanel', function (event, ui) {
@@ -231,17 +237,3 @@ var getSkaters = function(skateparkId) {
     console.log(response);
   });
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
