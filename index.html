@@ -95,10 +95,36 @@
 		<div data-role="main" class="ui-content">
 			<div class="skatepark-page"></div>
 			<div class="messages-div"></div>
-			<h4 class="chat-user" hideen></h4>
+			<h4 class="chat-user" hidden></h4>
 			<input type="text" id="message-input" placeholder="Message">
 			<br/>
 			<button id="message-submit">Post</button>
+		</div>
+
+		<div data-role="footer" class="footer" data-theme="b">
+			<div data-role="navbar" class="navbar">
+				<ul>
+					<li>
+						<a href="#anylink" class="ui-btn ui-icon-back ui-btn-icon-bottom back-btn" data-rel="back"></a>
+					</li>
+					<li>
+						<a href="#main-map-page" class="ui-btn ui-icon-home ui-btn-icon-bottom home-btn" data-prefetch></a>
+					</li>
+					<li>
+						<a href="#favoritePopup" data-rel="popup" class="ui-btn ui-icon-star ui-btn-icon-bottom favorite-button" data-role="button"></a>
+					</li>
+				</ul>
+
+				<!-- when user is logged in -->
+				<div data-role="popup" id="favoritePopup">
+					<p>Added to your favorites!</p>
+				</div>
+
+				<!-- when user isn't logged in -->
+				<div data-role="popup" id="favoriteErrorPopup">
+					<p>You need to be logged in to do that!</p>
+				</div>
+			</div>
 		</div>
 	</div>
 
@@ -106,7 +132,8 @@
 
 
 
-
+	<!-- Carousel -->
+	<script type="text/javascript" src="./js/slick-carousel.min.js"></script>
 
 	<!-- Custom scripts -->
 	<script type="text/javascript" src="./js/users.js"></script>
