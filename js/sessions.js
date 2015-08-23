@@ -104,3 +104,11 @@ $(document).on('click', '#logout', function () {
   $('.userame').text('Welcome Skater');
   $('.welcome-header').text('Skate Life, Breh');
 });
+
+
+
+// MAYBE MOVE THIS TO A MAIN FILE, APP.JS OR SOMETHING
+$(document).on('popupafteropen', '.ui-popup', function() {
+  $(this).animate({ opacity: 100 });
+  $(this).animate({ opacity: 0 }, 1500);
+})

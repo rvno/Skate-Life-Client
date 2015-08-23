@@ -60,11 +60,6 @@ $(document).on('click', '.favorite-button', function (event) {
         $('#favoritePopup p').text('This skatepark has already been favorited.');
         $('#favoritePopup').popup('open');
         match = true;
-
-        // REFACTOR THIS?
-        // event.preventDefault();
-      } else {
-        // event.preventDefault();
       }
     });
 
@@ -87,9 +82,6 @@ $(document).on('click', '.favorite-button', function (event) {
       })
     }
   } else {
-
-    // REFACTOR THIS?
-    // event.preventDefault();
     $('#favoriteErrorPopup').popup('open');
   }
 
