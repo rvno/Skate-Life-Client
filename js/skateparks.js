@@ -1,19 +1,12 @@
-var userData;
+// var userData;
 var messageRef;
 var favoriteSkateparks = [];
 
-$( document ).on( "pageshow", "#main-map-page", function( event ) {
-  userData = JSON.parse(window.localStorage.getItem('googleData'))
-  
-  // This is a hacky thing that prevents the chatroom events from binding
-  // twice if a user decides to log in
-  if (messageRef)
-    unBindEvents();
 
+$(document).on('pageshow', function (event) {
   bindEvents();
   console.log('events bound');
 });
-
 
 
 var bindEvents = function() {
