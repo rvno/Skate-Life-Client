@@ -1,28 +1,29 @@
-var userData;
 var messageRef;
 var favoriteSkateparks = [];
 
-$( document ).on( "pageshow", "#main-map-page", function( event ) {
-  userData = JSON.parse(window.localStorage.getItem('googleData'))
-  
-  // This is a hacky thing that prevents the chatroom events from binding
-  // twice if a user decides to log in
-  if (messageRef)
-    unBindEvents();
 
-  bindEvents();
-  console.log('events bound');
+$(document).on('pageshow', '#main-map-page', function (event, ui) {
+  bindSkateparkChatListener();
+});
+
+$(document).on('pageshow', '#skatepark-page', function (event, ui){
+  if(userData)
+    populateFavoriteSkateparks();
+})
+
+$(document).on('pagehide', '#skatepark-page', function (event, ui){
+  clearChat();
+  unBindSkateparkEventListener();
 });
 
 
 
-var bindEvents = function() {
 
-  // SkatePark Show Page
+
+var bindSkateparkChatListener = function() {
   $(document).on("click", ".skatepark-link", function(event){
     event.preventDefault();
     var path = event.target.href
-    // var skatepark = event.target.text
     var skatepark = $(this).siblings('p:nth-child(2)').text();
 
 
@@ -44,26 +45,27 @@ var bindEvents = function() {
     });
   });
   
+  console.log('chat event bound');
   
 }
 
 
 
-var unBindEvents = function() {
+var unBindSkateparkEventListener = function() {
   $(document).off('click', '.skatepark-link');
   $('#message-submit').off('click');
   messageRef.off('child_added');
-
   console.log('events unbound');
 }
 
 
 
 
+// Possibly break this up into 2 functions
 var initializeChatroom = function(skatepark) {
   var skateparkURL = skatepark.split(' ')[0];
   messageRef = new Firebase('https://skatelife.firebaseio.com/parkchats/' + skatepark);
-  // userData = JSON.parse(window.localStorage.getItem('googleData'));
+
   if (userData) {
     var firstName = userData.google.displayName.split(' ')[0];
   } else {
@@ -106,36 +108,6 @@ var initializeChatroom = function(skatepark) {
 
 }
 
-//grab the user's favorites and store them in a global array
-$(document).on('pageshow', '#skatepark-page', function(event, ui){
-  console.log("hi")
-  if(userData){
-    console.log(currentUserId)
-    var path = baseURL + 'api/users/' + currentUserId + '/favorites'
-    console.log(path)
-    $.ajax({
-      url: path,
-      method: 'get',
-      dataType: 'json'
-    })
-    .done(function(response){
-      console.log(response)
-      $.each(response, function(index, skatepark){
-        favoriteSkateparks.push(skatepark)
-        console.log(skatepark)
-      })
-    })
-    .fail(function(response){
-      console.log('failure')
-    })
-  }
-})
-
-
-$(document).on('pagehide', '#skatepark-page', function(event, ui){
-  clearChat();
-  unBindEvents();
-});
 
 var clearChat = function() {
   $('.messages-div').empty();
@@ -156,4 +128,26 @@ var buildSkateparkPage = function(skatepark) {
         .hide());
 
   $('#skatepark-page .ui-content .skatepark-page').html(skateparkDiv);
+}
+
+var populateFavoriteSkateparks = function() {
+  var path = baseURL + 'api/users/' + currentUserId + '/favorites'
+
+  $.ajax({
+    url: path,
+    method: 'get',
+    dataType: 'json'
+  })
+
+  .done(function(response){
+    console.log(response)
+    $.each(response, function(index, skatepark){
+      favoriteSkateparks.push(skatepark)
+      console.log(skatepark)
+    })
+  })
+
+  .fail(function(response){
+    console.log('failure')
+  })
 }
