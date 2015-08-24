@@ -44,8 +44,14 @@ var setHeader = function(header) {
 
 
 var initializeMap = function() {
+  if (currentUser) {
+    var currentMapCenter = currentUser.position
+  } else {
+    var currentMapCenter = new google.maps.LatLng(37.663836, -122.080266)
+  }
+
   var mapProps = {
-    center: new google.maps.LatLng(37.663836, -122.080266),
+    center: currentMapCenter,
     zoom:10,
     panControl:false,
     zoomControl:false,

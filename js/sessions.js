@@ -59,7 +59,6 @@ var googleOauth = function() {
 var initializeUserObject = function(serverData) {
   var userData = JSON.parse(window.localStorage.getItem('googleData'));
   currentUser = new User(userData.google, serverData, currentLocation);
-  debugger
 }
 
 
