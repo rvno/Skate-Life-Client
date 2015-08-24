@@ -16,6 +16,15 @@ $(document).on('pageshow', '#main-map-page', function (event, data) {
   setTimeout(function () {
     initializeMap();
     customizeMap();
+
+    // Do this later
+    addLocationButtons();
+
+
+
+    fetchSkateparks();
+
+
   })
 });
 
@@ -90,3 +99,42 @@ var customizeMap = function() {
   );
 }
 
+
+var addLocationButtons = function() {
+  // DO THIS LATER
+}
+
+
+var fetchSkateparks = function() {
+  $.ajax({
+    url: baseURL + 'api/skateparks',
+    type: 'get',
+    dataType: 'json'
+  })
+
+  .done(function (response) {
+    initializeSkateparkObjects(response);
+  })
+
+  .fail(function (response) {
+    console.log(response);
+  });
+}
+
+
+var initializeSkateparkObjects = function(skateparks) {
+  skateparks.forEach(function (skateparkData) {
+    var skatepark = new Skatepark(skateparkData);
+    skatepark.infoWindow = skatepark.buildInfoWindow();
+    allSkateparks.push(skatepark);
+
+    google.maps.event.addListener(skatepark.marker, 'click', function () {
+      // figure out a better way to do this, so that its not an
+      // ajax call
+
+      // getAttendees(skatepark.id);
+      skatepark.infoWindow.open(map, skatepark.marker);
+    });
+  });
+
+}

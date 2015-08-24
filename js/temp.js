@@ -9,8 +9,6 @@ function User(authData, serverData) {
 
 
 
-
-
 // Skateparks should load once and only once, make sure
 // that this is happening
 function Skatepark(serverData, options) {
@@ -21,6 +19,7 @@ function Skatepark(serverData, options) {
   this.marker = new google.maps.Marker({
     position: this.position,
     title: this.name,
+    map: map,
     icon: './imgs/skatepark.png'
   })
 }
