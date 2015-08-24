@@ -1,5 +1,4 @@
 var baseURL = 'https://skate-life-backend.herokuapp.com/';
-var userData;
 var currentUserId;
 
 // MOVE THIS TO APP.JS, or LAYOUT.JS?
@@ -10,8 +9,6 @@ var chatPanel = '<div data-role="panel" id="chatPanel" data-display="overlay" da
 
 // Load up Favs and Chat panel, also populate userData
 $(document).on('pagebeforecreate', function () {
-  userData = JSON.parse(window.localStorage.getItem('googleData'));
-
   $.mobile.pageContainer.prepend(externalPanel);
   $('#favoritesPanel').panel().enhanceWithin();
 
@@ -106,7 +103,7 @@ $(document).on('panelbeforeopen', '#favoritesPanel', function (event, ui) {
 var checkIfFavorited = function () {
   var match;
 
-  if (userData) {
+  if (currentUser) {
     var parkId = $('.skatepark-id').text()
 
     $.each(favoriteSkateparks, function (index, favoritePark) {
