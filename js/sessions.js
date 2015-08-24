@@ -2,10 +2,6 @@ var ref = new Firebase('https://skatelife.firebaseio.com/');
 var baseURL = 'https://skate-life-backend.herokuapp.com';
 var currentUser;
 
-// Get rid of this and make it a local variable when needed
-// var userData;
-// var currentUserId;
-
 
 
 
@@ -20,8 +16,6 @@ $(document).on('click', '.login-btn', function (event) {
 $(document).on('click', '#logout', function () {
   signOut();
 });
-
-
 
 
 
