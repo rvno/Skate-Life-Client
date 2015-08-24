@@ -35,6 +35,10 @@ $(document).on('pageshow', '#main-map-page', function (event, data) {
 
 
 
+
+
+
+
 var setHeader = function(header) {
   if (currentUser) {
     $(header).text('Welcome ' + currentUser.name);
@@ -149,6 +153,7 @@ var initializeSkateparkObjects = function(skateparks) {
 
 var fetchSkaters = function() {
   userMarkerRef.on('child_added', function (snapshot) {
+    debugger
     var userMarker = snapshot.val()
     var markerPosition = new google.maps.LatLng(userMarker.position.G, userMarker.position.K);
 
@@ -162,11 +167,23 @@ var fetchSkaters = function() {
 
     var marker = new google.maps.Marker({
       url: '#login-page',
+      uid: userMarker.uid,
       position: markerPosition,
       draggable: draggability,
       icon: iconPath
     });
 
-    marker.setMap(map);
+    if (marker.uid === currentUser.uid) {
+      currentUser.marker = marker;
+      currentUser.marker.setMap(map);
+      currentUser.bindDragListener();
+    } else {
+      marker.setMap(map);
+    }
+
   });
+
 }
+
+
+

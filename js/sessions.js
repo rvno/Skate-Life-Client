@@ -77,7 +77,7 @@ var backendUserAuth = function(authData) {
 
 var initializeUserObject = function(serverData) {
   var userData = JSON.parse(window.localStorage.getItem('googleData'));
-    var location = {position: currentLocation}
+  var location = {position: currentLocation}
   currentUser = new User(userData.google, serverData, location);
 
   createUserFirebaseMarker();
@@ -85,7 +85,7 @@ var initializeUserObject = function(serverData) {
 
 
 var createUserFirebaseMarker = function() {
-  userMarkerRef.push({
+  userMarkerRef.child(currentUser.uid).set({
     url: '#login-page',
     uid: currentUser.uid,
     position: currentUser.position,

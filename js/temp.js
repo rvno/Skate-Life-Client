@@ -9,6 +9,23 @@ function User(authData, serverData, location) {
 }
 
 
+User.prototype.saveCurrentLocation = function() {
+  currentUser.marker.position = this.position;
+
+  userMarkerRef.child(currentUser.uid).set({
+    url: currentUser.marker.url,
+    uid: currentUser.uid,
+    position: currentUser.marker.position,
+    icon: currentUser.marker.icon
+  });
+}
+
+User.prototype.bindDragListener = function() {
+  google.maps.event.addListener(this.marker, 'dragend', this.saveCurrentLocation);
+
+}
+
+
 
 
 // Skateparks should load once and only once, make sure
