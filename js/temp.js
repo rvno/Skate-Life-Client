@@ -1,6 +1,7 @@
-function User(authData, serverData) {
+function User(authData, serverData, position) {
   this.userId = serverData.id,
   this.uid = authData.id,
+  this.position = position,
   this.name = authData.displayName.split(' ')[0],
   this.img = authData.profileImageURL,
   this.favorites = []

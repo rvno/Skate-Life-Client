@@ -234,3 +234,4 @@ var getSkaters = function(skateparkId) {
     console.log(response);
   });
 }
+

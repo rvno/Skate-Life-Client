@@ -18,15 +18,14 @@ $(document).on('pageshow', '#main-map-page', function (event, data) {
     customizeMap();
 
     // Do this later
-    addLocationButtons();
-
-
-
+    // addLocationButtons();
     fetchSkateparks();
 
 
-  })
+  }, 100);
 });
+
+
 
 
 
@@ -124,14 +123,12 @@ var fetchSkateparks = function() {
 
 var initializeSkateparkObjects = function(skateparks) {
   skateparks.forEach(function (skateparkData) {
+    
     var skatepark = new Skatepark(skateparkData);
     skatepark.infoWindow = skatepark.buildInfoWindow();
     allSkateparks.push(skatepark);
 
     google.maps.event.addListener(skatepark.marker, 'click', function () {
-      // figure out a better way to do this, so that its not an
-      // ajax call
-
       // getAttendees(skatepark.id);
       skatepark.infoWindow.open(map, skatepark.marker);
     });

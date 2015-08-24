@@ -5,6 +5,10 @@ var currentUser;
 
 
 
+
+
+
+
 // Sign In
 $(document).on('click', '.login-btn', function (event) {
   event.preventDefault();
@@ -54,7 +58,8 @@ var googleOauth = function() {
 
 var initializeUserObject = function(serverData) {
   var userData = JSON.parse(window.localStorage.getItem('googleData'));
-  currentUser = new User(userData.google, serverData);
+  currentUser = new User(userData.google, serverData, currentLocation);
+  debugger
 }
 
 
