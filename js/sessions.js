@@ -40,6 +40,7 @@ var authenticateUserOnLogin = function() {
 
     backendUserAuth(authData);
     buildUserProfile();
+    buildUserObject();
   });
 }
 
@@ -59,6 +60,13 @@ var googleOauth = function() {
 }
 
 
+var buildUserObject = function() {
+  userData = JSON.parse(window.localStorage.getItem('googleData'));
+
+  // declare this as global variable
+  currentUser = new User(userData.google);
+  debugger
+}
 
 var buildUserProfile = function() {
   userData = JSON.parse(window.localStorage.getItem('googleData'));
