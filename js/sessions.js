@@ -17,9 +17,9 @@ $(document).on('click', '.login-btn', function (event) {
 $(document).on('click', '#logout', function () {
   signOut();
 
-  // REMOVE THIS AND PUT IT ON MAIN MAP PAGE
-  $('.userame').text('Welcome Skater');
-  $('.welcome-header').text('Skate Life, Breh');
+  // // REMOVE THIS AND PUT IT ON MAIN MAP PAGE
+  // $('.userame').text('Welcome Skater');
+  // $('.welcome-header').text('Skate Life, Breh');
 });
 
 
@@ -39,8 +39,9 @@ var authenticateUserOnLogin = function() {
     $.mobile.changePage('#main-map-page');
 
     backendUserAuth(authData);
-    buildUserProfile();
-    buildUserObject();
+
+    initializeUserObject();
+    // buildUserProfile();
   });
 }
 
@@ -60,22 +61,20 @@ var googleOauth = function() {
 }
 
 
-var buildUserObject = function() {
+var initializeUserObject = function() {
   userData = JSON.parse(window.localStorage.getItem('googleData'));
 
   // declare this as global variable
   currentUser = new User(userData.google);
-  debugger
 }
 
-var buildUserProfile = function() {
-  userData = JSON.parse(window.localStorage.getItem('googleData'));
-  var firstName = userData.google.displayName.split(' ')[0];
+// var buildUserProfile = function() {
+//   // userData = JSON.parse(window.localStorage.getItem('googleData'));
+//   // var firstName = userData.google.displayName.split(' ')[0];
 
-  // EVENTUALLY DO THIS ON MAIN MAP PAGE
-  $('.username').text('Welcome ' + firstName);
-  $('.welcom-header').text('Welcome ' + firstName);
-}
+//   // EVENTUALLY DO THIS ON MAIN MAP PAGE
+
+// }
 
 
 

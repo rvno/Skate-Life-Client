@@ -13,10 +13,29 @@ var previousWindow = null;
 
 
 
+var currentUser;
+
+// FIX THIS WHEN U GET A CHANCE
+$(document).on('pageshow', '#login-page', function () {
+  if (currentUser) {
+    $('.welcome-header').text('Welcome ' + currentUser.name);
+  } else {
+    $('.welcome-header').text('Welcome Skater');
+  }
+});
+
+
 
 //CHANGE MAP SIZE AND INITIALIZATION LOCATION
 $(document).on('pageshow', '#main-map-page', function (e, data) {
-  // debugger
+
+  // possibly make this quicker
+  if (currentUser) {
+    $('.username').text('Welcome ' + currentUser.name);
+  } else {
+    $('.username').text('Welcome Skater');
+  }
+
   setTimeout(function () {
 
     buildMap();

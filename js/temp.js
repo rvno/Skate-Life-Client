@@ -8,5 +8,5 @@ function User(options) {
 
 
 function Skatepark(options) {
-  this.name = 
+  this.name = null
 }
