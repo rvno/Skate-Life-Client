@@ -1,5 +1,7 @@
 var ref = new Firebase('https://skatelife.firebaseio.com/');
 var baseURL = 'https://skate-life-backend.herokuapp.com';
+
+// Get rid of this and make it a local variable when needed
 var userData;
 var currentUserId;
 
@@ -16,10 +18,6 @@ $(document).on('click', '.login-btn', function (event) {
 // Sign Out
 $(document).on('click', '#logout', function () {
   signOut();
-
-  // // REMOVE THIS AND PUT IT ON MAIN MAP PAGE
-  // $('.userame').text('Welcome Skater');
-  // $('.welcome-header').text('Skate Life, Breh');
 });
 
 
@@ -34,14 +32,13 @@ var authenticateUserOnLogin = function() {
       'googleData',
       JSON.stringify(authData));
 
+    backendUserAuth(authData);
+    initializeUserObject();
+
     // Verify if this makes any difference
     $.mobile.loadPage('#main-map-page');
     $.mobile.changePage('#main-map-page');
 
-    backendUserAuth(authData);
-
-    initializeUserObject();
-    // buildUserProfile();
   });
 }
 
@@ -62,20 +59,11 @@ var googleOauth = function() {
 
 
 var initializeUserObject = function() {
-  userData = JSON.parse(window.localStorage.getItem('googleData'));
 
-  // declare this as global variable
+  // possibly turn this into a local variable
+  userData = JSON.parse(window.localStorage.getItem('googleData'));
   currentUser = new User(userData.google);
 }
-
-// var buildUserProfile = function() {
-//   // userData = JSON.parse(window.localStorage.getItem('googleData'));
-//   // var firstName = userData.google.displayName.split(' ')[0];
-
-//   // EVENTUALLY DO THIS ON MAIN MAP PAGE
-
-// }
-
 
 
 var backendUserAuth = function(userData) {
@@ -102,8 +90,12 @@ var backendUserAuth = function(userData) {
 
 var signOut = function() {
   localStorage.clear();
+  currentUser = null;
+
+  // eventually get rid of these two
   userData = null;
   currentUserId = null;
+
   $.mobile.changePage('#login-page');
 }
 
