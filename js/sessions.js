@@ -1,7 +1,7 @@
 var ref = new Firebase('https://skatelife.firebaseio.com/');
 var baseURL = 'https://skate-life-backend.herokuapp.com';
 var currentUser;
-
+var userMarkerRef = ref.child('markers');
 
 
 
@@ -56,12 +56,6 @@ var googleOauth = function() {
 }
 
 
-var initializeUserObject = function(serverData) {
-  var userData = JSON.parse(window.localStorage.getItem('googleData'));
-  currentUser = new User(userData.google, serverData, currentLocation);
-}
-
-
 var backendUserAuth = function(authData) {
   var path = baseURL + 'api/users/' + authData.google.id + '/authenticate'
 
@@ -81,6 +75,23 @@ var backendUserAuth = function(authData) {
   });
 }
 
+var initializeUserObject = function(serverData) {
+  var userData = JSON.parse(window.localStorage.getItem('googleData'));
+    var location = {position: currentLocation}
+  currentUser = new User(userData.google, serverData, location);
+
+  createUserFirebaseMarker();
+}
+
+
+var createUserFirebaseMarker = function() {
+  userMarkerRef.push({
+    url: '#login-page',
+    uid: currentUser.uid,
+    position: currentUser.position,
+    icon: './imgs/user.png'
+  });
+}
 
 
 var signOut = function() {

@@ -1,6 +1,8 @@
 var map;
 var MY_MAPTYPE_ID = 'custom_style';
 
+// var userMarkerRef = ref.child('markers');
+
 
 // Figure out a way to optimize this, so that you
 // don't see "Skater" before the name changes.
@@ -20,7 +22,7 @@ $(document).on('pageshow', '#main-map-page', function (event, data) {
     // Do this later
     // addLocationButtons();
     fetchSkateparks();
-
+    fetchSkaters();
 
   }, 100);
 });
@@ -135,9 +137,36 @@ var initializeSkateparkObjects = function(skateparks) {
     allSkateparks.push(skatepark);
 
     google.maps.event.addListener(skatepark.marker, 'click', function () {
+
+      // *** ADD THIS LATER
       // getAttendees(skatepark.id);
       skatepark.infoWindow.open(map, skatepark.marker);
     });
   });
 
+}
+
+
+var fetchSkaters = function() {
+  userMarkerRef.on('child_added', function (snapshot) {
+    var userMarker = snapshot.val()
+    var markerPosition = new google.maps.LatLng(userMarker.position.G, userMarker.position.K);
+
+    if (userMarker.uid === currentUser.uid) {
+      var draggability = true;
+      var iconPath = './imgs/user-icon.png'
+    } else {
+      var draggability = false;
+      var iconPath = './imgs/user.png'
+    }
+
+    var marker = new google.maps.Marker({
+      url: '#login-page',
+      position: markerPosition,
+      draggable: draggability,
+      icon: iconPath
+    });
+
+    marker.setMap(map);
+  });
 }

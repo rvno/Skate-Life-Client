@@ -6,8 +6,6 @@ var setCurrentUserPosition = function(position) {
     position.coords.latitude,
     position.coords.longitude
   );
-  console.log('got current location');
-  // debugger
 }
 
 var onError = function() {
