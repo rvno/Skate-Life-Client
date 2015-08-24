@@ -4,6 +4,7 @@
 Skate Life is an Android app that allows skaters to connect with one another and explore nearby skateparks.
 [Link to Skate Life's Backend Repo](https://github.com/yago580/skate-life-backend)
 
+Download the app from the [Google Play Store](https://play.google.com/store/apps/details?id=com.skate_life.mobile_test).
 ##Technologies Used
   * Backend: Rails-API, ActiveRecord, PostgreSQL, Firebase
   * Frontend: Apache Cordova, Javascript, jQuery & jQuery Mobile, Slick.js, HTML, CSS
