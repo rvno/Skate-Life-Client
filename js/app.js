@@ -40,104 +40,104 @@ $(document).on('pageshow', '#main-map-page', function (e, data) {
     buildMap();
 
     //SET MARKER TO BE AT defaultLocation (MAKE IT VARIABLE LATER)
-    defaultLocation = new google.maps.LatLng(latitude, longitude)
-    createNewUserMarker(map);
+    // defaultLocation = new google.maps.LatLng(latitude, longitude)
+    // createNewUserMarker(map);
 
 
 
-    // Sets up Home button on Map div that will pan back to user marker postion
-    var homeControlDiv = document.createElement('div');
-    var homeControl = new HomeControl(homeControlDiv, map);
-    map.controls[google.maps.ControlPosition.TOP_RIGHT].push(homeControlDiv);
+    // // Sets up Home button on Map div that will pan back to user marker postion
+    // var homeControlDiv = document.createElement('div');
+    // var homeControl = new HomeControl(homeControlDiv, map);
+    // map.controls[google.maps.ControlPosition.TOP_RIGHT].push(homeControlDiv);
     
-    //call function to append the location control
-    var currentLocationCtrlDiv = document.createElement('div');
-    var locationCtrl = new CurrentLocationCtrl(currentLocationCtrlDiv, map);
-    map.controls[google.maps.ControlPosition.TOP_RIGHT].push(currentLocationCtrlDiv);
-    //end call to function to append location control button
+    // //call function to append the location control
+    // var currentLocationCtrlDiv = document.createElement('div');
+    // var locationCtrl = new CurrentLocationCtrl(currentLocationCtrlDiv, map);
+    // map.controls[google.maps.ControlPosition.TOP_RIGHT].push(currentLocationCtrlDiv);
+    // //end call to function to append location control button
 
-    // Ajax call to grab skatepark coordinates
-    $.ajax({
-      url: baseURL + 'api/skateparks',
-      type: 'get',
-      dataType: 'json'
-    })
-
-
-
-    .done(function(response) {
-
-      // maybe we don't need the parsefloat stuff, lets see...
-      initializeSkateparkObjects(response);
-
-      // WE DONT NEED THIS ANYMORE, SEE IF YOU CAN KEEP - IN BACKEND DB
-      $.each(response, function(index, skatepark) {
-
-        // DO THIS IN RUBY
-        if (skatepark.lat[0] === '-') {
-          var latParsed = skatepark.lat.substr(1);
-          var lat = parseFloat(skatepark.lat);
-        } else {
-          var lat = parseFloat(skatepark.lat);
-        }
-
-        if (skatepark.lon[0] === '-') {
-          var lonParsed = skatepark.lon.substr(1);
-          var lon = parseFloat(skatepark.lon);
-        } else {
-          var lon = parseFloat(skatepark.lon);
-        }
+    // // Ajax call to grab skatepark coordinates
+    // $.ajax({
+    //   url: baseURL + 'api/skateparks',
+    //   type: 'get',
+    //   dataType: 'json'
+    // })
 
 
 
-        var infowindow = buildSkateparkInfoWindow(skatepark, lat, lon);
-        infoWindows.push(infowindow)
+    // .done(function(response) {
+
+    //   // maybe we don't need the parsefloat stuff, lets see...
+    //   initializeSkateparkObjects(response);
+
+    //   // WE DONT NEED THIS ANYMORE, SEE IF YOU CAN KEEP - IN BACKEND DB
+    //   $.each(response, function(index, skatepark) {
+
+    //     // DO THIS IN RUBY
+    //     if (skatepark.lat[0] === '-') {
+    //       var latParsed = skatepark.lat.substr(1);
+    //       var lat = parseFloat(skatepark.lat);
+    //     } else {
+    //       var lat = parseFloat(skatepark.lat);
+    //     }
+
+    //     if (skatepark.lon[0] === '-') {
+    //       var lonParsed = skatepark.lon.substr(1);
+    //       var lon = parseFloat(skatepark.lon);
+    //     } else {
+    //       var lon = parseFloat(skatepark.lon);
+    //     }
 
 
-        var marker = new google.maps.Marker({
-          position: new google.maps.LatLng(lat,lon),
-          title: skatepark.name,
-          map: map,
-          icon: "./imgs/skatepark.png"
-        });
 
-        markers.push(marker);
-
-        google.maps.event.addListener(marker, 'click', function() {
-            getAttendees(skatepark.id);
-            infowindow.open(map,marker);
-        });
-      });
-
-      // var mc = new MarkerClusterer(map, markers);
-
-      //------------------GEOfence----------------------------//
-
-        // Grab current latitude and longitude coordinates
+    //     var infowindow = buildSkateparkInfoWindow(skatepark, lat, lon);
+    //     infoWindows.push(infowindow)
 
 
-        // Construct geofence circle
-      var currentGeofence = new google.maps.Circle({
-        map: map,
-        radius: 9001,
-        fillColor: '#336688',
-        fillOpacity: .22,
-        strokeColor: '#D48817',
-        strokeWeight: 1.75
-      });
+    //     var marker = new google.maps.Marker({
+    //       position: new google.maps.LatLng(lat,lon),
+    //       title: skatepark.name,
+    //       map: map,
+    //       icon: "./imgs/skatepark.png"
+    //     });
+
+    //     markers.push(marker);
+
+    //     google.maps.event.addListener(marker, 'click', function() {
+    //         getAttendees(skatepark.id);
+    //         infowindow.open(map,marker);
+    //     });
+    //   });
+
+    //   // var mc = new MarkerClusterer(map, markers);
+
+    //   //------------------GEOfence----------------------------//
+
+    //     // Grab current latitude and longitude coordinates
 
 
-      currentGeofence.bindTo('center', userMarker, 'position');
-      userMarker.setIcon('./imgs/user-icon.png');
-      userMarker.set('draggable', true);
+    //     // Construct geofence circle
+    //   var currentGeofence = new google.maps.Circle({
+    //     map: map,
+    //     radius: 9001,
+    //     fillColor: '#336688',
+    //     fillOpacity: .22,
+    //     strokeColor: '#D48817',
+    //     strokeWeight: 1.75
+    //   });
 
-      fireAutomaticCarouselBuilder(markers, currentGeofence);
 
-    })
+    //   currentGeofence.bindTo('center', userMarker, 'position');
+    //   userMarker.setIcon('./imgs/user-icon.png');
+    //   userMarker.set('draggable', true);
 
-    .fail(function(response) {
+    //   fireAutomaticCarouselBuilder(markers, currentGeofence);
 
-    });
+    // })
+
+    // .fail(function(response) {
+
+    // });
 
   }, 100);
   
@@ -190,22 +190,22 @@ var getAttendees = function(skateparkId) {
 // port these things to global variables and pass them in to the function
 var buildMap = function() {
   var MY_MAPTYPE_ID = 'custom_style';
-    var featureOpts = [
-      {
-        stylers: [
-          {hue: '#F2A516'},
-          {visibility: 'simplified'},
-          {gamma: 0.8},
-          {weight: 0.5}
-        ]
-      },
-      {
-        featureType: 'water',
-        stylers: [
-          {color: '#2E2D2A'}
-        ]
-      }
-    ];
+  var featureOpts = [
+    {
+      stylers: [
+        {hue: '#F2A516'},
+        {visibility: 'simplified'},
+        {gamma: 0.8},
+        {weight: 0.5}
+      ]
+    },
+    {
+      featureType: 'water',
+      stylers: [
+        {color: '#2E2D2A'}
+      ]
+    }
+  ];
 
   // Set up map properties for custom stuff
   var mapProps = {
