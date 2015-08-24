@@ -145,7 +145,7 @@ var populateFavorites = function(favData) {
   $('.favorites').empty();
   $('.favorites').prepend(
     $('<li>').attr('id', 'logout').append(
-    $('<a>').attr('href', '#').text('Logout')));
+      $('<a>').attr('href', '#').text('Logout')));
 
   $.each(favData, function(index, favorite){
     $('.favorites').append(

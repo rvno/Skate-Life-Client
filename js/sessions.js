@@ -1,4 +1,4 @@
-var oAuthRef = new Firebase('https://skatelife.firebaseio.com/');
+var ref = new Firebase('https://skatelife.firebaseio.com/');
 var baseURL = 'https://skate-life-backend.herokuapp.com';
 var userData;
 var currentUserId;
@@ -46,7 +46,7 @@ var authenticateUserOnLogin = function() {
 
 var googleOauth = function() {
   var promise = new Promise(function (resolve, reject) {
-    oAuthRef.authWithOAuthPopup('google', function (error, authData) {
+    ref.authWithOAuthPopup('google', function (error, authData) {
       if (error) {
         alert('login failed!');
         reject(error);

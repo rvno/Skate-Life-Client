@@ -1,6 +1,5 @@
 var ref = new Firebase('https://skatelife.firebaseio.com/');
 var baseURL = 'https://skate-life-backend.herokuapp.com/';
-// var baseURL = 'http://localhost:3000/';
 
 
 var map;
@@ -15,9 +14,9 @@ var previousWindow = null;
 
 
 
-
 //CHANGE MAP SIZE AND INITIALIZATION LOCATION
 $(document).on('pageshow', '#main-map-page', function (e, data) {
+  // debugger
   setTimeout(function () {
 
     buildMap();
@@ -25,8 +24,6 @@ $(document).on('pageshow', '#main-map-page', function (e, data) {
     //SET MARKER TO BE AT defaultLocation (MAKE IT VARIABLE LATER)
     defaultLocation = new google.maps.LatLng(latitude, longitude)
     createNewUserMarker(map);
-
-
 
 
 
@@ -412,7 +409,7 @@ $(document).ready(function(){
         console.log('gotemmmm')
         previousWindow = infoWindow;
         infoWindow.open(map);
-      }
+      } 
     })
   })
     
