@@ -1,9 +1,10 @@
 var messageRef;
+var allSkateparks = [];
+var currentPark;
 var favoriteSkateparks = [];
 
-
 $(document).on('pageshow', '#main-map-page', function (event, ui) {
-  bindSkateparkChatListener();
+  bindSkateparkPageListener();
 });
 
 $(document).on('pageshow', '#skatepark-page', function (event, ui){
@@ -20,12 +21,15 @@ $(document).on('pagehide', '#skatepark-page', function (event, ui){
 
 
 
-var bindSkateparkChatListener = function() {
+var bindSkateparkPageListener = function() {
+
   $(document).on("click", ".skatepark-link", function(event){
     event.preventDefault();
     var path = event.target.href
     var skatepark = $(this).siblings('p:nth-child(2)').text();
 
+
+    // *** Change this so it doesn't have to hit server
 
     $.ajax({
       url: path,
@@ -34,8 +38,10 @@ var bindSkateparkChatListener = function() {
     })
 
     .done(function(response){
-      initializeChatroom(skatepark);
+      initializeSkateParkObject(response);
 
+
+      initializeChatroom(skatepark);
       buildSkateparkPage(response)
       $.mobile.changePage('#skatepark-page');
     })
@@ -47,6 +53,14 @@ var bindSkateparkChatListener = function() {
   
   console.log('chat event bound');
   
+}
+
+
+var initializeSkateParkObject = function(serverData) {
+
+  // *** Change this so it doesn't have to hit server
+  currentPark = new Skatepark(serverData);
+  debugger
 }
 
 

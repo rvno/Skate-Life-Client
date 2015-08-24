@@ -67,6 +67,9 @@ $(document).on('pageshow', '#main-map-page', function (e, data) {
 
     .done(function(response) {
 
+      // maybe we don't need the parsefloat stuff, lets see...
+      initializeSkateparkObjects(response);
+
       // WE DONT NEED THIS ANYMORE, SEE IF YOU CAN KEEP - IN BACKEND DB
       $.each(response, function(index, skatepark) {
 
@@ -139,6 +142,29 @@ $(document).on('pageshow', '#main-map-page', function (e, data) {
   }, 100);
   
 });
+
+
+
+
+
+
+
+
+
+var initializeSkateparkObjects = function(skateparks) {
+  
+  skateparks.forEach(function(skateparkData) {
+    var skatepark = new Skatepark(skateparkData);
+    skatepark.infoWindow = skatepark.buildInfoWindow();
+    
+    allSkateparks.push(skatepark);
+  });
+}
+
+
+
+
+
 
 
 // Grab all attendees of a skatepark
