@@ -1,5 +1,5 @@
-## Git Workflow 
-# Separate branch for each feature!
+# Git Workflow 
+## Separate branch for each feature!
 * git status
 ** Make sure you recognize each file
 * git add --patch
