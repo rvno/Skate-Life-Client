@@ -7,7 +7,7 @@ $(document).on('pageshow', '#main-map-page', function (event, ui) {
 });
 
 $(document).on('pageshow', '#skatepark-page', function (event, ui){
-  if(userData)
+  if(currentUser)
     populateFavoriteSkateparks();
 })
 
@@ -66,8 +66,8 @@ var initializeChatroom = function(skatepark) {
   var skateparkURL = skatepark.split(' ')[0];
   messageRef = new Firebase('https://skatelife.firebaseio.com/parkchats/' + skatepark);
 
-  if (userData) {
-    var firstName = userData.google.displayName.split(' ')[0];
+  if (currentUser) {
+    var firstName = currentUser.name;
   } else {
     var firstName = 'Mystery Thrasher';
   }
@@ -88,8 +88,8 @@ var initializeChatroom = function(skatepark) {
   $('#message-submit').on('click', function (event) {
     event.preventDefault();
 
-    if (userData) {
-      var avatarURL = userData.google.profileImageURL;
+    if (currentUser) {
+      var avatarURL = currentUser.img;
     } else {
       var avatarURL = './imgs/johnny_hash.jpg';
     }
@@ -131,7 +131,7 @@ var buildSkateparkPage = function(skatepark) {
 }
 
 var populateFavoriteSkateparks = function() {
-  var path = baseURL + 'api/users/' + currentUserId + '/favorites'
+  var path = baseURL + 'api/users/' + currentUser.userId + '/favorites'
 
   $.ajax({
     url: path,

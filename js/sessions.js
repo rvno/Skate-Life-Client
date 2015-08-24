@@ -1,9 +1,10 @@
 var ref = new Firebase('https://skatelife.firebaseio.com/');
 var baseURL = 'https://skate-life-backend.herokuapp.com';
+var currentUser;
 
 // Get rid of this and make it a local variable when needed
-var userData;
-var currentUserId;
+// var userData;
+// var currentUserId;
 
 
 
@@ -33,7 +34,6 @@ var authenticateUserOnLogin = function() {
       JSON.stringify(authData));
 
     backendUserAuth(authData);
-    initializeUserObject();
 
     // Verify if this makes any difference
     $.mobile.loadPage('#main-map-page');
@@ -58,27 +58,24 @@ var googleOauth = function() {
 }
 
 
-var initializeUserObject = function() {
-
-  // possibly turn this into a local variable
-  userData = JSON.parse(window.localStorage.getItem('googleData'));
-  currentUser = new User(userData.google);
+var initializeUserObject = function(serverData) {
+  var userData = JSON.parse(window.localStorage.getItem('googleData'));
+  currentUser = new User(userData.google, serverData);
 }
 
 
-var backendUserAuth = function(userData) {
-  var path = baseURL + 'api/users/' + userData.google.id + '/authenticate'
+var backendUserAuth = function(authData) {
+  var path = baseURL + 'api/users/' + authData.google.id + '/authenticate'
 
   $.ajax({
     url: path,
     type: 'post',
-    data: userData,
+    data: authData,
     dataType: 'json'
   })
 
   .done(function (response) {
-    currentUserId = response.id;
-    window.localStorage.setItem('currentUserId', currentUserId);
+    initializeUserObject(response);
   })
 
   .fail(function (response) {
@@ -91,11 +88,6 @@ var backendUserAuth = function(userData) {
 var signOut = function() {
   localStorage.clear();
   currentUser = null;
-
-  // eventually get rid of these two
-  userData = null;
-  currentUserId = null;
-
   $.mobile.changePage('#login-page');
 }
 

@@ -1,5 +1,5 @@
 var baseURL = 'https://skate-life-backend.herokuapp.com/';
-var currentUserId;
+// var currentUserId;
 
 // MOVE THIS TO APP.JS, or LAYOUT.JS?
 var externalPanel = '<div data-role="panel" id="favoritesPanel" data-display="overlay" data-theme="b"><a href="#" data-rel="close" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-a ui-icon-delete ui-btn-icon-left" data-prefetch >Close Favorites</a><ul data-role="listview" class="favorites"><li id="logout"><a href="#">Logout</a></li></ul></div>';
@@ -42,10 +42,12 @@ $(document).on('popupafteropen', '.ui-popup', function() {
 
 // Favorites Panel
 $(document).on('panelbeforeopen', '#favoritesPanel', function (event, ui) {
-  currentUserId = window.localStorage.getItem('currentUserId');
-  var path = baseURL + 'api/users/' + currentUserId + '/favorites';
+  // currentUserId = window.localStorage.getItem('currentUserId');
 
-  if (currentUserId) {
+  if (currentUser) {
+    debugger
+    var path = baseURL + 'api/users/' + currentUser.userId + '/favorites';
+
     $.ajax({
       url: path,
       method: 'get',
@@ -115,8 +117,8 @@ var checkIfFavorited = function () {
     });
 
     if (!match) {
-      currentUserId = window.localStorage.getItem('currentUserId');
-      var path = baseURL + 'api/users/' + currentUserId + '/favorites/' + parkId;
+      // currentUserId = window.localStorage.getItem('currentUserId');
+      var path = baseURL + 'api/users/' + currentUser.userId + '/favorites/' + parkId;
 
       $.ajax({
         url: path,
@@ -176,7 +178,7 @@ var emptyFavorites = function() {
 
 var toggleAttendance = function (target, attending) {
   var parkId = $(target).siblings('p:first-child').text();
-  var path = baseURL + 'api/users/' + currentUserId + '/skateparks/' + parkId;
+  var path = baseURL + 'api/users/' + currentUser.userId + '/skateparks/' + parkId;
   var button = target;
 
   if (attending) {

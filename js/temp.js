@@ -1,7 +1,8 @@
-function User(options) {
-  this.name = options.displayName.split(' ')[0],
-  this.uid = options.id,
-  this.img = options.profileImageURL
+function User(authData, serverData) {
+  this.userId = serverData.id,
+  this.uid = authData.id,
+  this.name = authData.displayName.split(' ')[0],
+  this.img = authData.profileImageURL
   this.favorites = [];
 }
 

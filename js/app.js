@@ -13,7 +13,6 @@ var previousWindow = null;
 
 
 
-var currentUser;
 
 // FIX THIS WHEN U GET A CHANCE
 $(document).on('pageshow', '#login-page', function () {
