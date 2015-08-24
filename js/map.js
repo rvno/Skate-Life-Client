@@ -23,6 +23,7 @@ $(document).on('pageshow', '#main-map-page', function (event, data) {
     // addLocationButtons();
     fetchSkateparks();
     fetchSkaters();
+    listenForPositionChanges();
 
   }, 100);
 });
@@ -152,8 +153,9 @@ var initializeSkateparkObjects = function(skateparks) {
 
 
 var fetchSkaters = function() {
+  userMarkers = [];
+
   userMarkerRef.on('child_added', function (snapshot) {
-    debugger
     var userMarker = snapshot.val()
     var markerPosition = new google.maps.LatLng(userMarker.position.G, userMarker.position.K);
 
@@ -177,12 +179,31 @@ var fetchSkaters = function() {
       currentUser.marker = marker;
       currentUser.marker.setMap(map);
       currentUser.bindDragListener();
+
+      userMarkers.push(currentUser.marker);
     } else {
       marker.setMap(map);
+
+      userMarkers.push(marker);
     }
 
   });
 
+}
+
+var listenForPositionChanges = function() {
+  userMarkerRef.on('child_changed', function (snapshot) {
+    var position = snapshot.val().position;
+    var markerPosition = new google.maps.LatLng(position.G, position.K);
+    // debugger
+
+    userMarkers.forEach(function (marker) {
+      if (snapshot.val().uid === marker.uid) {
+        marker.setPosition(markerPosition);
+      }
+    });
+    // marker.
+  });
 }
 
 
