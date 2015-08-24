@@ -11,10 +11,10 @@
   BE descriptive, VERY descriptive
 * git co master
 * git pull
-* git co <branchname>
+* git co branchname
 
   Remember, make your branch name descriptive, too! Name it after a fix/feature!
-* git push origin <branchname>
+* git push origin branchname
 * Put in pull request
 
   Promptly follow up with a team member to review the pull request and then merge it when ready
