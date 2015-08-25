@@ -22,46 +22,70 @@ $(document).on('pagehide', '#skatepark-page', function (event, ui){
 
 
 var bindSkateparkPageListener = function() {
-
-  $(document).on("click", ".skatepark-link", function(event){
+  $(document).on('click', '.skatepark-link', function (event) {
     event.preventDefault();
-    var path = event.target.href
-    var skatepark = $(this).siblings('p:nth-child(2)').text();
+    var path = event.target.href;
+
+    var parkId = $(this).siblings('p:first-child').text();
+
+    allSkateparks.forEach(function (skatepark) {
+      if (skatepark.id == parkId) {
+
+        // fix this
+        // initializeChatroom(skatepark);
 
 
-    // *** Change this so it doesn't have to hit server
-
-    $.ajax({
-      url: path,
-      method: 'get',
-      dataType: 'json'
-    })
-
-    .done(function(response){
-      initializeSkateParkObject(response);
-
-
-      initializeChatroom(skatepark);
-      buildSkateparkPage(response)
-      $.mobile.changePage('#skatepark-page');
-    })
-
-    .fail(function(response){
-      console.log("failure")
+        buildSkateparkPage(skatepark);
+        currentPark = skatepark;
+        $.mobile.changePage('#skatepark-page');
+        return;
+      }
     });
   });
-  
-  console.log('chat event bound');
-  
 }
 
 
-var initializeSkateParkObject = function(serverData) {
+// var bindSkateparkPageListener = function() {
 
-  // *** Change this so it doesn't have to hit server
-  currentPark = new Skatepark(serverData);
-  debugger
-}
+//   $(document).on("click", ".skatepark-link", function(event){
+//     event.preventDefault();
+//     var path = event.target.href
+//     var skatepark = $(this).siblings('p:nth-child(2)').text();
+
+
+//     // *** Change this so it doesn't have to hit server
+
+//     $.ajax({
+//       url: path,
+//       method: 'get',
+//       dataType: 'json'
+//     })
+
+//     .done(function(response){
+//       initializeSkateParkObject(response);
+
+
+//       initializeChatroom(skatepark);
+//       buildSkateparkPage(response)
+//       $.mobile.changePage('#skatepark-page');
+//     })
+
+//     .fail(function(response){
+//       console.log("failure")
+//     });
+//   });
+  
+//   console.log('chat event bound');
+  
+// }
+
+
+// var initializeSkateParkObject = function(serverData) {
+
+//   // *** Change this so it doesn't have to hit server
+//   currentPark = new Skatepark(serverData);
+//   debugger
+// }
 
 
 
@@ -143,25 +167,3 @@ var buildSkateparkPage = function(skatepark) {
 
   $('#skatepark-page .ui-content .skatepark-page').html(skateparkDiv);
 }
-
-// var populateFavoriteSkateparks = function() {
-//   var path = baseURL + 'api/users/' + currentUser.userId + '/favorites'
-
-//   $.ajax({
-//     url: path,
-//     method: 'get',
-//     dataType: 'json'
-//   })
-
-//   .done(function(response){
-//     console.log(response)
-//     $.each(response, function(index, skatepark){
-//       favoriteSkateparks.push(skatepark)
-//       console.log(skatepark)
-//     })
-//   })
-
-//   .fail(function(response){
-//     console.log('failure')
-//   })
-// }
