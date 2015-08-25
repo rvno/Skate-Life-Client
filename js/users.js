@@ -13,8 +13,6 @@ $(document).on('pagebeforecreate', function () {
   $('#chatPanel').panel().enhanceWithin();
 });
 
-
-
 $(document).on('click', '.attend', function (event) {
   checkAttendance(this, true);
 });
@@ -23,12 +21,10 @@ $(document).on('click', '.leave', function (event) {
   checkAttendance(this, false);
 });
 
-
 $(document).on('click', '.favorite-button', function (event) {
   event.preventDefault();
   checkIfFavorited();
 });
-
 
 $(document).on('popupafteropen', '.ui-popup', function() {
   $(this).animate({ opacity: 100 });
@@ -124,10 +120,6 @@ var checkIfFavorited = function() {
 
 
 
-
-
-
-
 var populateFavorites = function(favData) {
   $('.favorites').empty();
   $('.favorites').prepend(
@@ -167,6 +159,12 @@ var emptyFavorites = function() {
 var checkAttendance = function (target, attending) {
   var button = target;
   var parkId = $(button).siblings('p:first-child').text();
+
+  // FIND SKATEPARK BY ID, PULL THIS OUT INTO FUNCTION
+  allSkateparks.forEach(function (skatepark) {
+    if (parkId == skatepark.id) return currentPark = skatepark;
+  });
+
   var path = baseURL+'api/users/'+currentUser.userId+'/skateparks/'+parkId;
 
   toggleAttendance(button, path, attending);
@@ -188,8 +186,10 @@ var toggleAttendance = function (target, path, attending) {
   .done(function (response) {
     if (attending) {
       $(target).toggleClass('attend leave').text('Leave');
+      currentPark.incrementAttendees();
     } else {
       $(target).toggleClass('leave attend').text('Attend');
+      currentPark.decrementAttendees();
     }
   })
 
@@ -201,12 +201,6 @@ var toggleAttendance = function (target, path, attending) {
     }
   });
 }
-
-
-
-
-// GRAB SKATERS WHO ARE ATTENDING BEFORE YOU EVEN OPEN UP THE INFO WINDOW
-// ALL THIS IS DOING IS HITTING THE ROUTE TO ATTEND OR UNATTEND
 
 
 

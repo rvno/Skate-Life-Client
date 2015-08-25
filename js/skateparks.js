@@ -16,6 +16,7 @@ $(document).on('pagehide', '#skatepark-page', function (event, ui){
 
 
 
+
 var bindSkateparkPageListener = function() {
   $(document).on('click', '.skatepark-link', function (event) {
     event.preventDefault();
@@ -38,7 +39,6 @@ var bindSkateparkPageListener = function() {
 }
 
 
-
 var unBindSkateparkEventListener = function() {
   $(document).off('click', '.skatepark-link');
   $('#message-submit').off('click');
@@ -47,9 +47,6 @@ var unBindSkateparkEventListener = function() {
 }
 
 
-
-
-// Possibly break this up into 2 functions
 var initializeChatroom = function(skatepark) {
   var skateparkURL = skatepark.name.split(' ')[0];
   messageRef = new Firebase('https://skatelife.firebaseio.com/parkchats/' + skateparkURL);
@@ -61,7 +58,6 @@ var initializeChatroom = function(skatepark) {
   }
 
   $('.chat-user').text(firstName);
-
   messageRef.on('child_added', function (snapshot){
     var message = snapshot.val();
     $('.messages-div').append(
@@ -73,7 +69,6 @@ var initializeChatroom = function(skatepark) {
   bindMessageSubmitListener();
 
 }
-
 
 
 var bindMessageSubmitListener = function() {
