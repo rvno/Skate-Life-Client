@@ -85,45 +85,6 @@ $(document).on('panelbeforeopen', '#favoritesPanel', function (event, ui) {
 // })
 
 
-// var checkIfFavorited = function () {
-//   var match;
-
-//   if (currentUser) {
-//     var parkId = $('.skatepark-id').text()
-
-//     $.each(favoriteSkateparks, function (index, favoritePark) {
-//       if (favoritePark.id == parkId) {
-//         $('#favoritePopup p').text('This skatepark has already been favorited.');
-//         $('#favoritePopup').popup('open');
-//         match = true;
-//       }
-//     });
-
-//     if (!match) {
-//       // currentUserId = window.localStorage.getItem('currentUserId');
-//       var path = baseURL + 'api/users/' + currentUser.userId + '/favorites/' + parkId;
-
-//       $.ajax({
-//         url: path,
-//         method: 'post'
-//       })
-
-//       .done(function (response) {
-//         $('#favoritePopup p').text('Added to your favorites!');
-//         $('#favoritePopup').popup('open');
-//       })
-
-//       .fail(function(response) {
-//         console.log(response);
-//       })
-//     }
-//   } else {
-//     $('#favoriteErrorPopup').popup('open');
-//   }
-// }
-
-
-
 
 var checkIfFavorited = function() {
   var match;
