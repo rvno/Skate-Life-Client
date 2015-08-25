@@ -211,47 +211,6 @@ var toggleAttendance = function (target, path, attending) {
 
 
 
-
-// var toggleAttendance = function (target, attending) {
-//   var parkId = $(target).siblings('p:first-child').text();
-//   var path = baseURL + 'api/users/' + currentUser.userId + '/skateparks/' + parkId;
-//   var button = target;
-
-//   if (attending) {
-//     var method = 'post'
-//   } else {
-//     var method = 'delete'
-//   }
-
-//   $.ajax({
-//     url: path,
-//     type: method
-//   })
-
-//   .done(function (response) {
-//     getSkaters(parkId);
-//     if (attending) {
-//       $(button)
-//         .toggleClass('attend leave')
-//         .text('Leave');
-//     } else {
-//       $(button)
-//         .toggleClass('leave attend')
-//         .text('Attend')
-//     }
-//   })
-
-//   .fail(function (response) {
-//     if (attending) {
-//       alert('U GOTTA LOG IN BRAWSKI');
-//     } else {
-//       console.log(response);
-//     }
-//   });
-// }
-
-
-
 var getSkaters = function(skateparkId) {
   var path = baseURL + 'api/skateparks/' + skateparkId + '/attendees';
 
