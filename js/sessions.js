@@ -1,5 +1,6 @@
 var ref = new Firebase('https://skatelife.firebaseio.com/');
-var baseURL = 'https://skate-life-backend.herokuapp.com/';
+// var baseURL = 'https://skate-life-backend.herokuapp.com/';
+var baseURL = 'http://localhost:3000/';
 var currentUser;
 var userMarkerRef = ref.child('markers');
 
@@ -78,6 +79,7 @@ var backendUserAuth = function(authData) {
 var initializeUserObject = function(serverData) {
   var userData = JSON.parse(window.localStorage.getItem('googleData'));
   var location = {position: currentLocation}
+  debugger
   currentUser = new User(userData.google, serverData, location);
 
   createUserFirebaseMarker();
