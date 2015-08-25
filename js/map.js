@@ -33,13 +33,6 @@ $(document).on('pageshow', '#main-map-page', function (event, data) {
 
 
 
-
-
-
-
-
-
-
 var setHeader = function(header) {
   if (currentUser) {
     $(header).text('Welcome ' + currentUser.name);
@@ -195,14 +188,12 @@ var listenForPositionChanges = function() {
   userMarkerRef.on('child_changed', function (snapshot) {
     var position = snapshot.val().position;
     var markerPosition = new google.maps.LatLng(position.G, position.K);
-    // debugger
 
     userMarkers.forEach(function (marker) {
       if (snapshot.val().uid === marker.uid) {
         marker.setPosition(markerPosition);
       }
     });
-    // marker.
   });
 }
 
