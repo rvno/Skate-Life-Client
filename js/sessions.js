@@ -1,5 +1,5 @@
 var ref = new Firebase('https://skatelife.firebaseio.com/');
-var baseURL = 'https://skate-life-backend.herokuapp.com';
+var baseURL = 'https://skate-life-backend.herokuapp.com/';
 var currentUser;
 var userMarkerRef = ref.child('markers');
 
@@ -50,7 +50,7 @@ var googleOauth = function() {
       } else {
         resolve(authData);
       }
-    });
+    }); 
   });
   return promise;
 }
