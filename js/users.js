@@ -16,11 +16,11 @@ $(document).on('pagebeforecreate', function () {
 
 
 $(document).on('click', '.attend', function (event) {
-  toggleAttendance(this, true);
+  checkAttendance(this, true);
 });
 
 $(document).on('click', '.leave', function (event) {
-  toggleAttendance(this, false);
+  checkAttendance(this, false);
 });
 
 
@@ -164,15 +164,20 @@ var emptyFavorites = function() {
 
 
 
-var toggleAttendance = function (target, attending) {
-  var parkId = $(target).siblings('p:first-child').text();
-  var path = baseURL + 'api/users/' + currentUser.userId + '/skateparks/' + parkId;
+var checkAttendance = function (target, attending) {
   var button = target;
+  var parkId = $(button).siblings('p:first-child').text();
+  var path = baseURL+'api/users/'+currentUser.userId+'/skateparks/'+parkId;
 
+  toggleAttendance(button, path, attending);
+}
+
+
+var toggleAttendance = function (target, path, attending) {
   if (attending) {
-    var method = 'post'
+    var method = 'post';
   } else {
-    var method = 'delete'
+    var method = 'delete';
   }
 
   $.ajax({
@@ -181,26 +186,69 @@ var toggleAttendance = function (target, attending) {
   })
 
   .done(function (response) {
-    getSkaters(parkId);
     if (attending) {
-      $(button)
-        .toggleClass('attend leave')
-        .text('Leave');
+      $(target).toggleClass('attend leave').text('Leave');
     } else {
-      $(button)
-        .toggleClass('leave attend')
-        .text('Attend')
+      $(target).toggleClass('leave attend').text('Attend');
     }
   })
 
   .fail(function (response) {
     if (attending) {
-      alert('U GOTTA LOG IN BRAWSKI');
+      alert('U GOTTA LOG IN BRASKI');
     } else {
       console.log(response);
     }
   });
 }
+
+
+
+
+// GRAB SKATERS WHO ARE ATTENDING BEFORE YOU EVEN OPEN UP THE INFO WINDOW
+// ALL THIS IS DOING IS HITTING THE ROUTE TO ATTEND OR UNATTEND
+
+
+
+
+
+// var toggleAttendance = function (target, attending) {
+//   var parkId = $(target).siblings('p:first-child').text();
+//   var path = baseURL + 'api/users/' + currentUser.userId + '/skateparks/' + parkId;
+//   var button = target;
+
+//   if (attending) {
+//     var method = 'post'
+//   } else {
+//     var method = 'delete'
+//   }
+
+//   $.ajax({
+//     url: path,
+//     type: method
+//   })
+
+//   .done(function (response) {
+//     getSkaters(parkId);
+//     if (attending) {
+//       $(button)
+//         .toggleClass('attend leave')
+//         .text('Leave');
+//     } else {
+//       $(button)
+//         .toggleClass('leave attend')
+//         .text('Attend')
+//     }
+//   })
+
+//   .fail(function (response) {
+//     if (attending) {
+//       alert('U GOTTA LOG IN BRAWSKI');
+//     } else {
+//       console.log(response);
+//     }
+//   });
+// }
 
 
 
