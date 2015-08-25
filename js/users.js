@@ -26,7 +26,6 @@ $(document).on('click', '.leave', function (event) {
 
 $(document).on('click', '.favorite-button', function (event) {
   event.preventDefault();
-
   checkIfFavorited();
 });
 
@@ -38,31 +37,18 @@ $(document).on('popupafteropen', '.ui-popup', function() {
 
 
 // Favorites Panel
+
+// Why is this firing twice?
 $(document).on('panelbeforeopen', '#favoritesPanel', function (event, ui) {
-  // currentUserId = window.localStorage.getItem('currentUserId');
-
   if (currentUser) {
-    debugger
-    var path = baseURL + 'api/users/' + currentUser.userId + '/favorites';
-
-    $.ajax({
-      url: path,
-      method: 'get',
-      dataType: 'json'
-    })
-
-    .done(function  (response) {
-      populateFavorites(response);
-    })
-
-    .fail(function (response) {
-      console.log(response);
-    });
-
+    populateFavorites(currentUser.skateparks);
   } else {
     emptyFavorites();
   }
 });
+
+
+
 
 
 
@@ -99,14 +85,52 @@ $(document).on('panelbeforeopen', '#favoritesPanel', function (event, ui) {
 // })
 
 
-var checkIfFavorited = function () {
+// var checkIfFavorited = function () {
+//   var match;
+
+//   if (currentUser) {
+//     var parkId = $('.skatepark-id').text()
+
+//     $.each(favoriteSkateparks, function (index, favoritePark) {
+//       if (favoritePark.id == parkId) {
+//         $('#favoritePopup p').text('This skatepark has already been favorited.');
+//         $('#favoritePopup').popup('open');
+//         match = true;
+//       }
+//     });
+
+//     if (!match) {
+//       // currentUserId = window.localStorage.getItem('currentUserId');
+//       var path = baseURL + 'api/users/' + currentUser.userId + '/favorites/' + parkId;
+
+//       $.ajax({
+//         url: path,
+//         method: 'post'
+//       })
+
+//       .done(function (response) {
+//         $('#favoritePopup p').text('Added to your favorites!');
+//         $('#favoritePopup').popup('open');
+//       })
+
+//       .fail(function(response) {
+//         console.log(response);
+//       })
+//     }
+//   } else {
+//     $('#favoriteErrorPopup').popup('open');
+//   }
+// }
+
+
+
+
+var checkIfFavorited = function() {
   var match;
 
   if (currentUser) {
-    var parkId = $('.skatepark-id').text()
-
-    $.each(favoriteSkateparks, function (index, favoritePark) {
-      if (favoritePark.id == parkId) {
+    currentUser.skateparks.forEach(function (skatepark) {
+      if (skatepark.id === currentPark.id) {
         $('#favoritePopup p').text('This skatepark has already been favorited.');
         $('#favoritePopup').popup('open');
         match = true;
@@ -114,8 +138,7 @@ var checkIfFavorited = function () {
     });
 
     if (!match) {
-      // currentUserId = window.localStorage.getItem('currentUserId');
-      var path = baseURL + 'api/users/' + currentUser.userId + '/favorites/' + parkId;
+      var path = baseURL+'api/users/'+currentUser.userId+'/favorites/'+currentPark.id;
 
       $.ajax({
         url: path,
@@ -123,18 +146,25 @@ var checkIfFavorited = function () {
       })
 
       .done(function (response) {
+        currentUser.skateparks.push(currentPark);
         $('#favoritePopup p').text('Added to your favorites!');
         $('#favoritePopup').popup('open');
       })
 
-      .fail(function(response) {
+      .fail(function (response) {
         console.log(response);
       })
     }
+
   } else {
     $('#favoriteErrorPopup').popup('open');
   }
 }
+
+
+
+
+
 
 
 var populateFavorites = function(favData) {

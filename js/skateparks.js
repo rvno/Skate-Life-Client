@@ -1,16 +1,16 @@
 var messageRef;
 var allSkateparks = [];
 var currentPark;
-var favoriteSkateparks = [];
+// var favoriteSkateparks = [];
 
 $(document).on('pageshow', '#main-map-page', function (event, ui) {
   bindSkateparkPageListener();
 });
 
-$(document).on('pageshow', '#skatepark-page', function (event, ui){
-  if(currentUser)
-    populateFavoriteSkateparks();
-})
+// $(document).on('pageshow', '#skatepark-page', function (event, ui){
+//   if(currentUser)
+//     populateFavoriteSkateparks();
+// })
 
 $(document).on('pagehide', '#skatepark-page', function (event, ui){
   clearChat();
@@ -144,24 +144,24 @@ var buildSkateparkPage = function(skatepark) {
   $('#skatepark-page .ui-content .skatepark-page').html(skateparkDiv);
 }
 
-var populateFavoriteSkateparks = function() {
-  var path = baseURL + 'api/users/' + currentUser.userId + '/favorites'
+// var populateFavoriteSkateparks = function() {
+//   var path = baseURL + 'api/users/' + currentUser.userId + '/favorites'
 
-  $.ajax({
-    url: path,
-    method: 'get',
-    dataType: 'json'
-  })
+//   $.ajax({
+//     url: path,
+//     method: 'get',
+//     dataType: 'json'
+//   })
 
-  .done(function(response){
-    console.log(response)
-    $.each(response, function(index, skatepark){
-      favoriteSkateparks.push(skatepark)
-      console.log(skatepark)
-    })
-  })
+//   .done(function(response){
+//     console.log(response)
+//     $.each(response, function(index, skatepark){
+//       favoriteSkateparks.push(skatepark)
+//       console.log(skatepark)
+//     })
+//   })
 
-  .fail(function(response){
-    console.log('failure')
-  })
-}
+//   .fail(function(response){
+//     console.log('failure')
+//   })
+// }
