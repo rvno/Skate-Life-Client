@@ -79,7 +79,6 @@ var backendUserAuth = function(authData) {
 var initializeUserObject = function(serverData) {
   var userData = JSON.parse(window.localStorage.getItem('googleData'));
   var location = {position: currentLocation}
-  debugger
   currentUser = new User(userData.google, serverData, location);
 
   createUserFirebaseMarker();

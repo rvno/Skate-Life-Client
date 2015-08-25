@@ -32,15 +32,13 @@ var bindSkateparkPageListener = function() {
       if (skatepark.id == parkId) {
 
         // fix this
-        // initializeChatroom(skatepark);
-
-
         buildSkateparkPage(skatepark);
-        currentPark = skatepark;
-        $.mobile.changePage('#skatepark-page');
-        return;
+        return currentPark = skatepark;
       }
     });
+
+    initializeChatroom(currentPark);
+    $.mobile.changePage('#skatepark-page');
   });
 }
 
@@ -94,6 +92,7 @@ var unBindSkateparkEventListener = function() {
   $('#message-submit').off('click');
   messageRef.off('child_added');
   console.log('events unbound');
+  alert('events unbound');
 }
 
 
@@ -101,8 +100,8 @@ var unBindSkateparkEventListener = function() {
 
 // Possibly break this up into 2 functions
 var initializeChatroom = function(skatepark) {
-  var skateparkURL = skatepark.split(' ')[0];
-  messageRef = new Firebase('https://skatelife.firebaseio.com/parkchats/' + skatepark);
+  var skateparkURL = skatepark.name.split(' ')[0];
+  messageRef = new Firebase('https://skatelife.firebaseio.com/parkchats/' + skateparkURL);
 
   if (currentUser) {
     var firstName = currentUser.name;
@@ -113,6 +112,7 @@ var initializeChatroom = function(skatepark) {
   $('.chat-user').text(firstName);
 
   messageRef.on('child_added', function (snapshot){
+    debugger
     var message = snapshot.val();
     $('.messages-div').append(
       $('<div>').addClass('message').append(
