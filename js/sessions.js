@@ -1,6 +1,6 @@
 var ref = new Firebase('https://skatelife.firebaseio.com/');
-// var baseURL = 'https://skate-life-backend.herokuapp.com/';
-var baseURL = 'http://localhost:3000/';
+var baseURL = 'https://skate-life-backend.herokuapp.com/';
+// var baseURL = 'http://localhost:3000/';
 var currentUser;
 var userMarkerRef = ref.child('markers');
 
