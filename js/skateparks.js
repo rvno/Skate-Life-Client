@@ -1,22 +1,17 @@
 var messageRef;
 var allSkateparks = [];
 var currentPark;
-// var favoriteSkateparks = [];
+
+
 
 $(document).on('pageshow', '#main-map-page', function (event, ui) {
   bindSkateparkPageListener();
 });
 
-// $(document).on('pageshow', '#skatepark-page', function (event, ui){
-//   if(currentUser)
-//     populateFavoriteSkateparks();
-// })
-
 $(document).on('pagehide', '#skatepark-page', function (event, ui){
   clearChat();
   unBindSkateparkEventListener();
 });
-
 
 
 
@@ -30,8 +25,6 @@ var bindSkateparkPageListener = function() {
 
     allSkateparks.forEach(function (skatepark) {
       if (skatepark.id == parkId) {
-
-        // fix this
         buildSkateparkPage(skatepark);
         return currentPark = skatepark;
       }
@@ -40,50 +33,9 @@ var bindSkateparkPageListener = function() {
     initializeChatroom(currentPark);
     $.mobile.changePage('#skatepark-page');
   });
+
+  console.log('events bound');
 }
-
-
-// var bindSkateparkPageListener = function() {
-
-//   $(document).on("click", ".skatepark-link", function(event){
-//     event.preventDefault();
-//     var path = event.target.href
-//     var skatepark = $(this).siblings('p:nth-child(2)').text();
-
-
-//     // *** Change this so it doesn't have to hit server
-
-//     $.ajax({
-//       url: path,
-//       method: 'get',
-//       dataType: 'json'
-//     })
-
-//     .done(function(response){
-//       initializeSkateParkObject(response);
-
-
-//       initializeChatroom(skatepark);
-//       buildSkateparkPage(response)
-//       $.mobile.changePage('#skatepark-page');
-//     })
-
-//     .fail(function(response){
-//       console.log("failure")
-//     });
-//   });
-  
-//   console.log('chat event bound');
-  
-// }
-
-
-// var initializeSkateParkObject = function(serverData) {
-
-//   // *** Change this so it doesn't have to hit server
-//   currentPark = new Skatepark(serverData);
-//   debugger
-// }
 
 
 
@@ -92,7 +44,6 @@ var unBindSkateparkEventListener = function() {
   $('#message-submit').off('click');
   messageRef.off('child_added');
   console.log('events unbound');
-  alert('events unbound');
 }
 
 
@@ -112,7 +63,6 @@ var initializeChatroom = function(skatepark) {
   $('.chat-user').text(firstName);
 
   messageRef.on('child_added', function (snapshot){
-    debugger
     var message = snapshot.val();
     $('.messages-div').append(
       $('<div>').addClass('message').append(
@@ -120,9 +70,13 @@ var initializeChatroom = function(skatepark) {
         $('<p>').text(message.name + ': ' + message.text)));
   });
 
+  bindMessageSubmitListener();
+
+}
 
 
 
+var bindMessageSubmitListener = function() {
   $('#message-submit').on('click', function (event) {
     event.preventDefault();
 
@@ -143,7 +97,6 @@ var initializeChatroom = function(skatepark) {
     $('#message-input').val('');
 
   });
-
 }
 
 
