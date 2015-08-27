@@ -18,10 +18,8 @@ $(document).on('pagehide', '#skatepark-page', function (event, ui){
 
 var bindSkateparkPageListener = function() {
   $(document).on('click', '.skatepark-link', function (event) {
-    debugger
     clearChat();
     unBindChatroomListener();
-    debugger
 
     event.preventDefault();
     var path = event.target.href;
@@ -55,7 +53,6 @@ var unBindChatroomListener = function() {
 
 
 var initializeChatroom = function(skatepark) {
-  debugger
   var skateparkURL = skatepark.name.split(' ')[0];
   messageRef = new Firebase('https://skatelife.firebaseio.com/parkchats/' + skateparkURL);
 
