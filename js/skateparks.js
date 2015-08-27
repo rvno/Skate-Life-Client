@@ -9,8 +9,7 @@ $(document).on('pageshow', '#main-map-page', function (event, ui) {
 });
 
 $(document).on('pagehide', '#skatepark-page', function (event, ui){
-  clearChat();
-  unBindSkateparkEventListener();
+  unBindSkateparkLinkListener();
 });
 
 
@@ -19,15 +18,18 @@ $(document).on('pagehide', '#skatepark-page', function (event, ui){
 
 var bindSkateparkPageListener = function() {
   $(document).on('click', '.skatepark-link', function (event) {
-    event.preventDefault();
     debugger
+    clearChat();
+    unBindChatroomListener();
+    debugger
+
+    event.preventDefault();
     var path = event.target.href;
 
     var parkId = $(this).siblings('p:first-child').text();
 
     allSkateparks.forEach(function (skatepark) {
       if (skatepark.id == parkId) {
-        debugger
         buildSkateparkPage(skatepark);
         return currentPark = skatepark;
       }
@@ -41,15 +43,19 @@ var bindSkateparkPageListener = function() {
 }
 
 
-var unBindSkateparkEventListener = function() {
+var unBindSkateparkLinkListener = function() {
   $(document).off('click', '.skatepark-link');
-  $('#message-submit').off('click');
-  messageRef.off('child_added');
   console.log('events unbound');
+}
+
+var unBindChatroomListener = function() {
+  $('#message-submit').off('click');
+  if (messageRef) messageRef.off('child_added');
 }
 
 
 var initializeChatroom = function(skatepark) {
+  debugger
   var skateparkURL = skatepark.name.split(' ')[0];
   messageRef = new Firebase('https://skatelife.firebaseio.com/parkchats/' + skateparkURL);
 
