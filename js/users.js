@@ -34,11 +34,7 @@ $(document).on('popupafteropen', '.ui-popup', function() {
 });
 
 
-// Favorites Panel
-
-// Why is this firing twice?
 $(document).on('panelbeforeopen', '#favoritesPanel', function (event, ui) {
-  debugger
   if (currentUser) {
     populateFavorites(currentUser.skateparks);
   } else {
