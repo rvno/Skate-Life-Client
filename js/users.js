@@ -6,9 +6,11 @@ var chatPanel = '<div data-role="panel" id="chatPanel" data-display="overlay" da
 
 // Load up Favs and Chat panel, also populate userData
 $(document).on('pagebeforecreate', function () {
+  $.mobile.pageContainer.children('#favoritesPanel').remove();
   $.mobile.pageContainer.prepend(externalPanel);
   $('#favoritesPanel').panel().enhanceWithin();
 
+  $.mobile.pageContainer.children('#chatPanel').remove();
   $.mobile.pageContainer.prepend(chatPanel);
   $('#chatPanel').panel().enhanceWithin();
 });
@@ -36,6 +38,7 @@ $(document).on('popupafteropen', '.ui-popup', function() {
 
 // Why is this firing twice?
 $(document).on('panelbeforeopen', '#favoritesPanel', function (event, ui) {
+  debugger
   if (currentUser) {
     populateFavorites(currentUser.skateparks);
   } else {
@@ -118,8 +121,11 @@ var populateFavorites = function(favData) {
       $('<a>').attr('href', '#').text('Logout')));
 
   $.each(favData, function(index, favorite){
+    var hiddenID = '<p class="park-id">'+favorite.id+'</p>';
+
     $('.favorites').append(
       $('<li>').append(
+        $(hiddenID).hide(),
         $('<a>')
           .attr('href', baseURL + 'api/skateparks/' + favorite.id)
           .addClass('skatepark-link')

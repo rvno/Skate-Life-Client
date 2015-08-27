@@ -20,12 +20,14 @@ $(document).on('pagehide', '#skatepark-page', function (event, ui){
 var bindSkateparkPageListener = function() {
   $(document).on('click', '.skatepark-link', function (event) {
     event.preventDefault();
+    debugger
     var path = event.target.href;
 
     var parkId = $(this).siblings('p:first-child').text();
 
     allSkateparks.forEach(function (skatepark) {
       if (skatepark.id == parkId) {
+        debugger
         buildSkateparkPage(skatepark);
         return currentPark = skatepark;
       }
