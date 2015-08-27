@@ -1,8 +1,8 @@
 var map;
 var MY_MAPTYPE_ID = 'custom_style';
 
-// var userMarkerRef = ref.child('markers');
-
+// turn this into a promise.
+getCurrentLocation();
 
 // Figure out a way to optimize this, so that you
 // don't see "Skater" before the name changes.
@@ -12,10 +12,12 @@ $(document).on('pageshow', '#login-page', function () {
 
 
 // May not need event and data
-$(document).on('pageshow', '#main-map-page', function (event, data) {
+$(document).on('pageshow', '#main-map-page', function () {
   setHeader('.username');
 
   setTimeout(function () {
+
+    // Do these one time, not every time the map page opens.
     initializeMap();
     customizeMap();
 

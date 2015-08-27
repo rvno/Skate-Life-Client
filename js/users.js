@@ -46,7 +46,6 @@ $(document).on('panelbeforeopen', '#favoritesPanel', function (event, ui) {
 
 
 
-
 // FIX THIS LATER
 
 // // CHAT PANEL (INSERT FIREBASE RELATED LOGIC HERE)

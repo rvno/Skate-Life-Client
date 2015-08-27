@@ -227,4 +227,11 @@ button.attend.center, button.leave{
 }
 
 
+.location-btn{
+	height:1.5em;
+	border-radius:10px;
+	display:table;
+}
+
+
 
