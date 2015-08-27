@@ -48,7 +48,7 @@ From the beginning, we knew that the only way skaters would use our app was if i
   * Team Lead: Chris Scott
   * Team Members: Harvey Ngo, Shahab Amin, Ian Harris
 
-##Run Halle Locally:
+##Run Skate Life Locally:
 Via the Command Line
   1. Clone the repo - 'git clone https://github.com/hdngo/skate-life-client.git'
   2. Throw up a server by running 'python -m SimpleHTTPServer'
