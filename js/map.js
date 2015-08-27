@@ -19,16 +19,13 @@ $(document).on('pageshow', '#main-map-page', function (event, data) {
     initializeMap();
     customizeMap();
 
-    // Do this later
-    // addLocationButtons();
+    addLocationButtons();
     fetchSkateparks();
     fetchSkaters();
     listenForPositionChanges();
 
   }, 100);
 });
-
-
 
 
 
@@ -102,11 +99,6 @@ var customizeMap = function() {
     MY_MAPTYPE_ID, 
     new google.maps.StyledMapType(featureOptions, styledMapOptions)
   );
-}
-
-
-var addLocationButtons = function() {
-  // DO THIS LATER
 }
 
 
