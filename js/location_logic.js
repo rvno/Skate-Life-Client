@@ -2,16 +2,28 @@ var currentLocation;
 
 
 
-var getCurrentLocation = function() {
-  navigator.geolocation.getCurrentPosition(setCurrentUserPosition, onError);
-}
+var getCurrentLocation = function(options) {
+  alert('getting your location');
+  var deferred = $.Deferred();
+
+  navigator.geolocation.getCurrentPosition(
+    deferred.resolve, 
+    deferred.reject, 
+    options);
+
+  return deferred.promise();
+};
+
 
 var setCurrentUserPosition = function(position) {
   currentLocation = new google.maps.LatLng(
     position.coords.latitude,
     position.coords.longitude
   );
-}
+
+  console.log('current location set');
+};
+
 
 var onError = function() {
   alert('code: '    + error.code    + '\n' + 

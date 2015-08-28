@@ -2,7 +2,9 @@ var map;
 var MY_MAPTYPE_ID = 'custom_style';
 
 // turn this into a promise.
-getCurrentLocation();
+
+$.when(getCurrentLocation()).then(setCurrentUserPosition);
+
 
 // Figure out a way to optimize this, so that you
 // don't see "Skater" before the name changes.
