@@ -22,9 +22,23 @@ User.prototype.saveCurrentLocation = function() {
   });
 }
 
+
+User.prototype.initializeGeofence = function() {
+  var geofence = new google.maps.Circle({
+    map: map,
+    radius: 9001,
+    fillColor: '#336688',
+    fillOpacity: .22,
+    strokeColor: '#D48817',
+    strokeWeight: 1.75
+  });
+
+  geofence.bindTo('center', this.marker, 'position');
+}
+
+
 User.prototype.bindDragListener = function() {
   google.maps.event.addListener(this.marker, 'dragend', this.saveCurrentLocation);
-
 }
 
 

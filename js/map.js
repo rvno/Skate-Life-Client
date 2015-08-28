@@ -20,7 +20,6 @@ $(document).on('pageshow', '#main-map-page', function () {
     // Do these one time, not every time the map page opens.
     initializeMap();
     customizeMap();
-
     addLocationButtons();
     fetchSkateparks();
     fetchSkaters();
@@ -165,6 +164,7 @@ var fetchSkaters = function() {
     if (marker.uid === currentUser.uid) {
       currentUser.marker = marker;
       currentUser.marker.setMap(map);
+      currentUser.initializeGeofence();
       currentUser.bindDragListener();
 
       userMarkers.push(currentUser.marker);
