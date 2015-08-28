@@ -93,7 +93,7 @@ var initializeUserObject = function(serverData) {
 var initializeAnonymousUser = function() {
   var options = {
     uid: Math.floor(Math.random() * 6732) + 8893,
-    position: currentLocation 
+    position: currentLocation
   }
 
   currentUser = new AnonymousUser(options);
