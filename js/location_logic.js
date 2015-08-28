@@ -31,9 +31,6 @@ var onError = function() {
 }
 
 
-
-
-
 var addLocationButtons = function() {
   var homeControlDiv = document.createElement('div');
   var homeControl = new LocationButton(homeControlDiv, map, 'Home');

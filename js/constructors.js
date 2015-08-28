@@ -44,6 +44,57 @@ User.prototype.bindDragListener = function() {
 
 
 
+
+// USE PROTOTYPICAL INHERITANCE HERE
+function AnonymousUser(options) {
+  this.userId = 0,
+  this.uid = options.uid,
+  this.position = options.position,
+  this.name = 'Anonymous Thrasher',
+  this.marker = null,
+  this.img = '../imgs/johnny_hash.jpg',
+  this.favorites = [],
+  this.currentPark = null,
+  this.skateparks = []
+}
+
+
+AnonymousUser.prototype.saveCurrentLocation = function() {
+  currentUser.marker.position = this.position;
+
+  userMarkerRef.child(currentUser.uid).set({
+    url: currentUser.marker.url,
+    uid: currentUser.uid,
+    position: currentUser.marker.position,
+    icon: currentUser.marker.icon
+  });
+}
+
+
+AnonymousUser.prototype.initializeGeofence = function() {
+  var geofence = new google.maps.Circle({
+    map: map,
+    radius: 9001,
+    fillColor: '#336688',
+    fillOpacity: .22,
+    strokeColor: '#D48817',
+    strokeWeight: 1.75
+  });
+
+  geofence.bindTo('center', this.marker, 'position');
+}
+
+
+AnonymousUser.prototype.bindDragListener = function() {
+  google.maps.event.addListener(this.marker, 'dragend', this.saveCurrentLocation);
+}
+
+
+
+
+
+
+
 // Skateparks should load once and only once, make sure
 // that this is happening
 function Skatepark(serverData, options) {

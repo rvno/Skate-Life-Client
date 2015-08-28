@@ -16,6 +16,13 @@ $(document).on('click', '.login-btn', function (event) {
   authenticateUserOnLogin();
 });
 
+$(document).on('click', '.explore-btn', function (event) {
+  event.preventDefault();
+  initializeAnonymousUser();
+  $.mobile.loadPage('#main-map-page');
+  $.mobile.changePage('#main-map-page');
+});
+
 
 // Sign Out
 $(document).on('click', '#logout', function () {
@@ -33,7 +40,6 @@ var authenticateUserOnLogin = function() {
       JSON.stringify(authData));
 
     backendUserAuth(authData);
-
     // Verify if this makes any difference
     $.mobile.loadPage('#main-map-page');
     $.mobile.changePage('#main-map-page');
@@ -81,6 +87,16 @@ var initializeUserObject = function(serverData) {
   var location = {position: currentLocation}
   currentUser = new User(userData.google, serverData, location);
 
+  createUserFirebaseMarker();
+}
+
+var initializeAnonymousUser = function() {
+  var options = {
+    uid: Math.floor(Math.random() * 6732) + 8893,
+    position: currentLocation 
+  }
+
+  currentUser = new AnonymousUser(options);
   createUserFirebaseMarker();
 }
 
