@@ -1,13 +1,14 @@
-function User(authData, serverData, location) {
-  this.userId = serverData.user.id,
-  this.uid = authData.id,
-  this.position = location.position,
-  this.name = authData.displayName.split(' ')[0],
+// DO WE EVEN USER THIS.FAVORITES????
+
+function User(userData) {
+  this.uid = userData.id,
+  this.userId = userData.userId,
+  this.position = userData.position,
+  this.name = userData.name,
+  this.img = userData.profileImageURL,
   this.marker = null,
-  this.img = authData.profileImageURL,
-  this.favorites = [],
-  this.currentPark = serverData.user.currentPark,
-  this.skateparks = serverData.skateparks
+  this.currentPark = userData.currentPark,
+  this.skateparks = userData.skateparks
 }
 
 
@@ -40,57 +41,6 @@ User.prototype.initializeGeofence = function() {
 User.prototype.bindDragListener = function() {
   google.maps.event.addListener(this.marker, 'dragend', this.saveCurrentLocation);
 }
-
-
-
-
-
-// USE PROTOTYPICAL INHERITANCE HERE
-function AnonymousUser(options) {
-  this.userId = 0,
-  this.uid = options.uid,
-  this.position = options.position,
-  this.name = 'Anonymous Thrasher',
-  this.marker = null,
-  this.img = '../imgs/johnny_hash.jpg',
-  this.favorites = [],
-  this.currentPark = null,
-  this.skateparks = []
-}
-
-
-AnonymousUser.prototype.saveCurrentLocation = function() {
-  currentUser.marker.position = this.position;
-
-  userMarkerRef.child(currentUser.uid).set({
-    url: currentUser.marker.url,
-    uid: currentUser.uid,
-    position: currentUser.marker.position,
-    icon: currentUser.marker.icon
-  });
-}
-
-
-AnonymousUser.prototype.initializeGeofence = function() {
-  var geofence = new google.maps.Circle({
-    map: map,
-    radius: 9001,
-    fillColor: '#336688',
-    fillOpacity: .22,
-    strokeColor: '#D48817',
-    strokeWeight: 1.75
-  });
-
-  geofence.bindTo('center', this.marker, 'position');
-}
-
-
-AnonymousUser.prototype.bindDragListener = function() {
-  google.maps.event.addListener(this.marker, 'dragend', this.saveCurrentLocation);
-}
-
-
-
 
 
 

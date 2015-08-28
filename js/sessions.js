@@ -18,7 +18,7 @@ $(document).on('click', '.login-btn', function (event) {
 
 $(document).on('click', '.explore-btn', function (event) {
   event.preventDefault();
-  initializeAnonymousUser();
+  initializeAnonymousUserObject();
   $.mobile.loadPage('#main-map-page');
   $.mobile.changePage('#main-map-page');
 });
@@ -83,20 +83,31 @@ var backendUserAuth = function(authData) {
 }
 
 var initializeUserObject = function(serverData) {
-  var userData = JSON.parse(window.localStorage.getItem('googleData'));
-  var location = {position: currentLocation}
-  currentUser = new User(userData.google, serverData, location);
+  var userData = JSON.parse(window.localStorage.getItem('googleData')).google;
+  userData.position = currentLocation;
+  userData.userId = serverData.user.id;
+  userData.currentPark = serverData.user.currentPark;
+  userData.skateparks = serverData.skateparks;
+  userData.name = userData.displayName.split(' ')[0];
 
+  currentUser = new User(userData);
+  debugger
   createUserFirebaseMarker();
 }
 
-var initializeAnonymousUser = function() {
-  var options = {
-    uid: Math.floor(Math.random() * 6732) + 8893,
-    position: currentLocation
+var initializeAnonymousUserObject = function() {
+  var userData = {
+    id: Math.floor(Math.random() * 6732) + 8893,
+    userId: 0,
+    position: currentLocation,
+    name: 'Mystery Thrasher',
+    profileImageURL: '../imgs/johnny_hash.jpg',
+    currentPark: null,
+    skateparks: []
   }
 
-  currentUser = new AnonymousUser(options);
+
+  currentUser = new User(userData);
   createUserFirebaseMarker();
 }
 
