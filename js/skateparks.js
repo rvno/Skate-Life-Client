@@ -1,79 +1,68 @@
 var messageRef;
-var favoriteSkateparks = [];
+var allSkateparks = [];
+var currentPark;
+
 
 
 $(document).on('pageshow', '#main-map-page', function (event, ui) {
-  bindSkateparkChatListener();
+  bindSkateparkPageListener();
 });
-
-$(document).on('pageshow', '#skatepark-page', function (event, ui){
-  if(userData)
-    populateFavoriteSkateparks();
-})
 
 $(document).on('pagehide', '#skatepark-page', function (event, ui){
-  clearChat();
-  unBindSkateparkEventListener();
+  unBindSkateparkLinkListener();
 });
 
 
 
 
 
-var bindSkateparkChatListener = function() {
-  $(document).on("click", ".skatepark-link", function(event){
+var bindSkateparkPageListener = function() {
+  $(document).on('click', '.skatepark-link', function (event) {
+    clearChat();
+    unBindChatroomListener();
+
     event.preventDefault();
-    var path = event.target.href
-    var skatepark = $(this).siblings('p:nth-child(2)').text();
+    var path = event.target.href;
 
+    var parkId = $(this).siblings('p:first-child').text();
 
-    $.ajax({
-      url: path,
-      method: 'get',
-      dataType: 'json'
-    })
-
-    .done(function(response){
-      initializeChatroom(skatepark);
-
-      buildSkateparkPage(response)
-      $.mobile.changePage('#skatepark-page');
-    })
-
-    .fail(function(response){
-      console.log("failure")
+    allSkateparks.forEach(function (skatepark) {
+      if (skatepark.id == parkId) {
+        buildSkateparkPage(skatepark);
+        return currentPark = skatepark;
+      }
     });
+
+    initializeChatroom(currentPark);
+    $.mobile.changePage('#skatepark-page');
   });
-  
-  console.log('chat event bound');
-  
+
+  console.log('events bound');
 }
 
 
-
-var unBindSkateparkEventListener = function() {
+var unBindSkateparkLinkListener = function() {
   $(document).off('click', '.skatepark-link');
-  $('#message-submit').off('click');
-  messageRef.off('child_added');
   console.log('events unbound');
 }
 
+var unBindChatroomListener = function() {
+  $('#message-submit').off('click');
+  if (messageRef) messageRef.off('child_added');
+}
 
 
-
-// Possibly break this up into 2 functions
 var initializeChatroom = function(skatepark) {
-  var skateparkURL = skatepark.split(' ')[0];
-  messageRef = new Firebase('https://skatelife.firebaseio.com/parkchats/' + skatepark);
+  var skateparkURL = skatepark.name.split(' ')[0];
+  messageRef = new Firebase('https://skatelife.firebaseio.com/parkchats/' + skateparkURL);
 
-  if (userData) {
-    var firstName = userData.google.displayName.split(' ')[0];
+  if (currentUser) {
+    var firstName = currentUser.name;
   } else {
     var firstName = 'Mystery Thrasher';
   }
 
   $('.chat-user').text(firstName);
-
   messageRef.on('child_added', function (snapshot){
     var message = snapshot.val();
     $('.messages-div').append(
@@ -82,14 +71,17 @@ var initializeChatroom = function(skatepark) {
         $('<p>').text(message.name + ': ' + message.text)));
   });
 
+  bindMessageSubmitListener();
+
+}
 
 
-
+var bindMessageSubmitListener = function() {
   $('#message-submit').on('click', function (event) {
     event.preventDefault();
 
-    if (userData) {
-      var avatarURL = userData.google.profileImageURL;
+    if (currentUser) {
+      var avatarURL = currentUser.img;
     } else {
       var avatarURL = './imgs/johnny_hash.jpg';
     }
@@ -105,7 +97,6 @@ var initializeChatroom = function(skatepark) {
     $('#message-input').val('');
 
   });
-
 }
 
 
@@ -128,26 +119,4 @@ var buildSkateparkPage = function(skatepark) {
         .hide());
 
   $('#skatepark-page .ui-content .skatepark-page').html(skateparkDiv);
-}
-
-var populateFavoriteSkateparks = function() {
-  var path = baseURL + 'api/users/' + currentUserId + '/favorites'
-
-  $.ajax({
-    url: path,
-    method: 'get',
-    dataType: 'json'
-  })
-
-  .done(function(response){
-    console.log(response)
-    $.each(response, function(index, skatepark){
-      favoriteSkateparks.push(skatepark)
-      console.log(skatepark)
-    })
-  })
-
-  .fail(function(response){
-    console.log('failure')
-  })
 }

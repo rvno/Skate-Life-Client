@@ -1,7 +1,3 @@
-var baseURL = 'https://skate-life-backend.herokuapp.com/';
-var userData;
-var currentUserId;
-
 // MOVE THIS TO APP.JS, or LAYOUT.JS?
 var externalPanel = '<div data-role="panel" id="favoritesPanel" data-display="overlay" data-theme="b"><a href="#" data-rel="close" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-a ui-icon-delete ui-btn-icon-left" data-prefetch >Close Favorites</a><ul data-role="listview" class="favorites"><li id="logout"><a href="#">Logout</a></li></ul></div>';
 var chatPanel = '<div data-role="panel" id="chatPanel" data-display="overlay" data-position="right" data-theme="b"><a href="#" data-rel="close" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-a ui-icon-delete ui-btn-icon-right" data-prefetch >Close Messages</a><ul data-role="listview" class="chat-messages"></ul></div>';
@@ -10,32 +6,27 @@ var chatPanel = '<div data-role="panel" id="chatPanel" data-display="overlay" da
 
 // Load up Favs and Chat panel, also populate userData
 $(document).on('pagebeforecreate', function () {
-  userData = JSON.parse(window.localStorage.getItem('googleData'));
-
+  $.mobile.pageContainer.children('#favoritesPanel').remove();
   $.mobile.pageContainer.prepend(externalPanel);
   $('#favoritesPanel').panel().enhanceWithin();
 
+  $.mobile.pageContainer.children('#chatPanel').remove();
   $.mobile.pageContainer.prepend(chatPanel);
   $('#chatPanel').panel().enhanceWithin();
 });
 
-
-
 $(document).on('click', '.attend', function (event) {
-  toggleAttendance(this, true);
+  checkAttendance(this, true);
 });
 
 $(document).on('click', '.leave', function (event) {
-  toggleAttendance(this, false);
+  checkAttendance(this, false);
 });
-
 
 $(document).on('click', '.favorite-button', function (event) {
   event.preventDefault();
-
   checkIfFavorited();
 });
-
 
 $(document).on('popupafteropen', '.ui-popup', function() {
   $(this).animate({ opacity: 100 });
@@ -43,37 +34,13 @@ $(document).on('popupafteropen', '.ui-popup', function() {
 });
 
 
-// Favorites Panel
 $(document).on('panelbeforeopen', '#favoritesPanel', function (event, ui) {
-  currentUserId = window.localStorage.getItem('currentUserId');
-  var path = baseURL + 'api/users/' + currentUserId + '/favorites';
-
-  if (currentUserId) {
-    $.ajax({
-      url: path,
-      method: 'get',
-      dataType: 'json'
-    })
-
-    .done(function  (response) {
-      populateFavorites(response);
-    })
-
-    .fail(function (response) {
-      console.log(response);
-    });
-
+  if (currentUser) {
+    populateFavorites(currentUser.skateparks);
   } else {
     emptyFavorites();
   }
 });
-
-
-
-
-
-
-
 
 
 
@@ -103,14 +70,13 @@ $(document).on('panelbeforeopen', '#favoritesPanel', function (event, ui) {
 // })
 
 
-var checkIfFavorited = function () {
+
+var checkIfFavorited = function() {
   var match;
 
-  if (userData) {
-    var parkId = $('.skatepark-id').text()
-
-    $.each(favoriteSkateparks, function (index, favoritePark) {
-      if (favoritePark.id == parkId) {
+  if (currentUser) {
+    currentUser.skateparks.forEach(function (skatepark) {
+      if (skatepark.id === currentPark.id) {
         $('#favoritePopup p').text('This skatepark has already been favorited.');
         $('#favoritePopup').popup('open');
         match = true;
@@ -118,8 +84,7 @@ var checkIfFavorited = function () {
     });
 
     if (!match) {
-      currentUserId = window.localStorage.getItem('currentUserId');
-      var path = baseURL + 'api/users/' + currentUserId + '/favorites/' + parkId;
+      var path = baseURL+'api/users/'+currentUser.userId+'/favorites/'+currentPark.id;
 
       $.ajax({
         url: path,
@@ -127,29 +92,35 @@ var checkIfFavorited = function () {
       })
 
       .done(function (response) {
+        currentUser.skateparks.push(currentPark);
         $('#favoritePopup p').text('Added to your favorites!');
         $('#favoritePopup').popup('open');
       })
 
-      .fail(function(response) {
+      .fail(function (response) {
         console.log(response);
       })
     }
+
   } else {
     $('#favoriteErrorPopup').popup('open');
   }
 }
 
 
+
 var populateFavorites = function(favData) {
   $('.favorites').empty();
   $('.favorites').prepend(
     $('<li>').attr('id', 'logout').append(
-    $('<a>').attr('href', '#').text('Logout')));
+      $('<a>').attr('href', '#').text('Logout')));
 
   $.each(favData, function(index, favorite){
+    var hiddenID = '<p class="park-id">'+favorite.id+'</p>';
+
     $('.favorites').append(
       $('<li>').append(
+        $(hiddenID).hide(),
         $('<a>')
           .attr('href', baseURL + 'api/skateparks/' + favorite.id)
           .addClass('skatepark-link')
@@ -177,15 +148,26 @@ var emptyFavorites = function() {
 
 
 
-var toggleAttendance = function (target, attending) {
-  var parkId = $(target).siblings('p:first-child').text();
-  var path = baseURL + 'api/users/' + currentUserId + '/skateparks/' + parkId;
+var checkAttendance = function (target, attending) {
   var button = target;
+  var parkId = $(button).siblings('p:first-child').text();
 
+  // FIND SKATEPARK BY ID, PULL THIS OUT INTO FUNCTION
+  allSkateparks.forEach(function (skatepark) {
+    if (parkId == skatepark.id) return currentPark = skatepark;
+  });
+
+  var path = baseURL+'api/users/'+currentUser.userId+'/skateparks/'+parkId;
+
+  toggleAttendance(button, path, attending);
+}
+
+
+var toggleAttendance = function (target, path, attending) {
   if (attending) {
-    var method = 'post'
+    var method = 'post';
   } else {
-    var method = 'delete'
+    var method = 'delete';
   }
 
   $.ajax({
@@ -194,26 +176,24 @@ var toggleAttendance = function (target, attending) {
   })
 
   .done(function (response) {
-    getSkaters(parkId);
     if (attending) {
-      $(button)
-        .toggleClass('attend leave')
-        .text('Leave');
+      $(target).toggleClass('attend leave').text('Leave');
+      currentPark.incrementAttendees();
     } else {
-      $(button)
-        .toggleClass('leave attend')
-        .text('Attend')
+      $(target).toggleClass('leave attend').text('Attend');
+      currentPark.decrementAttendees();
     }
   })
 
   .fail(function (response) {
     if (attending) {
-      alert('U GOTTA LOG IN BRAWSKI');
+      alert('U GOTTA LOG IN BRASKI');
     } else {
       console.log(response);
     }
   });
 }
+
 
 
 
@@ -235,3 +215,4 @@ var getSkaters = function(skateparkId) {
     console.log(response);
   });
 }
+

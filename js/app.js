@@ -1,6 +1,5 @@
 var ref = new Firebase('https://skatelife.firebaseio.com/');
 var baseURL = 'https://skate-life-backend.herokuapp.com/';
-// var baseURL = 'http://localhost:3000/';
 
 
 var map;
@@ -15,9 +14,27 @@ var previousWindow = null;
 
 
 
+// FIX THIS WHEN U GET A CHANCE
+$(document).on('pageshow', '#login-page', function () {
+  if (currentUser) {
+    $('.welcome-header').text('Welcome ' + currentUser.name);
+  } else {
+    $('.welcome-header').text('Welcome Skater');
+  }
+});
+
+
 
 //CHANGE MAP SIZE AND INITIALIZATION LOCATION
 $(document).on('pageshow', '#main-map-page', function (e, data) {
+
+  // possibly make this quicker
+  if (currentUser) {
+    $('.username').text('Welcome ' + currentUser.name);
+  } else {
+    $('.username').text('Welcome Skater');
+  }
+
   setTimeout(function () {
 
     buildMap();
@@ -25,8 +42,6 @@ $(document).on('pageshow', '#main-map-page', function (e, data) {
     //SET MARKER TO BE AT defaultLocation (MAKE IT VARIABLE LATER)
     defaultLocation = new google.maps.LatLng(latitude, longitude)
     createNewUserMarker(map);
-
-
 
 
 
@@ -51,6 +66,9 @@ $(document).on('pageshow', '#main-map-page', function (e, data) {
 
 
     .done(function(response) {
+
+      // maybe we don't need the parsefloat stuff, lets see...
+      initializeSkateparkObjects(response);
 
       // WE DONT NEED THIS ANYMORE, SEE IF YOU CAN KEEP - IN BACKEND DB
       $.each(response, function(index, skatepark) {
@@ -126,6 +144,29 @@ $(document).on('pageshow', '#main-map-page', function (e, data) {
 });
 
 
+
+
+
+
+
+
+
+var initializeSkateparkObjects = function(skateparks) {
+  
+  skateparks.forEach(function(skateparkData) {
+    var skatepark = new Skatepark(skateparkData);
+    skatepark.infoWindow = skatepark.buildInfoWindow();
+    
+    allSkateparks.push(skatepark);
+  });
+}
+
+
+
+
+
+
+
 // Grab all attendees of a skatepark
 var getAttendees = function(skateparkId) {
   var path = baseURL + 'api/skateparks/' + skateparkId + '/attendees';
@@ -149,22 +190,22 @@ var getAttendees = function(skateparkId) {
 // port these things to global variables and pass them in to the function
 var buildMap = function() {
   var MY_MAPTYPE_ID = 'custom_style';
-    var featureOpts = [
-      {
-        stylers: [
-          {hue: '#F2A516'},
-          {visibility: 'simplified'},
-          {gamma: 0.8},
-          {weight: 0.5}
-        ]
-      },
-      {
-        featureType: 'water',
-        stylers: [
-          {color: '#2E2D2A'}
-        ]
-      }
-    ];
+  var featureOpts = [
+    {
+      stylers: [
+        {hue: '#F2A516'},
+        {visibility: 'simplified'},
+        {gamma: 0.8},
+        {weight: 0.5}
+      ]
+    },
+    {
+      featureType: 'water',
+      stylers: [
+        {color: '#2E2D2A'}
+      ]
+    }
+  ];
 
   // Set up map properties for custom stuff
   var mapProps = {
@@ -412,7 +453,7 @@ $(document).ready(function(){
         console.log('gotemmmm')
         previousWindow = infoWindow;
         infoWindow.open(map);
-      }
+      } 
     })
   })
     
