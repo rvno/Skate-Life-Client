@@ -41,8 +41,6 @@ var authenticateUserOnLogin = function() {
 
     backendUserAuth(authData);
     // Verify if this makes any difference
-    $.mobile.loadPage('#main-map-page');
-    $.mobile.changePage('#main-map-page');
 
   });
 }
@@ -75,6 +73,8 @@ var backendUserAuth = function(authData) {
 
   .done(function (response) {
     initializeUserObject(response);
+    $.mobile.loadPage('#main-map-page');
+    $.mobile.changePage('#main-map-page');
   })
 
   .fail(function (response) {
@@ -91,7 +91,6 @@ var initializeUserObject = function(serverData) {
   userData.name = userData.displayName.split(' ')[0];
 
   currentUser = new User(userData);
-  debugger
   createUserFirebaseMarker();
 }
 
@@ -105,7 +104,6 @@ var initializeAnonymousUserObject = function() {
     currentPark: null,
     skateparks: []
   }
-
 
   currentUser = new User(userData);
   createUserFirebaseMarker();
