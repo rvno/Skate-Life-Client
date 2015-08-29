@@ -23,7 +23,6 @@ $(document).on('click', '.explore-btn', function (event) {
   $.mobile.changePage('#main-map-page');
 });
 
-
 // Sign Out
 $(document).on('click', '#logout', function () {
   signOut();
