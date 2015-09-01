@@ -3,7 +3,10 @@ var MY_MAPTYPE_ID = 'custom_style';
 
 // turn this into a promise.
 
-$.when(getCurrentLocation()).then(setCurrentUserPosition);
+
+$.when(getCurrentLocation())
+  .then(setCurrentUserPosition)
+  .fail(setDefaultUserPosition);
 
 
 // Figure out a way to optimize this, so that you
@@ -26,7 +29,6 @@ $(document).on('pageshow', '#main-map-page', function () {
     fetchSkateparks();
     fetchSkaters();
     listenForPositionChanges();
-
   }, 100);
 });
 
