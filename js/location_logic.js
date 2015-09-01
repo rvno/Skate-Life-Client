@@ -25,6 +25,11 @@ var setCurrentUserPosition = function(position) {
 };
 
 
+var setDefaultUserPosition = function() {
+  currentLocation = new google.maps.LatLng(37.8717, -122.2728);
+}
+
+
 var onError = function() {
   alert('code: '    + error.code    + '\n' + 
         'message: ' + error.message + '\n');
