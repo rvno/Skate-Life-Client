@@ -21,7 +21,6 @@ $(document).on('pageshow', '#main-map-page', function () {
   setHeader('.username');
 
   setTimeout(function () {
-
     // Do these one time, not every time the map page opens.
     initializeMap();
     customizeMap();
