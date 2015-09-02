@@ -83,7 +83,7 @@ var bindMessageSubmitListener = function() {
     if (currentUser) {
       var avatarURL = currentUser.img;
     } else {
-      var avatarURL = './imgs/johnny_hash.jpg';
+      var avatarURL = 'https://avatars3.githubusercontent.com/u/10751085?v=3&s=460';
     }
 
     var name = $('.chat-user').text();

@@ -99,7 +99,7 @@ var initializeAnonymousUserObject = function() {
     userId: 0,
     position: currentLocation,
     name: 'Mystery Thrasher',
-    profileImageURL: '../imgs/johnny_hash.jpg',
+    profileImageURL: 'https://avatars3.githubusercontent.com/u/10751085?v=3&s=460',
     currentPark: null,
     skateparks: []
   }
