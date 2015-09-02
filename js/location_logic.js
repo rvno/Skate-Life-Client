@@ -38,7 +38,7 @@ var onError = function() {
 
 var addLocationButtons = function() {
   var homeControlDiv = document.createElement('div');
-  var homeControl = new LocationButton(homeControlDiv, map, 'Home');
+  var homeControl = new LocationButton(homeControlDiv, map, 'Cursor');
 
   var currentLocationCtrlDiv = document.createElement('div');
   var currentLocationControl = new LocationButton(currentLocationCtrlDiv, map, 'My Location');
@@ -57,7 +57,7 @@ function LocationButton(controlDiv, map, buttonText) {
   controlUI.style.cursor = 'pointer';
   controlUI.style.textAlign = 'center';
   controlUI.title = 'location button';
-  controlUI.class = "location-btn";
+  controlUI.className = "location-btn";
   controlDiv.appendChild(controlUI);
 
   var controlText = document.createElement('div');
@@ -70,7 +70,7 @@ function LocationButton(controlDiv, map, buttonText) {
 
 
   google.maps.event.addDomListener(controlUI, 'click', function () {
-    if (buttonText === 'Home') {
+    if (buttonText === 'Cursor') {
       map.panTo(currentUser.marker.position);
     } else {
       map.panTo(currentLocation);

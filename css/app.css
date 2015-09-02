@@ -231,6 +231,7 @@ button.attend.center, button.leave{
 	height:1.5em;
 	border-radius:10px;
 	display:table;
+	text-shadow:none;
 }
 
 
