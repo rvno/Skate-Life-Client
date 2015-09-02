@@ -36,7 +36,12 @@ $(document).on('popupafteropen', '.ui-popup', function() {
 
 $(document).on('panelbeforeopen', '#favoritesPanel', function (event, ui) {
   if (currentUser) {
+    if(currentUser.name !== "Mystery Thrasher"){
     populateFavorites(currentUser.skateparks);
+    }
+    else{
+      emptyFavorites();
+    }
   } else {
     emptyFavorites();
   }
