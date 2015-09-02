@@ -56,7 +56,8 @@ function Skatepark(serverData, options) {
     position: this.position,
     title: this.name,
     map: map,
-    icon: './imgs/skatepark.png'
+    // icon: './imgs/skatepark.png'
+    icon: './imgs/new-skatepark-icon.png'
   }),
   this.attendees = 0
 }
