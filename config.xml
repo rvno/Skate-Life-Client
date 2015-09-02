@@ -7,10 +7,10 @@
 
    <!-- versionCode is optional and Android only -->
 
-   <name>Skate Life</name>
+   <name>Skate Life Mobile Fix Tests</name>
 
    <description>
-       Skate Life mobile application.
+       Fixing the Skate Life mobile application.
    </description>
 
    <author href="http://phonegap.com" email="harveydngo@gmail.com">
