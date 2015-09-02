@@ -38,7 +38,7 @@ var onError = function() {
 
 var addLocationButtons = function() {
   var homeControlDiv = document.createElement('div');
-  var homeControl = new LocationButton(homeControlDiv, map, 'Home');
+  var homeControl = new LocationButton(homeControlDiv, map, 'Cursor Location');
 
   var currentLocationCtrlDiv = document.createElement('div');
   var currentLocationControl = new LocationButton(currentLocationCtrlDiv, map, 'My Location');
@@ -52,12 +52,16 @@ function LocationButton(controlDiv, map, buttonText) {
   controlDiv.style.padding = '5px';
   
   var controlUI = document.createElement('div');
-  controlUI.style.backgroundColor = 'orange';
-  controlUI.style.color = 'black';
+  // controlUI.style.backgroundColor = 'orange';
+  // controlUI.style.color = 'black';
   controlUI.style.cursor = 'pointer';
-  controlUI.style.textAlign = 'center';
+  // controlUI.style.textAlign = 'center';
+  controlUI.style.height = '100px';
+  controlUI.style.width = '100px';
+  controlUI.style.background = backgroundImage = "url('http://www.renders-graphiques.fr/image/upload/normal/6982_render_yosho.png')";
+  controlUI.style.backgroundSize= 'contain';
   controlUI.title = 'location button';
-  controlUI.class = "location-btn";
+  controlUI.className = "location-btn";
   controlDiv.appendChild(controlUI);
 
   var controlText = document.createElement('div');
@@ -65,7 +69,7 @@ function LocationButton(controlDiv, map, buttonText) {
   controlText.style.fontSize='12px';
   controlText.style.paddingLeft = '4px';
   controlText.style.paddingRight ='4px';
-  controlText.innerHTML = '<p>'+buttonText+'</p>';
+  // controlText.innerHTML = '<p>'+buttonText+'</p>';
   controlUI.appendChild(controlText);
 
 
