@@ -54,6 +54,11 @@ a.ui-btn.login-btn, a.ui-btn.explore-btn{
 }*/
 
 
+.map-header{
+	position:fixed;
+	width:100%;
+}
+
 /*map resizing section*/
 #content{
 	padding:0;
