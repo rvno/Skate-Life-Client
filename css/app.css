@@ -156,15 +156,17 @@ div.ui-input-text.ui-body-inherit{
 .message p{
 	padding-left:15px;
 	padding-right:15px;
-	display:table-cell;
-	vertical-align:middle;
+	/*display:table-cell;*/
+	display:inline-block;
+	/*vertical-align:middle;*/
+	line-height:4em;
 }
 
 .user-profile-img{
 	height:80%;
 	border-radius:50%;
   display: inline-block;
-  margin-top: .4em;
+  margin-top: .6em;
   margin-left: .4em;
   float:left;
   border:1px solid black;
@@ -211,7 +213,8 @@ button.attend.center, button.leave{
 
 #message-input{
 	height:3em;
-	width:60%;
+	/*width:60%;*/
+	resize:vertical;
 }
 
 #message-submit{
