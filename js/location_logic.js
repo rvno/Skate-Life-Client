@@ -56,9 +56,9 @@ function LocationButton(controlDiv, map, buttonText) {
   // controlUI.style.color = 'black';
   controlUI.style.cursor = 'pointer';
   // controlUI.style.textAlign = 'center';
-  controlUI.style.height = '40px';
-  controlUI.style.width = '45px';
-  controlUI.style.background = backgroundImage = 'url("http://www.renders-graphiques.fr/image/upload/normal/6982_render_yosho.png")';
+  controlUI.style.height = '100px';
+  controlUI.style.width = '100px';
+  controlUI.style.background = backgroundImage = "url('http://www.renders-graphiques.fr/image/upload/normal/6982_render_yosho.png')";
   controlUI.style.backgroundSize= 'contain';
   controlUI.title = 'location button';
   controlUI.className = "location-btn";
