@@ -79,13 +79,14 @@ $(document).on('panelbeforeopen', '#favoritesPanel', function (event, ui) {
 var checkIfFavorited = function() {
   var match;
 
-  if (currentUser) {
+  if (currentUser && currentUser.name !== "Mystery Thrasher") {
     currentUser.skateparks.forEach(function (skatepark) {
       if (skatepark.id === currentPark.id) {
         $('#favoritePopup p').text('This skatepark has already been favorited.');
         $('#favoritePopup').popup('open');
         match = true;
       }
+      refreshPage();
     });
 
     if (!match) {
@@ -100,6 +101,7 @@ var checkIfFavorited = function() {
         currentUser.skateparks.push(currentPark);
         $('#favoritePopup p').text('Added to your favorites!');
         $('#favoritePopup').popup('open');
+        refreshPage();
       })
 
       .fail(function (response) {
@@ -109,7 +111,14 @@ var checkIfFavorited = function() {
 
   } else {
     $('#favoriteErrorPopup').popup('open');
+    refreshPage();
   }
+}
+
+var refreshPage = function(){
+  setTimeout(function(){
+    window.location = window.location.hash.split('&')[0]
+  }, 2500);
 }
 
 
