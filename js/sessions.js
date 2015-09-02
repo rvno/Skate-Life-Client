@@ -19,6 +19,7 @@ $(document).on('click', '.login-btn', function (event) {
 $(document).on('click', '.explore-btn', function (event) {
   event.preventDefault();
   initializeAnonymousUserObject();
+  alert("loading...")
   $.mobile.loadPage('#main-map-page');
   $.mobile.changePage('#main-map-page');
 });
