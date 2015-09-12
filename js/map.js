@@ -3,10 +3,12 @@ var MY_MAPTYPE_ID = 'custom_style';
 
 // turn this into a promise.
 
-
+//being called as soon as this script is loaded
 $.when(getCurrentLocation())
   .then(setCurrentUserPosition)
   .fail(setDefaultUserPosition);
+
+
 
 
 // Figure out a way to optimize this, so that you
