@@ -13,7 +13,8 @@ function User(userData) {
 
 
 User.prototype.saveCurrentLocation = function() {
-  currentUser.marker.position = this.position;
+  //this may not work
+  currentUser.marker.position = this.marker.position;
 
   userMarkerRef.child(currentUser.uid).set({
     url: currentUser.marker.url,
@@ -40,8 +41,8 @@ User.prototype.initializeGeofence = function() {
 
 
 User.prototype.bindDragListener = function() {
-  // google.maps.event.addListener(this.marker, 'dragend', this.handleDragListener.bind(this));
-  google.maps.event.addListener(this.marker, 'dragend', this.saveCurrentLocation);
+  google.maps.event.addListener(this.marker, 'dragend', this.handleDragListener.bind(this));
+  // google.maps.event.addListener(this.marker, 'dragend', this.saveCurrentLocation);
   // google.maps.event.addListener(this.marker, 'dragend', this.populateCarousel.bind(this));
 }
 
@@ -53,6 +54,7 @@ User.prototype.handleDragListener = function(){
 User.prototype.populateCarousel = function() {
   var bounds = this.geofence.getBounds();
 
+  console.log('batch em')
   allSkateparks.forEach(function(park){
     if(bounds.contains(park.marker.position)){
       console.log(park)
