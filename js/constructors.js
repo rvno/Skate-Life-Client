@@ -49,6 +49,7 @@ User.prototype.bindDragListener = function() {
 User.prototype.handleDragListener = function(){
   this.saveCurrentLocation();
   this.populateCarousel();
+  openActiveSkateparkWindow();
 }
 
 User.prototype.populateCarousel = function() {
@@ -59,7 +60,9 @@ User.prototype.populateCarousel = function() {
     if(bounds.contains(park.marker.position)){
       $('.carousel').slick('slickAdd', park.carouselElement)
     }
-  })  
+  }) 
+
+
 }
 
 // User.prototype.bindDragListener = function() {

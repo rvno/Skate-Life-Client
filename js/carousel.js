@@ -22,32 +22,18 @@ var buildCarouselElement = function(skatepark){
 
 }
 
-$('.carousel').on('afterChange', function(){
+var openActiveSkateparkWindow = function(){
 	var parkId = $('.slick-active').attr('id')
 	allSkateparks.forEach(function(park){
 		park.infoWindow.close(map)
 		if(park.id === parseInt(parkId)){
 			park.infoWindow.open(map);
 		}
-	})	
-})
+	})
+}
+		
 
-// $('.carousel').on('afterChange', function(){
-//   imageSrc = $('.slick-active > img').attr('src')
-//   parkLocation = grabLocationFromURL(imageSrc)
-//   console.log(parkLocation)
-//   newMarkerLat = parkLocation.lat
-//   newMarkerLong = parkLocation.lon
-//   console.log(newMarkerLat)
-//   console.log(newMarkerLong)
-//   newCenterPoint = {lat: newMarkerLat,lng: newMarkerLong}
-//   map.panTo(newCenterPoint)
-//   //OPEN INFO WINDOW UPON CAROUSEL SCROLL, time permitting, try to close window when scrolling
-//   $.each(infoWindows, function(index, infoWindow){
-//     if(infoWindow.position['G'] === newCenterPoint['lat'] && infoWindow.position['K'] === newCenterPoint['lng']){
-//       console.log('gotemmmm')
-//       previousWindow = infoWindow;
-//       infoWindow.open(map);
-//     } 
-//   })
-// })
+
+$('.carousel').on('afterChange', function(){
+	openActiveSkateparkWindow();
+})
