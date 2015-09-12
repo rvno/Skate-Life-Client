@@ -61,8 +61,6 @@ User.prototype.populateCarousel = function() {
       $('.carousel').slick('slickAdd', park.carouselElement)
     }
   }) 
-
-
 }
 
 // User.prototype.bindDragListener = function() {

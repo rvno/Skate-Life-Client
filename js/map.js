@@ -173,6 +173,7 @@ var fetchSkaters = function() {
       currentUser.bindDragListener();
 
       userMarkers.push(currentUser.marker);
+      currentUser.populateCarousel();
     } else {
       marker.setMap(map);
 
