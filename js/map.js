@@ -22,7 +22,6 @@ $(document).on('pageshow', '#login-page', function () {
 $(document).on('pageshow', '#main-map-page', function () {
   setHeader('.username');
 
-  setTimeout(function () {
     // Do these one time, not every time the map page opens.
     initializeMap();
     customizeMap();
@@ -30,7 +29,6 @@ $(document).on('pageshow', '#main-map-page', function () {
     fetchSkateparks();
     fetchSkaters();
     listenForPositionChanges();
-  }, 100);
 });
 
 
@@ -138,6 +136,8 @@ var initializeSkateparkObjects = function(skateparks) {
       // getAttendees(skatepark.id);
       skatepark.infoWindow.open(map, skatepark.marker);
     });
+
+    buildCarouselElement(skatepark)
   });
 
 }

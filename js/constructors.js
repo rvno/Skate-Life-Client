@@ -35,14 +35,24 @@ User.prototype.initializeGeofence = function() {
   });
 
   geofence.bindTo('center', this.marker, 'position');
+  this.geofence = geofence;
 }
 
+
+// User.prototype.bindDragListener = function() {
+//   google.maps.event.addListener(this.marker, 'dragend', this.saveCurrentLocation);
+// }
 
 User.prototype.bindDragListener = function() {
-  google.maps.event.addListener(this.marker, 'dragend', this.saveCurrentLocation);
+  var user = this;
+  google.maps.event.addListener(this.marker, 'dragend', function(){
+    user.saveCurrentLocation();
+
+    //take the geofence bounds and compare it against the markers here
+    console.log(user.geofence)
+    debugger
+  });
 }
-
-
 
 
 // Skateparks should load once and only once, make sure
