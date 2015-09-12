@@ -52,12 +52,12 @@ User.prototype.handleDragListener = function(){
 }
 
 User.prototype.populateCarousel = function() {
+  $('.carousel-element').remove();
   var bounds = this.geofence.getBounds();
 
-  console.log('batch em')
   allSkateparks.forEach(function(park){
     if(bounds.contains(park.marker.position)){
-      console.log(park)
+      $('.carousel').slick('slickAdd', park.carouselElement)
     }
   })  
 }
