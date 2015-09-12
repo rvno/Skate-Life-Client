@@ -1,9 +1,6 @@
 var currentLocation;
 
-
-
 var getCurrentLocation = function(options) {
-  alert('getting your location');
   var deferred = $.Deferred();
 
   navigator.geolocation.getCurrentPosition(
@@ -14,14 +11,20 @@ var getCurrentLocation = function(options) {
   return deferred.promise();
 };
 
+var redirectToLoginPage = function(){
+  var deferred = $.Deferred();
+  $.mobile.changePage('#login-page')
+  return deferred.promise();
+}
 
 var setCurrentUserPosition = function(position) {
+
   currentLocation = new google.maps.LatLng(
     position.coords.latitude,
     position.coords.longitude
   );
-
   console.log('current location set');
+  redirectToLoginPage();
 };
 
 

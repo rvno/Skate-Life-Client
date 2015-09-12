@@ -1,3 +1,4 @@
+//pre-refactor
 var ref = new Firebase('https://skatelife.firebaseio.com/');
 var baseURL = 'https://skate-life-backend.herokuapp.com/';
 

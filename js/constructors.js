@@ -13,7 +13,8 @@ function User(userData) {
 
 
 User.prototype.saveCurrentLocation = function() {
-  currentUser.marker.position = this.position;
+  //this may not work
+  currentUser.marker.position = this.marker.position;
 
   userMarkerRef.child(currentUser.uid).set({
     url: currentUser.marker.url,
@@ -35,14 +36,49 @@ User.prototype.initializeGeofence = function() {
   });
 
   geofence.bindTo('center', this.marker, 'position');
+  this.geofence = geofence;
 }
 
 
 User.prototype.bindDragListener = function() {
-  google.maps.event.addListener(this.marker, 'dragend', this.saveCurrentLocation);
+  google.maps.event.addListener(this.marker, 'dragend', this.handleDragListener.bind(this));
+  // google.maps.event.addListener(this.marker, 'dragend', this.saveCurrentLocation);
+  // google.maps.event.addListener(this.marker, 'dragend', this.populateCarousel.bind(this));
 }
 
+User.prototype.handleDragListener = function(){
+  this.saveCurrentLocation();
+  this.populateCarousel();
+  openActiveSkateparkWindow();
+}
 
+User.prototype.populateCarousel = function() {
+  $('.carousel-element').remove();
+  var bounds = this.geofence.getBounds();
+
+  allSkateparks.forEach(function(park){
+    if(bounds.contains(park.marker.position)){
+      $('.carousel').slick('slickAdd', park.carouselElement)
+    }
+  }) 
+}
+
+// User.prototype.bindDragListener = function() {
+//   var user = this;
+//   google.maps.event.addListener(this.marker, 'dragend', function(){
+//     user.saveCurrentLocation();
+
+    //take the geofence bounds and compare it against the markers here
+
+    // var bounds = user.geofence.getBounds();
+    // if(bounds.contains())  
+    // allSkateparks.forEach(function(park){
+      // if(bounds.contains(park.marker.position)){
+        // console.log('we gawt 1')
+      // }
+    // })  
+//   });
+// }
 
 
 // Skateparks should load once and only once, make sure

@@ -3,10 +3,12 @@ var MY_MAPTYPE_ID = 'custom_style';
 
 // turn this into a promise.
 
-
+//being called as soon as this script is loaded
 $.when(getCurrentLocation())
   .then(setCurrentUserPosition)
   .fail(setDefaultUserPosition);
+
+
 
 
 // Figure out a way to optimize this, so that you
@@ -20,7 +22,6 @@ $(document).on('pageshow', '#login-page', function () {
 $(document).on('pageshow', '#main-map-page', function () {
   setHeader('.username');
 
-  setTimeout(function () {
     // Do these one time, not every time the map page opens.
     initializeMap();
     customizeMap();
@@ -28,7 +29,6 @@ $(document).on('pageshow', '#main-map-page', function () {
     fetchSkateparks();
     fetchSkaters();
     listenForPositionChanges();
-  }, 100);
 });
 
 
@@ -136,6 +136,8 @@ var initializeSkateparkObjects = function(skateparks) {
       // getAttendees(skatepark.id);
       skatepark.infoWindow.open(map, skatepark.marker);
     });
+
+    buildCarouselElement(skatepark)
   });
 
 }
@@ -171,6 +173,7 @@ var fetchSkaters = function() {
       currentUser.bindDragListener();
 
       userMarkers.push(currentUser.marker);
+      currentUser.populateCarousel();
     } else {
       marker.setMap(map);
 
