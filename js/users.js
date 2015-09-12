@@ -1,6 +1,6 @@
 // MOVE THIS TO APP.JS, or LAYOUT.JS?
 var externalPanel = '<div data-role="panel" id="favoritesPanel" data-display="overlay" data-theme="b"><a href="#" data-rel="close" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-a ui-icon-delete ui-btn-icon-left" data-prefetch >Close Favorites</a><ul data-role="listview" class="favorites"><li id="logout"><a href="#">Logout</a></li></ul></div>';
-var chatPanel = '<div data-role="panel" id="chatPanel" data-display="overlay" data-position="right" data-theme="b"><a href="#" data-rel="close" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-a ui-icon-delete ui-btn-icon-right" data-prefetch >Close Messages</a><ul data-role="listview" class="chat-messages"></ul></div>';
+// var chatPanel = '<div data-role="panel" id="chatPanel" data-display="overlay" data-position="right" data-theme="b"><a href="#" data-rel="close" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-a ui-icon-delete ui-btn-icon-right" data-prefetch >Close Messages</a><ul data-role="listview" class="chat-messages"></ul></div>';
 
 
 
@@ -10,9 +10,9 @@ $(document).on('pagebeforecreate', function () {
   $.mobile.pageContainer.prepend(externalPanel);
   $('#favoritesPanel').panel().enhanceWithin();
 
-  $.mobile.pageContainer.children('#chatPanel').remove();
-  $.mobile.pageContainer.prepend(chatPanel);
-  $('#chatPanel').panel().enhanceWithin();
+  // $.mobile.pageContainer.children('#chatPanel').remove();
+  // $.mobile.pageContainer.prepend(chatPanel);
+  // $('#chatPanel').panel().enhanceWithin();
 });
 
 $(document).on('click', '.attend', function (event) {
@@ -36,7 +36,12 @@ $(document).on('popupafteropen', '.ui-popup', function() {
 
 $(document).on('panelbeforeopen', '#favoritesPanel', function (event, ui) {
   if (currentUser) {
+    if(currentUser.name !== "Mystery Thrasher"){
     populateFavorites(currentUser.skateparks);
+    }
+    else{
+      emptyFavorites();
+    }
   } else {
     emptyFavorites();
   }
@@ -74,13 +79,14 @@ $(document).on('panelbeforeopen', '#favoritesPanel', function (event, ui) {
 var checkIfFavorited = function() {
   var match;
 
-  if (currentUser) {
+  if (currentUser && currentUser.name !== "Mystery Thrasher") {
     currentUser.skateparks.forEach(function (skatepark) {
       if (skatepark.id === currentPark.id) {
         $('#favoritePopup p').text('This skatepark has already been favorited.');
         $('#favoritePopup').popup('open');
         match = true;
       }
+      refreshPage();
     });
 
     if (!match) {
@@ -95,6 +101,7 @@ var checkIfFavorited = function() {
         currentUser.skateparks.push(currentPark);
         $('#favoritePopup p').text('Added to your favorites!');
         $('#favoritePopup').popup('open');
+        refreshPage();
       })
 
       .fail(function (response) {
@@ -104,7 +111,14 @@ var checkIfFavorited = function() {
 
   } else {
     $('#favoriteErrorPopup').popup('open');
+    refreshPage();
   }
+}
+
+var refreshPage = function(){
+  setTimeout(function(){
+    window.location = window.location.hash.split('&')[0]
+  }, 2500);
 }
 
 
