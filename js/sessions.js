@@ -106,7 +106,6 @@ var initializeAnonymousUserObject = function() {
 
   currentUser = new User(userData);
   createUserFirebaseMarker();
-  initializeMap();
 }
 
 
