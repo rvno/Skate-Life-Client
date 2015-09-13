@@ -130,7 +130,6 @@ function signOut() {
 }
 
 function removeUserMarker() {
-  debugger
   userMarkerRef.child(currentUser.uid).remove();
 }
 
