@@ -158,14 +158,16 @@ div.ui-input-text.ui-body-inherit{
 	background-color:white;
 }
 
-.message p{
-	padding-left:15px;
-	padding-right:15px;
-	/*display:table-cell;*/
+.message-content-container{
+	margin-left:70px;
+}
+
+.message-content{
+	width:inherit;
+	padding-left:10px;
+	padding-right:10px;
 	display:inline-block;
-	/*vertical-align:middle;*/
-	/*line-height:4em;*/
-	width:160px;
+	word-break:break-word;
 }
 
 .user-profile-img{
@@ -173,17 +175,12 @@ div.ui-input-text.ui-body-inherit{
 	width:40px;
 	border-radius:50%;
   display: inline-block;
-  margin-top: .35em;
+  margin-top: .45em;
   margin-bottom:.35em;
-  margin-left: .4em;
+  margin-left: .45em;
   float:left;
   border:1px solid black;
 }
-
-/*.message-text{
-	display:inline-block;
-}*/
-
 
 .skatepark-link.center{
 	display:inline-block;
