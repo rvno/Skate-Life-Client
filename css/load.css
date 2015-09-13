@@ -1,0 +1,42 @@
+.loading-dots{
+  height:20px;
+  width:20px;
+  margin-left: 47%;
+  background-color: orange;
+  border-radius: 50%;
+  animation: rotate 2s infinite;
+}
+
+@-webkit-keyframes  rotate{
+  0%{
+    opacity:1;
+    transform: translateX(0px)
+    
+  }
+  16.7%{
+    opacity:.3;
+  }
+  
+  33%{
+    opacity: 1;
+    transform: translateX(20px)
+  }
+  
+  50%{
+    opacity:.3;
+  }
+  
+  67%{
+    opacity: 1;
+    transform: translateX(40px)
+  }
+  
+  84%{
+    opacity:.3;
+  }
+  
+  100%{
+   opacity: 1;
+    transform: translate X(60px)
+  }
+}
