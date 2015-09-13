@@ -96,8 +96,6 @@ var bindMessageSubmitListener = function() {
         avatarURL: avatarURL});
 
       $('#message-input').val('');
-   
-
   });
 }
 
@@ -109,12 +107,17 @@ var clearChat = function() {
 
 var buildSkateparkPage = function(skatepark) {
   $('#skatepark-page .skatepark-name').text(skatepark.name.toUpperCase());
+
+  if (skatepark.favCount === 1)
+    var favCountString = 'This park has been Fav\'d '+skatepark.favCount+' time!';
+  else
+    var favCountString = 'This park has been Fav\'d '+skatepark.favCount+' times!';
+
   var skateparkDiv =
     $('<div>').append(
       $('<h1>').text(skatepark.name),
       $('<p>').addClass('bold').text('Address: ' + skatepark.address),
-      $('<p>').text('This spot has been favorited a whopping ' + skatepark.fav_count + ' times!'),
-      $('<img >').attr('src', 'https://maps.googleapis.com/maps/api/streetview?size=300x100&location='+skatepark.lat+','+skatepark.lon+'&fov=70&heading=235&pitch=0'),
+      $('<p>').addClass('fav-count').text(favCountString),
       $('<p>')
         .addClass('skatepark-id')
         .text(skatepark.id)

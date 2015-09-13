@@ -69,7 +69,8 @@ function Skatepark(serverData, options) {
   this.name = serverData.name,
   this.address = serverData.address,
   this.position = new google.maps.LatLng(serverData.lat,serverData.lon),
-  this.attendees = 0
+  this.attendees = 0,
+  this.favCount = serverData.fav_count
 }
 
 
@@ -84,15 +85,17 @@ Skatepark.prototype.buildInfoWindow = function() {
 }
 
 Skatepark.prototype.initializeSkateparkMarker = function() {
-  this.marker = new google.maps.Marker({
-    position: this.position,
-    title: this.name,
+  var skatepark = this;
+
+  skatepark.marker = new google.maps.Marker({
+    position: skatepark.position,
+    title: skatepark.name,
     map: map,
     icon: './imgs/new-skatepark-icon.png'
   });
 
-  google.maps.event.addListener(this.marker, 'click', function () {
-    this.infoWindow.open(map, this.marker);
+  google.maps.event.addListener(skatepark.marker, 'click', function () {
+    skatepark.infoWindow.open(map, skatepark.marker);
   });
 }
 
@@ -110,4 +113,14 @@ Skatepark.prototype.decrementAttendees = function() {
 Skatepark.prototype.refreshAttendees = function() {
   var content = $('p:contains('+this.id+')').parent().children('.skater_count').children();
   content.text(this.attendees);
+}
+
+Skatepark.prototype.incrementFavCount = function() {
+  this.favCount++;
+  this.refreshFavCount();
+}
+
+Skatepark.prototype.refreshFavCount = function() {
+  var favCount = $('.fav-count').text();
+  favCount.replace(/\d+/, this.favCount);
 }

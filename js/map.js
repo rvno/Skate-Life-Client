@@ -28,7 +28,6 @@ $(document).on('pageshow', '#main-map-page', function () {
     initializeMap();
     customizeMap();
     addLocationButtons();
-    // fetchSkateparks();
     dropSkateparkPins();
     dropSkaterPins();
     listenForPositionChanges();
@@ -123,16 +122,11 @@ function fetchSkateparks() {
 
 function initializeSkateparkObjects(skateparks) {
   skateparks.forEach(function (skateparkData) {
-    
     var skatepark = new Skatepark(skateparkData);
+
     skatepark.infoWindow = skatepark.buildInfoWindow();
     allSkateparks.push(skatepark);
-
-    // google.maps.event.addListener(skatepark.marker, 'click', function () {
-    //   skatepark.infoWindow.open(map, skatepark.marker);
-    // });
-
-    buildCarouselElement(skatepark)
+    buildCarouselElement(skatepark);
   });
 
 }
