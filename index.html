@@ -7,10 +7,12 @@
 	<!-- jQuery mobile stylesheets -->
 	<link rel="stylesheet" href="./css/jquery-mobile.min.css">
 	<link rel="stylesheet" href="./css/app.css">
+	<link rel="stylesheet" href="./css/load.css">
 
 	<!-- Carousel & header-font stylesheets -->
 	<link rel="stylesheet" type="text/css" href="./css/slick-carousel.css">
 	<link rel="stylesheet" type="text/css" href="./fonts/header-font.css">
+
 
 	<!-- jQuery & jQuery mobile scripts -->
 	<script src="./js/jquery.min.js"></script>
@@ -31,7 +33,10 @@
 	<div data-role="page" id="loading-page">
 
 		<div data-role="main" class="ui-content">
-			<h1 class="loading-text">Fetching Your Location</h1>
+			<div class="loading-text">
+				<p>Fetching Your Location</p>
+				<div class='loading-dots'></div>
+			</div>
 		</div>
 
 	</div>

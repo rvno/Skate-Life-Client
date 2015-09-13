@@ -191,6 +191,10 @@ div.ui-input-text.ui-body-inherit{
 	font-weight:450;
 }
 
+.info-window{
+	text-shadow:none;
+}
+
 .center.info-w-name{
 	font-weight:450;
 }
@@ -229,28 +233,47 @@ button.attend.center, button.leave, button.check-park{
 
 #message-input{
 	height:3em;
-	/*width:60%;*/
 }
 
 #message-submit{
 	width:20%;
 	margin:auto;
-	background-color: #F2A516;
+	background-color: #FF8C00;
 }
-
-#map-home-btn, #my-location-btn{
-	height:1.5em;
-	border-radius:10px;
-	display:table;
-}
-
 
 .location-btn{
-	height:1.5em;
-	border-radius:10px;
-	display:table;
-	text-shadow:none;
+	height: 1.5em;
+	border-radius: 4px;
+	border-style: outset;
+	border-color: #E6AE85;
+	display: table;
+	text-shadow: none;
 }
 
+.location-btn > div > p{
+	font-size:10px;
+}
+
+#loading-page{
+	height:100%;
+	width:100%;
+}
+
+#loading-page .ui-content{
+	display:table;
+	height:100%;
+	width:100%;
+	margin:0;
+	padding:0;
+}
+
+.loading-text{
+	display: table-cell;
+	width: 30px;
+	margin: 0 auto;
+	height: 20px;
+	text-align: center;
+	vertical-align: middle;
+}
 
 

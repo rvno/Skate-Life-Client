@@ -55,7 +55,7 @@ function LocationButton(controlDiv, map, buttonText) {
   controlDiv.style.padding = '5px';
   
   var controlUI = document.createElement('div');
-  controlUI.style.backgroundColor = 'orange';
+  controlUI.style.backgroundColor = '#FFAD33';
   controlUI.style.color = 'black';
   controlUI.style.cursor = 'pointer';
   controlUI.style.textAlign = 'center';
@@ -64,7 +64,7 @@ function LocationButton(controlDiv, map, buttonText) {
   controlDiv.appendChild(controlUI);
 
   var controlText = document.createElement('div');
-  controlText.style.fontFamily = 'Arial', 'sans-serif';
+  controlText.style.fontFamily = 'Roboto', 'sans-serif';
   controlText.style.fontSize='12px';
   controlText.style.paddingLeft = '4px';
   controlText.style.paddingRight ='4px';
