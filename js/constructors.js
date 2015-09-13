@@ -29,10 +29,10 @@ User.prototype.initializeGeofence = function() {
   var geofence = new google.maps.Circle({
     map: map,
     radius: 9001,
-    fillColor: '#336688',
+    fillColor: 'EEEBE4',
     fillOpacity: .22,
-    strokeColor: '#D48817',
-    strokeWeight: 1.75
+    strokeColor: '#383838',
+    strokeWeight: .35
   });
 
   geofence.bindTo('center', this.marker, 'position');

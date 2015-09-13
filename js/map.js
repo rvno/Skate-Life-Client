@@ -152,10 +152,10 @@ var fetchSkaters = function() {
 
     if (userMarker.uid === currentUser.uid) {
       var draggability = true;
-      var iconPath = './imgs/user-icon.png'
+      var iconPath = './imgs/main-user-icon.png'
     } else {
       var draggability = false;
-      var iconPath = './imgs/user.png'
+      var iconPath = './imgs/other-skaters.png'
     }
 
     var marker = new google.maps.Marker({
