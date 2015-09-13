@@ -15,7 +15,7 @@ var buildCarouselElement = function(skatepark){
 	//
 	var parkCarouselElement = 
 		$('<div>').addClass('carousel-element').attr('id', skatepark.id).append(
-			$('<p>').text(skatepark.name)
+			$('<p>').addClass('center').text(skatepark.name)
 			) 
 
 	skatepark.carouselElement = parkCarouselElement

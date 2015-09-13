@@ -102,7 +102,7 @@ function Skatepark(serverData, options) {
 Skatepark.prototype.buildInfoWindow = function() {
   // ***** Refactor infoWindow content string
   var infoWindow = new google.maps.InfoWindow({
-    content: '<p class="park-id" hidden>'+this.id+'</p><p class="center info-w-name">'+this.name+'</p><p class="center info-w-address">'+this.address+'</p><a class="skatepark-link center" href='+baseURL+'api/skateparks/'+this.id+'>check it</a><button class="attend center">Attend</button><p class="center center-img"><img src="https://maps.googleapis.com/maps/api/streetview?size=300x100&location='+this.position.G+','+this.position.K+'&fov=70&heading=235&pitch=0"/></p><p class="skater_count">Skaters Here: <span class="attendee-count">'+this.attendees+'</span></p>',
+    content: '<div class="info-window"><p class="park-id" hidden>'+this.id+'</p><p class="center info-w-name">'+this.name+'</p><p class="center info-w-address">'+this.address+'</p><p class="skater-count center">Skaters Here: <span class="attendee-count">'+this.attendees+'</span></p><a class="skatepark-link" href='+baseURL+'api/skateparks/'+this.id+'><button class="check-park center">Check It</button></a><button class="attend center">Attend</button></div>',
     position: this.position
   });
 

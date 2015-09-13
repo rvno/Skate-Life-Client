@@ -13,9 +13,6 @@ $(document).on('pagehide', '#skatepark-page', function (event, ui){
 });
 
 
-
-
-
 var bindSkateparkPageListener = function() {
   $(document).on('click', '.skatepark-link', function (event) {
     clearChat();
@@ -89,12 +86,17 @@ var bindMessageSubmitListener = function() {
     var name = $('.chat-user').text();
     var message = $('#message-input').val();
 
-    messageRef.push({
-      name: name,
-      text: message,
-      avatarURL: avatarURL});
+    if(message.length !== 0){
+      messageRef.push({
+        name: name,
+        text: message,
+        avatarURL: avatarURL});
 
-    $('#message-input').val('');
+      $('#message-input').val('');
+    }
+    else{
+      alert('Gotta type something in!')
+    }
 
   });
 }
@@ -111,7 +113,7 @@ var buildSkateparkPage = function(skatepark) {
     $('<div>').append(
       $('<h1>').text(skatepark.name),
       $('<p>').addClass('bold').text('Address: ' + skatepark.address),
-      $('<p>').text('This spot has been favorited a whopping ' + skatepark.fav_count + ' times braski'),
+      $('<p>').text('This spot has been favorited a whopping ' + skatepark.fav_count + ' times!'),
       $('<img >').attr('src', 'https://maps.googleapis.com/maps/api/streetview?size=300x100&location='+skatepark.lat+','+skatepark.lon+'&fov=70&heading=235&pitch=0'),
       $('<p>')
         .addClass('skatepark-id')
@@ -120,3 +122,4 @@ var buildSkateparkPage = function(skatepark) {
 
   $('#skatepark-page .ui-content .skatepark-page').html(skateparkDiv);
 }
+

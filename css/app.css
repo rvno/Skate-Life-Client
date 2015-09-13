@@ -138,8 +138,8 @@ div.ui-input-text.ui-body-inherit{
 }
 
 .gm-style > div:first-child > div + div > div:last-child > div > div:first-child > div{
-	border-radius:10px !important;
-	border:1px solid #559641;
+	border-radius:4px 4px 0 0;
+	border:1px solid black;
 }
 
 .messages-div{
@@ -203,14 +203,23 @@ div.ui-input-text.ui-body-inherit{
 }
 
 button.attend.center, button.leave{
-	display:inline-block;
 	float:right;
+}
+
+button.check-park{
+
+}
+
+button.attend.center, button.leave, button.check-park{
+	display:inline-block;
 	background-color:black;
 	color:white;
 	border:none;
-	border-radius:12px;
+	border-radius:2px;
 	margin-bottom:10px;
+	cursor: pointer;
 }
+
 
 .bold{
 	font-weight:550;
