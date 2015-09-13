@@ -114,7 +114,7 @@ var createUserFirebaseMarker = function() {
     url: '#login-page',
     uid: currentUser.uid,
     position: currentUser.position,
-    icon: './imgs/user.png'
+    icon: './imgs/other-skaters.png'
   });
 }
 
