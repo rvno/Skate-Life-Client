@@ -64,8 +64,11 @@ var initializeChatroom = function(skatepark) {
     var message = snapshot.val();
     $('.messages-div').append(
       $('<div>').addClass('message').append(
-        $('<img>').addClass('user-profile-img').attr('src', message.avatarURL),
-        $('<p>').text(message.name + ': ' + message.text)));
+        $('<div>').addClass('user-profile-container').append(
+        $('<img>').addClass('user-profile-img').attr('src', message.avatarURL)),
+        $('<div>').addClass('message-content-container').append(
+          $('<p>').addClass('message-content').text(message.name + ': ' + message.text))
+        ));
   });
 
   bindMessageSubmitListener();
@@ -86,17 +89,14 @@ var bindMessageSubmitListener = function() {
     var name = $('.chat-user').text();
     var message = $('#message-input').val();
 
-    if(message.length !== 0){
+  
       messageRef.push({
         name: name,
         text: message,
         avatarURL: avatarURL});
 
       $('#message-input').val('');
-    }
-    else{
-      alert('Gotta type something in!')
-    }
+   
 
   });
 }
