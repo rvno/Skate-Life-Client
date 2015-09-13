@@ -88,13 +88,6 @@ function Skatepark(serverData, options) {
   this.name = serverData.name,
   this.address = serverData.address,
   this.position = new google.maps.LatLng(serverData.lat,serverData.lon),
-  this.marker = new google.maps.Marker({
-    position: this.position,
-    title: this.name,
-    map: map,
-    // icon: './imgs/skatepark.png'
-    icon: './imgs/new-skatepark-icon.png'
-  }),
   this.attendees = 0
 }
 
@@ -107,6 +100,19 @@ Skatepark.prototype.buildInfoWindow = function() {
   });
 
   return infoWindow;
+}
+
+Skatepark.prototype.initializeSkateparkMarker = function() {
+  this.marker = new google.maps.Marker({
+    position: this.position,
+    title: this.name,
+    map: map,
+    icon: './imgs/new-skatepark-icon.png'
+  });
+
+  google.maps.event.addListener(this.marker, 'click', function () {
+    this.infoWindow.open(map, this.marker);
+  });
 }
 
 

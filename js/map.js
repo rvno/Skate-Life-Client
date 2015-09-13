@@ -4,6 +4,8 @@ var MY_MAPTYPE_ID = 'custom_style';
 // turn this into a promise.
 
 //being called as soon as this script is loaded
+fetchSkateparks();
+
 $.when(getCurrentLocation())
   .then(setCurrentUserPosition)
   .fail(setDefaultUserPosition);
@@ -26,8 +28,9 @@ $(document).on('pageshow', '#main-map-page', function () {
     initializeMap();
     customizeMap();
     addLocationButtons();
-    fetchSkateparks();
-    fetchSkaters();
+    // fetchSkateparks();
+    dropSkateparkPins();
+    dropSkaterPins();
     listenForPositionChanges();
 });
 
@@ -45,11 +48,7 @@ var setHeader = function(header) {
 
 
 var initializeMap = function() {
-  if (currentUser) {
-    var currentMapCenter = currentUser.position
-  } else {
-    var currentMapCenter = new google.maps.LatLng(37.663836, -122.080266)
-  }
+  var currentMapCenter = currentUser.position;
 
   var mapProps = {
     center: currentMapCenter,
@@ -105,8 +104,7 @@ var customizeMap = function() {
   );
 }
 
-
-var fetchSkateparks = function() {
+function fetchSkateparks() {
   $.ajax({
     url: baseURL + 'api/skateparks',
     type: 'get',
@@ -123,27 +121,30 @@ var fetchSkateparks = function() {
 }
 
 
-var initializeSkateparkObjects = function(skateparks) {
+function initializeSkateparkObjects(skateparks) {
   skateparks.forEach(function (skateparkData) {
     
     var skatepark = new Skatepark(skateparkData);
     skatepark.infoWindow = skatepark.buildInfoWindow();
     allSkateparks.push(skatepark);
 
-    google.maps.event.addListener(skatepark.marker, 'click', function () {
-
-      // *** ADD THIS LATER
-      // getAttendees(skatepark.id);
-      skatepark.infoWindow.open(map, skatepark.marker);
-    });
+    // google.maps.event.addListener(skatepark.marker, 'click', function () {
+    //   skatepark.infoWindow.open(map, skatepark.marker);
+    // });
 
     buildCarouselElement(skatepark)
   });
 
 }
 
+var dropSkateparkPins = function() {
+  allSkateparks.forEach(function (skatepark) {
+    skatepark.initializeSkateparkMarker();
+  });
+}
 
-var fetchSkaters = function() {
+
+var dropSkaterPins = function() {
   userMarkers = [];
 
   userMarkerRef.on('child_added', function (snapshot) {
