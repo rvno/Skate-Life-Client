@@ -107,11 +107,12 @@ var clearChat = function() {
 
 var buildSkateparkPage = function(skatepark) {
   $('#skatepark-page .skatepark-name').text(skatepark.name.toUpperCase());
+  var favCountString = 'This park has been Fav\'d '+skatepark.favCount;
 
   if (skatepark.favCount === 1)
-    var favCountString = 'This park has been Fav\'d '+skatepark.favCount+' time!';
+    favCountString += ' time!';
   else
-    var favCountString = 'This park has been Fav\'d '+skatepark.favCount+' times!';
+    favCountString += ' times!';
 
   var skateparkDiv =
     $('<div>').append(
