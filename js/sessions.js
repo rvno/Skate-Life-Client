@@ -25,27 +25,31 @@ $(document).on('click', '.explore-btn', function (event) {
 
 // Sign Out
 $(document).on('click', '#logout', function () {
+  removeUserMarker();
   signOut();
+});
+
+// Remove userMarker when user leaves
+$(window).on('beforeunload', function () {
+  removeUserMarker();
 });
 
 
 
 
 
-var authenticateUserOnLogin = function() {
+function authenticateUserOnLogin() {
   googleOauth().then(function(authData) {
     window.localStorage.setItem(
       'googleData',
       JSON.stringify(authData));
 
     backendUserAuth(authData);
-    // Verify if this makes any difference
-
   });
 }
 
 
-var googleOauth = function() {
+function googleOauth() {
   var promise = new Promise(function (resolve, reject) {
     ref.authWithOAuthPopup('google', function (error, authData) {
       if (error) {
@@ -60,7 +64,7 @@ var googleOauth = function() {
 }
 
 
-var backendUserAuth = function(authData) {
+function backendUserAuth(authData) {
   var path = baseURL + 'api/users/' + authData.google.id + '/authenticate'
 
   $.ajax({
@@ -81,7 +85,7 @@ var backendUserAuth = function(authData) {
   });
 }
 
-var initializeUserObject = function(serverData) {
+function initializeUserObject(serverData) {
   var userData = JSON.parse(window.localStorage.getItem('googleData')).google;
   userData.position = currentLocation;
   userData.userId = serverData.user.id;
@@ -93,7 +97,7 @@ var initializeUserObject = function(serverData) {
   createUserFirebaseMarker();
 }
 
-var initializeAnonymousUserObject = function() {
+function initializeAnonymousUserObject() {
   var userData = {
     id: Math.floor(Math.random() * 6732) + 8893,
     userId: 0,
@@ -109,7 +113,7 @@ var initializeAnonymousUserObject = function() {
 }
 
 
-var createUserFirebaseMarker = function() {
+function createUserFirebaseMarker() {
   userMarkerRef.child(currentUser.uid).set({
     url: '#login-page',
     uid: currentUser.uid,
@@ -119,12 +123,16 @@ var createUserFirebaseMarker = function() {
 }
 
 
-var signOut = function() {
+function signOut() {
   localStorage.clear();
   currentUser = null;
   $.mobile.changePage('#login-page');
 }
 
+function removeUserMarker() {
+  debugger
+  userMarkerRef.child(currentUser.uid).remove();
+}
 
 
 
