@@ -99,6 +99,7 @@ var checkIfFavorited = function() {
 
       .done(function (response) {
         currentUser.skateparks.push(currentPark);
+        currentPark.incrementFavCount();
         $('#favoritePopup p').text('Added to your favorites!');
         $('#favoritePopup').popup('open');
         refreshPage();
