@@ -42,8 +42,6 @@ User.prototype.initializeGeofence = function() {
 
 User.prototype.bindDragListener = function() {
   google.maps.event.addListener(this.marker, 'dragend', this.handleDragListener.bind(this));
-  // google.maps.event.addListener(this.marker, 'dragend', this.saveCurrentLocation);
-  // google.maps.event.addListener(this.marker, 'dragend', this.populateCarousel.bind(this));
 }
 
 User.prototype.handleDragListener = function(){
@@ -62,23 +60,6 @@ User.prototype.populateCarousel = function() {
     }
   }) 
 }
-
-// User.prototype.bindDragListener = function() {
-//   var user = this;
-//   google.maps.event.addListener(this.marker, 'dragend', function(){
-//     user.saveCurrentLocation();
-
-    //take the geofence bounds and compare it against the markers here
-
-    // var bounds = user.geofence.getBounds();
-    // if(bounds.contains())  
-    // allSkateparks.forEach(function(park){
-      // if(bounds.contains(park.marker.position)){
-        // console.log('we gawt 1')
-      // }
-    // })  
-//   });
-// }
 
 
 // Skateparks should load once and only once, make sure
