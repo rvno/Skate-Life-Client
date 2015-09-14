@@ -188,6 +188,16 @@ var listenForPositionChanges = function() {
       }
     });
   });
+
+  userMarkerRef.on('child_removed', function (snapshot) {
+    userMarkers.forEach(function (marker) {
+      if (snapshot.val().uid === marker.uid) {
+        var index = userMarkers.indexOf(marker);
+        marker.setMap(null);
+        userMarkers.splice(index, 1);
+      }
+    });
+  });
 }
 
 
