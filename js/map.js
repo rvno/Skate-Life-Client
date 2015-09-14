@@ -31,6 +31,9 @@ $(document).on('pageshow', '#main-map-page', function () {
   }
 });
 
+$(document).on('click', '.location-btn', function () {
+  currentUser.saveCurrentLocation();
+});
 
 
 
