@@ -9,8 +9,6 @@ $.when(getCurrentLocation())
   .fail(setDefaultUserPosition);
 
 
-// Figure out a way to optimize this, so that you
-// don't see "Skater" before the name changes.
 $(document).on('pagebeforeshow', '#login-page', function () {
   setHeader('.welcome-header');
 });
@@ -28,11 +26,20 @@ $(document).on('pageshow', '#main-map-page', function () {
     dropSkateparkPins();
     dropSkaterPins();
     listenForPositionChanges();
+  } else {
+    map.panTo(currentUser.marker.position);
   }
 });
 
 $(document).on('click', '.location-btn', function () {
   currentUser.saveCurrentLocation();
+});
+
+
+$(document).on('click', '.check-park', function () {
+  allSkateparks.forEach(function (park) {
+    park.infoWindow.close();
+  });
 });
 
 
@@ -48,8 +55,6 @@ var setHeader = function(header) {
 
 
 var initializeMap = function() {
-  // var currentMapCenter = currentUser.position;
-
   var mapProps = {
     center: currentUser.position,
     zoom:10,
