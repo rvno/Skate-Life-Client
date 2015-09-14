@@ -113,6 +113,7 @@ Skatepark.prototype.decrementAttendees = function() {
 Skatepark.prototype.refreshAttendees = function() {
   var content = $('p:contains('+this.id+')').parent().children('.skater_count').children();
   content.text(this.attendees);
+  $('.attendee-count').text(this.attendees) 
 }
 
 Skatepark.prototype.incrementFavCount = function() {
@@ -122,5 +123,6 @@ Skatepark.prototype.incrementFavCount = function() {
 
 Skatepark.prototype.refreshFavCount = function() {
   var favCount = $('.fav-count').text();
-  favCount.replace(/\d+/, this.favCount);
+  newFavCount = favCount.replace(/\d+/, this.favCount);
+  $('.fav-count').text(newFavCount)
 }

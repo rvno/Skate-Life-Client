@@ -89,13 +89,17 @@ var bindMessageSubmitListener = function() {
     var name = $('.chat-user').text();
     var message = $('#message-input').val();
 
-  
+    if(message.length !== 0){
       messageRef.push({
         name: name,
         text: message,
         avatarURL: avatarURL});
 
       $('#message-input').val('');
+    }
+    else{
+      alert("Gotta type something in!")
+    }
   });
 }
 
