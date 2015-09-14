@@ -3,6 +3,7 @@ var MY_MAPTYPE_ID = 'custom_style';
 
 // turn this into a promise.
 
+debugger
 //being called as soon as this script is loaded
 fetchSkateparks();
 
@@ -11,23 +12,26 @@ $.when(getCurrentLocation())
   .fail(setDefaultUserPosition);
 
 
-
-
 // Figure out a way to optimize this, so that you
 // don't see "Skater" before the name changes.
 $(document).on('pageshow', '#login-page', function () {
   setHeader('.welcome-header');
+  debugger
+  initializeMap();
+  customizeMap();
+  addLocationButtons();
 });
 
 
 // May not need event and data
 $(document).on('pageshow', '#main-map-page', function () {
-  setHeader('.username');
+    setHeader('.username');
 
     // Do these one time, not every time the map page opens.
-    initializeMap();
-    customizeMap();
-    addLocationButtons();
+    // initializeMap();
+    // customizeMap();
+    // addLocationButtons();
+
     dropSkateparkPins();
     dropSkaterPins();
     listenForPositionChanges();
