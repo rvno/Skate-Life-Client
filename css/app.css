@@ -196,7 +196,8 @@ div.ui-input-text.ui-body-inherit{
 }
 
 .center.info-w-name{
-	font-weight:450;
+	font-weight:600;
+	font-style: bold;
 }
 
 .center.info-w-address{
