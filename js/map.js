@@ -1,7 +1,9 @@
 var map;
 var MY_MAPTYPE_ID = 'custom_style';
 
+// turn this into a promise.
 
+//being called as soon as this script is loaded
 fetchSkateparks();
 
 $.when(getCurrentLocation())
@@ -9,38 +11,28 @@ $.when(getCurrentLocation())
   .fail(setDefaultUserPosition);
 
 
-$(document).on('pagebeforeshow', '#login-page', function () {
+
+
+// Figure out a way to optimize this, so that you
+// don't see "Skater" before the name changes.
+$(document).on('pageshow', '#login-page', function () {
   setHeader('.welcome-header');
 });
 
 
-$(document).on('pagebeforeshow', '#main-map-page', function () {
-  setHeader('.username');
-});
-
+// May not need event and data
 $(document).on('pageshow', '#main-map-page', function () {
-  if (!map) {
+  setHeader('.username');
+
+    // Do these one time, not every time the map page opens.
     initializeMap();
     customizeMap();
     addLocationButtons();
     dropSkateparkPins();
     dropSkaterPins();
     listenForPositionChanges();
-  } else {
-    map.panTo(currentUser.marker.position);
-  }
 });
 
-$(document).on('click', '.location-btn', function () {
-  currentUser.saveCurrentLocation();
-});
-
-
-$(document).on('click', '.check-park', function () {
-  allSkateparks.forEach(function (park) {
-    park.infoWindow.close();
-  });
-});
 
 
 
@@ -55,8 +47,10 @@ var setHeader = function(header) {
 
 
 var initializeMap = function() {
+  var currentMapCenter = currentUser.position;
+
   var mapProps = {
-    center: currentUser.position,
+    center: currentMapCenter,
     zoom:10,
     panControl:false,
     zoomControl:false,
@@ -193,16 +187,6 @@ var listenForPositionChanges = function() {
     userMarkers.forEach(function (marker) {
       if (snapshot.val().uid === marker.uid) {
         marker.setPosition(markerPosition);
-      }
-    });
-  });
-
-  userMarkerRef.on('child_removed', function (snapshot) {
-    userMarkers.forEach(function (marker) {
-      if (snapshot.val().uid === marker.uid) {
-        var index = userMarkers.indexOf(marker);
-        marker.setMap(null);
-        userMarkers.splice(index, 1);
       }
     });
   });
