@@ -125,7 +125,6 @@ function createUserFirebaseMarker() {
 
 function signOut() {
   localStorage.clear();
-  map = null;
   currentUser = null;
   $.mobile.changePage('#login-page');
 }
